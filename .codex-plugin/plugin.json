@@ -1,0 +1,7 @@
+{
+  "name": "dataminer-devops",
+  "version": "0.0.1",
+  "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
+  "skills": "./skills/",
+  "agents": "./adapters/codex/agents/"
+}

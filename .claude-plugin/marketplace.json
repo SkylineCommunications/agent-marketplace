@@ -1,0 +1,14 @@
+{
+  "name": "Skyline Communications",
+  "owner": {
+    "name": "Skyline Communications",
+    "url": "https://github.com/SkylineCommunications"
+  },
+  "plugins": [
+    {
+      "name": "dataminer-devops",
+      "source": "./",
+      "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services."
+    }
+  ]
+}

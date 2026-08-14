@@ -1,0 +1,22 @@
+{
+  "manifestVersion": "0.0.1",
+  "productId": "dataminer-devops",
+  "publisherToolVersion": "1.0.0.0",
+  "sourceCommitSha": "5da5bcc4fa21eb1b8868a4bd98b1c2e1138b2e2c",
+  "builtAtUtc": "2026-08-14T12:55:57.3502223+00:00",
+  "publishedSkills": [
+    "dataminer-api",
+    "dataminer-create-new-app",
+    "dataminer-data-discovery",
+    "dataminer-debug-issues",
+    "dataminer-execute-automation-script",
+    "dataminer-execute-query",
+    "dataminer-frontend",
+    "dataminer-headless-ias",
+    "dataminer-performing-actions"
+  ],
+  "publishedAgents": [
+    "dataminer-app-builder",
+    "dataminer-devops"
+  ]
+}

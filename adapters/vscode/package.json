@@ -1,0 +1,72 @@
+{
+  "name": "dataminer-devops",
+  "displayName": "DataMiner DevOps Agent",
+  "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
+  "version": "0.0.1",
+  "publisher": "SkylineCommunications",
+  "homepage": "https://aka.dataminer.services/devops-agent",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SkylineCommunications/dataminer-devops-agent.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "dataminer",
+    "skyline",
+    "web-apps",
+    "frontend",
+    "react",
+    "devops"
+  ],
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Machine Learning"
+  ],
+  "files": [
+    "agents",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
+  "contributes": {
+    "chatAgents": [
+      {
+        "path": "./agents/dataminer-app-builder.agent.md"
+      },
+      {
+        "path": "./agents/dataminer-devops.agent.md"
+      }
+    ],
+    "chatSkills": [
+      {
+        "path": "./skills/dataminer-api/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-create-new-app/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-data-discovery/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-debug-issues/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-execute-automation-script/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-execute-query/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-frontend/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-headless-ias/SKILL.md"
+      },
+      {
+        "path": "./skills/dataminer-performing-actions/SKILL.md"
+      }
+    ]
+  }
+}

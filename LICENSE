@@ -1,8 +1,8 @@
-DATAMINER APP BUILDER LICENSE
+SKYLINE AGENT MARKETPLACE LICENSE
 
 1. Software and acceptance
 
-The DataMiner App Builder, also referred to as the DataMiner DevOps Agent, including all agent, prompt, instruction, skill, configuration and other files distributed or synchronised with it, whether obtained through this repository, through a plug-in or through any other channel, is the "Software". The Software is owned by Skyline Communications NV ("Skyline").
+The Skyline Agent Marketplace, including the DataMiner App Builder, also referred to as the DataMiner DevOps Agent, and all agent, prompt, instruction, skill, configuration and other files distributed or synchronised with it, whether obtained through this repository, through a plug-in or through any other channel, is the "Software". The Software is owned by Skyline Communications NV ("Skyline").
 
 By installing, copying, accessing or using the Software, you accept this license. If you do not accept it, you may not use the Software.
 
@@ -20,7 +20,7 @@ You may not:
 
 (b) modify, adapt or reverse engineer the Software beyond the configuration and use permitted above;
 
-(c) use the Software or its files to develop, train or offer a product, service, agent or tool that competes with the DataMiner App Builder or DataMiner DevOps Agent; or
+(c) use the Software or its files to develop, train or offer a product, service, marketplace, agent or tool that competes with the Skyline Agent Marketplace, DataMiner App Builder or DataMiner DevOps Agent; or
 
 (d) remove or alter any proprietary notice contained in the Software.
 

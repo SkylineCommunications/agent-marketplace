@@ -1,0 +1,9 @@
+{
+  "name": "dataminer-app-builder",
+  "version": "0.0.3",
+  "description": "Build static frontend applications for deployment inside Skyline DataMiner.",
+  "author": {
+    "name": "Skyline Communications",
+    "url": "https://github.com/SkylineCommunications"
+  }
+}

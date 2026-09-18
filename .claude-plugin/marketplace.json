@@ -1,16 +1,17 @@
 {
-  "name": "skyline-communications",
+  "name": "skyline-agent-marketplace",
   "owner": {
     "name": "Skyline Communications",
     "url": "https://github.com/SkylineCommunications"
   },
-  "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
-  "version": "0.0.2",
+  "description": "Skyline Communications' public marketplace for AI agents and reusable skills across supported AI development clients.",
+  "version": "0.0.3",
   "plugins": [
     {
-      "name": "dataminer-devops",
-      "source": "./adapters/claude",
-      "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services."
+      "name": "dataminer-app-builder",
+      "description": "Build static frontend applications for deployment inside Skyline DataMiner.",
+      "version": "0.0.3",
+      "source": "./plugins/dataminer-app-builder/claude"
     }
   ]
 }

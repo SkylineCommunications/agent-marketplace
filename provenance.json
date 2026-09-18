@@ -1,22 +1,32 @@
 {
-  "manifestVersion": "0.0.2",
-  "productId": "dataminer-devops-agent",
+  "manifestVersion": "0.0.3",
+  "marketplace": "skyline-agent-marketplace",
+  "sourceRepository": "SkylineCommunications/.github-private",
+  "sourceCommitSha": "d94b7d1ad6d58254d4172e1a0c5a835d516de32d",
+  "builtAtUtc": "2026-09-18T12:48:13.0200624+00:00",
   "publisherToolVersion": "1.0.0.0",
-  "sourceCommitSha": "a83674644e8dce52092e37aad61b8d25a5b8480a",
-  "builtAtUtc": "2026-09-18T07:14:04.1673290+00:00",
-  "publishedSkills": [
-    "dataminer-api",
-    "dataminer-create-new-app",
-    "dataminer-data-discovery",
-    "dataminer-debug-issues",
-    "dataminer-execute-automation-script",
-    "dataminer-execute-query",
-    "dataminer-frontend",
-    "dataminer-headless-ias",
-    "dataminer-performing-actions"
-  ],
-  "publishedAgents": [
-    "dataminer-app-builder",
-    "dataminer-devops"
+  "plugins": [
+    {
+      "id": "dataminer-app-builder",
+      "version": "0.0.3",
+      "path": "plugins/dataminer-app-builder",
+      "rootAgents": [
+        "dataminer-app-builder"
+      ],
+      "agents": [
+        "dataminer-app-builder"
+      ],
+      "skills": [
+        "dataminer-create-new-app",
+        "dataminer-frontend",
+        "dataminer-api",
+        "dataminer-data-discovery",
+        "dataminer-execute-query",
+        "dataminer-execute-automation-script",
+        "dataminer-performing-actions",
+        "dataminer-headless-ias",
+        "dataminer-debug-issues"
+      ]
+    }
   ]
 }

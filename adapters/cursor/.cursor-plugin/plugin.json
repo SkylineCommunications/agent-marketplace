@@ -1,9 +1,0 @@
-{
-  "name": "dataminer-devops",
-  "version": "0.0.2",
-  "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
-  "author": {
-    "name": "Skyline Communications",
-    "url": "https://github.com/SkylineCommunications"
-  }
-}

@@ -1,42 +1,41 @@
-# DataMiner DevOps Agent
+# Skyline Agent Marketplace
 
 > [!IMPORTANT]
-> The DataMiner App Builder is owned by Skyline Communications NV and its use is governed by the DataMiner App Builder License in the LICENSE file. By installing or using it, you accept that license. You may not redistribute these files or use them to develop or offer a competing App Builder, agent or similar tool. "DataMiner" and "Skyline" are trademarks of Skyline Communications NV.
+> The Skyline Agent Marketplace, including the DataMiner App Builder, is owned by Skyline Communications NV and its use is governed by the Skyline Agent Marketplace License in the LICENSE file. By installing or using it, you accept that license. You may not redistribute these files or use them to develop or offer a competing marketplace, App Builder, agent, or similar tool. "DataMiner" and "Skyline" are trademarks of Skyline Communications NV.
 
 > [!WARNING]
-> This experimental agent, its distribution, and its output may change significantly or become unavailable. Apps may need to be rebuilt after updates. App creators remain solely responsible for validating and testing every app before use; the DataMiner App Builder cannot be held responsible for failures in production environments.
+> The agents in this marketplace are experimental. Their distribution and output may change significantly or become unavailable. Users remain solely responsible for validating and testing generated work before use in production environments.
 
-AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.
+Skyline Communications' public marketplace for AI agents and reusable skills.
 
-* Version: **0.0.2**
-* License: [DataMiner App Builder License](LICENSE)
+* Version: **0.0.3**
+* License: [Skyline Agent Marketplace License](LICENSE)
 
 ## Installing
 
-Add this repository as a plugin marketplace in your client, then install **DataMiner DevOps Agent**. The root marketplace catalogs route each client to its matching package under `adapters/`. For local development, register the matching adapter directory directly.
+Add this repository as a plugin marketplace in your client, then install an agent. The root marketplace catalogs route each client to the matching agent package under `plugins/<plugin>/<client>/`.
 
 ## Included Skills
 
-* `dataminer-api` — see [`adapters/copilot/skills/dataminer-api/SKILL.md`](adapters/copilot/skills/dataminer-api/SKILL.md)
-* `dataminer-create-new-app` — see [`adapters/copilot/skills/dataminer-create-new-app/SKILL.md`](adapters/copilot/skills/dataminer-create-new-app/SKILL.md)
-* `dataminer-data-discovery` — see [`adapters/copilot/skills/dataminer-data-discovery/SKILL.md`](adapters/copilot/skills/dataminer-data-discovery/SKILL.md)
-* `dataminer-debug-issues` — see [`adapters/copilot/skills/dataminer-debug-issues/SKILL.md`](adapters/copilot/skills/dataminer-debug-issues/SKILL.md)
-* `dataminer-execute-automation-script` — see [`adapters/copilot/skills/dataminer-execute-automation-script/SKILL.md`](adapters/copilot/skills/dataminer-execute-automation-script/SKILL.md)
-* `dataminer-execute-query` — see [`adapters/copilot/skills/dataminer-execute-query/SKILL.md`](adapters/copilot/skills/dataminer-execute-query/SKILL.md)
-* `dataminer-frontend` — see [`adapters/copilot/skills/dataminer-frontend/SKILL.md`](adapters/copilot/skills/dataminer-frontend/SKILL.md)
-* `dataminer-headless-ias` — see [`adapters/copilot/skills/dataminer-headless-ias/SKILL.md`](adapters/copilot/skills/dataminer-headless-ias/SKILL.md)
-* `dataminer-performing-actions` — see [`adapters/copilot/skills/dataminer-performing-actions/SKILL.md`](adapters/copilot/skills/dataminer-performing-actions/SKILL.md)
+* `dataminer-api` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-api/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-api/SKILL.md)
+* `dataminer-create-new-app` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-create-new-app/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-create-new-app/SKILL.md)
+* `dataminer-data-discovery` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-data-discovery/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-data-discovery/SKILL.md)
+* `dataminer-debug-issues` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-debug-issues/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-debug-issues/SKILL.md)
+* `dataminer-execute-automation-script` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-execute-automation-script/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-execute-automation-script/SKILL.md)
+* `dataminer-execute-query` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-execute-query/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-execute-query/SKILL.md)
+* `dataminer-frontend` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-frontend/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-frontend/SKILL.md)
+* `dataminer-headless-ias` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-headless-ias/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-headless-ias/SKILL.md)
+* `dataminer-performing-actions` — see [`plugins/dataminer-app-builder/copilot/skills/dataminer-performing-actions/SKILL.md`](plugins/dataminer-app-builder/copilot/skills/dataminer-performing-actions/SKILL.md)
 
 ## Included Agents
 
-* `dataminer-app-builder` — role: subagent
-* `dataminer-devops` — role: orchestrator
+* `dataminer-app-builder` — role: orchestrator
 
 ## Platform Support
 
-Skills and agents are packaged per IDE under `adapters/`; root marketplace catalogs contain routing metadata only.
+Skills and agents are packaged per client under `plugins/<plugin>/<client>/`; root marketplace catalogs contain routing metadata only.
 
-* GitHub Copilot & Visual Studio Code: `.github/plugin/marketplace.json` routes to `adapters/copilot/`
-* Cursor: `.cursor-plugin/marketplace.json` routes to `adapters/cursor/`
-* Claude Code: `.claude-plugin/marketplace.json` routes to `adapters/claude/`
-* OpenAI Codex: `.agents/plugins/marketplace.json` routes to `adapters/codex/`
+* GitHub Copilot & Visual Studio Code: `.github/plugin/marketplace.json` routes to `plugins/<plugin>/copilot/`
+* Cursor: `.cursor-plugin/marketplace.json` routes to `plugins/<plugin>/cursor/`
+* Claude Code: `.claude-plugin/marketplace.json` routes to `plugins/<plugin>/claude/`
+* OpenAI Codex: `.agents/plugins/marketplace.json` routes to `plugins/<plugin>/codex/`

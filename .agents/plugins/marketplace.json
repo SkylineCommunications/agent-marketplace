@@ -1,14 +1,14 @@
 {
-  "name": "skyline-communications",
+  "name": "skyline-agent-marketplace",
   "interface": {
     "displayName": "Skyline Communications"
   },
   "plugins": [
     {
-      "name": "dataminer-devops",
+      "name": "dataminer-app-builder",
       "source": {
         "source": "local",
-        "path": "./adapters/codex"
+        "path": "./plugins/dataminer-app-builder/codex"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -1,13 +1,15 @@
 {
-  "name": "Skyline Communications",
+  "name": "skyline-communications",
   "owner": {
     "name": "Skyline Communications",
     "url": "https://github.com/SkylineCommunications"
   },
+  "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
+  "version": "0.0.2",
   "plugins": [
     {
       "name": "dataminer-devops",
-      "source": "./",
+      "source": "./adapters/claude",
       "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services."
     }
   ]

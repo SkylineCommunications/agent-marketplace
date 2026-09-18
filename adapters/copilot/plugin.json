@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dataminer-devops",
+  "version": "0.0.2",
+  "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
+  "author": {
+    "name": "Skyline Communications",
+    "url": "https://github.com/SkylineCommunications"
+  },
+  "homepage": "https://aka.dataminer.services/devops-agent",
+  "repository": "https://github.com/SkylineCommunications/dataminer-devops-agent",
+  "license": "LicenseRef-DataMiner-App-Builder",
+  "keywords": [
+    "dataminer",
+    "skyline",
+    "web-apps",
+    "frontend",
+    "react",
+    "devops"
+  ]
+}

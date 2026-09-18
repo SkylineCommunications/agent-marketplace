@@ -1,9 +1,9 @@
 {
-  "manifestVersion": "0.0.1",
-  "productId": "dataminer-devops",
+  "manifestVersion": "0.0.2",
+  "productId": "dataminer-devops-agent",
   "publisherToolVersion": "1.0.0.0",
-  "sourceCommitSha": "5da5bcc4fa21eb1b8868a4bd98b1c2e1138b2e2c",
-  "builtAtUtc": "2026-08-14T12:55:57.3502223+00:00",
+  "sourceCommitSha": "a83674644e8dce52092e37aad61b8d25a5b8480a",
+  "builtAtUtc": "2026-09-18T07:14:04.1673290+00:00",
   "publishedSkills": [
     "dataminer-api",
     "dataminer-create-new-app",

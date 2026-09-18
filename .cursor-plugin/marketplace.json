@@ -1,0 +1,17 @@
+{
+  "name": "skyline-communications",
+  "owner": {
+    "name": "Skyline Communications"
+  },
+  "metadata": {
+    "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services.",
+    "version": "0.0.2"
+  },
+  "plugins": [
+    {
+      "name": "dataminer-devops",
+      "source": "./adapters/cursor",
+      "description": "AI orchestrator and portable skills for building custom DataMiner web applications with React, Vite, TypeScript, and DataMiner web services."
+    }
+  ]
+}

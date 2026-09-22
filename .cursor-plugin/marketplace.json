@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Skyline Communications' public marketplace for AI agents and reusable skills across supported AI development clients.",
-    "version": "0.0.3"
+    "version": "0.0.4"
   },
   "plugins": [
     {
       "name": "dataminer-app-builder",
       "description": "Build static frontend applications for deployment inside Skyline DataMiner.",
-      "version": "0.0.3",
+      "version": "0.0.4",
       "source": "./plugins/dataminer-app-builder/cursor"
     }
   ]

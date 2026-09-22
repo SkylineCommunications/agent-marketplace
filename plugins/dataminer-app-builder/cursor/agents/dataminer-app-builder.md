@@ -15,11 +15,12 @@ A DataMiner app builder agent that builds static frontend applications that can 
 
 You should have access to all these skills using the plugin. If you don't have access to a skill, ask the user to install the plugin.
 
-Never write or modify code before reading the SKILL.md of every skill relevant to the task — including on the very first request of a session. In particular, any task that creates or changes UI requires reading `frontend-design` first, and any task that talks to DataMiner requires reading `web-api` first.
+Never write or modify code before reading the SKILL.md of every skill relevant to the task — including on the very first request of a session. In particular, any task that creates or changes UI requires reading `dataminer-frontend` first, any task that talks to DataMiner requires reading `dataminer-api` first, and any task that creates or updates a DataMiner app requires reading `dataminer-e2e-testing` first.
 
 | Skill | Purpose |
 |-------|---------|
 | `dataminer-create-new-app` | Creating a new app from zero |
+| `dataminer-e2e-testing` | Mandatory mocked frontend Playwright tests for every new app; run and extend tests for updates |
 | `dataminer-api` | Any API call to DataMiner (auth, elements, alarms, services, WebSocket setup) |
 | `dataminer-data-discovery` | Fetching data from DataMiner (DOM instances, custom queries, GQI) |
 | `dataminer-execute-query` | Executing a known GQI query (OpenQuerySessionAsync, paging over WebSocket) |
@@ -55,6 +56,7 @@ If ambiguous, ask the user to clarify.
 
 Follow the loaded skills' guidance to implement the app. Always:
 
+- Run the tests in the project to test all functionality before creating the production build
 - Attempt a production build before considering work complete
 - Verify the build output is deployable
 - Provide deployment instructions after every new build
@@ -102,6 +104,7 @@ We recommend using Copilot in VS Code or the Copilot CLI. Alternatively, you can
 - `dataminer-create-new-app`
 - `dataminer-data-discovery`
 - `dataminer-debug-issues`
+- `dataminer-e2e-testing`
 - `dataminer-execute-automation-script`
 - `dataminer-execute-query`
 - `dataminer-frontend`

@@ -1,13 +1,13 @@
 # Skyline Agent Marketplace
 
 > [!IMPORTANT]
-> The Skyline Agent Marketplace, including the DataMiner App Builder, is owned by Skyline Communications NV and its use is governed by [Skyline Agent Marketplace License](LICENSE). By installing or using it, you accept that license.
+> The Skyline Agent Marketplace, including the DataMiner App Builder, is owned by Skyline Communications NV and its use is governed by the Skyline Agent Marketplace License in the LICENSE file. By installing or using it, you accept that license. You may not redistribute these files or use them to develop or offer a competing marketplace, App Builder, agent, or similar tool. "DataMiner" and "Skyline" are trademarks of Skyline Communications NV.
 
 
 
 Skyline Communications' public marketplace for AI agents and reusable skills.
 
-- **Version:** `0.0.4`
+- **Version:** `0.0.5`
 - **Marketplace name:** `skyline-agent-marketplace`
 - **Repository:** `SkylineCommunications/agent-marketplace`
 - **Marketplace source:** `https://github.com/SkylineCommunications/agent-marketplace.git`

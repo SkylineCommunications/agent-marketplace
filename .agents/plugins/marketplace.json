@@ -1,7 +1,7 @@
 {
   "name": "skyline-agent-marketplace",
   "interface": {
-    "displayName": "Skyline Communications"
+    "displayName": "Skyline Agent Marketplace"
   },
   "plugins": [
     {

@@ -4,6 +4,9 @@ description: Perform AI-assisted data discovery against a live DataMiner system 
 argument-hint: Natural language prompt, e.g. 'show me all goals' or 'list roadmap items by status'
 license: LicenseRef-Skyline-Agent-Marketplace
 user-invocable: true
+metadata:
+  updated: 2026-09-11
+  version: 1.0
 ---
 
 # Data Discovery Skill

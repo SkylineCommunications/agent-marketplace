@@ -3,6 +3,9 @@ name: dataminer-execute-query
 description: Execute GQI queries in a DataMiner frontend application using OpenQuerySessionAsync over WebSocket. Use when building production apps that need to fetch GQI data (DOM instances, ad hoc data sources, custom queries) from DataMiner using a known query object, or when the user provides a query object directly.
 license: LicenseRef-Skyline-Agent-Marketplace
 user-invocable: true
+metadata:
+  updated: 2026-09-11
+  version: 1.0
 ---
 
 # DataMiner Execute Query Skill

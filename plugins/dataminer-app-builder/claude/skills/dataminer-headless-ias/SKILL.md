@@ -3,11 +3,24 @@ name: dataminer-headless-ias
 description: Use when a frontend app needs to drive a DataMiner Interactive Automation Script (IAS) from a custom UI. Covers the full WebSocket + HTTP protocol flow, dialog parsing, values string construction, re-render handling, and multi-dialog wizard navigation.
 license: LicenseRef-Skyline-Agent-Marketplace
 user-invocable: true
+metadata:
+  updated: 2026-09-14
+  version: 1.1
 ---
+
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-automation-core`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-automation-core`: Backing-script authoring is a separate workflow; the frontend protocol consumer does not author Automation scripts.
+
+## Changelog
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.1 | 2026-09-14 | Made headless IAS explicit-only/non-authoritative and removed worker-thread script patterns while preserving AsyncCalls wire synchronization. |
+| 1.0 | 2026-09-11 | Initial release. |
 
 # Headless IAS (Interactive Automation Script) Client
 
-Drive a DataMiner Interactive Automation Script from a custom UI instead of the built-in dialog renderer.
+Drive a DataMiner Interactive Automation Script from a custom UI instead of the built-in dialog renderer **only when the user explicitly requests this route**. This wire-protocol flow is non-authoritative and must not replace supported Cube, web, or low-code IAS hosts.
 
 ---
 
@@ -29,7 +42,13 @@ Present the list to the user so they can pick the right one.
 ### Ask for the script source
 
 **Always ask the user to provide the C# source of the selected script before doing anything else.**
-Without it you cannot know the dialog structure, widget layout, button wiring, async data calls, or re-render triggers — all of which are required to drive the script correctly.
+Without it you cannot know the dialog structure, widget layout, button wiring, `AsyncCalls` protocol behavior, re-render triggers, or whether the script violates the Automation runtime contract — all of which must be assessed before driving it.
+
+### Source safety gate
+
+Before implementing the client, inspect the script source using `dataminer-automation-core/references/runtime-safety-and-errors.md`. An IAS script must have synchronous `Run(IEngine)` and must not use an async entry point, `async void`, `Task.Run`, `Parallel.For`/`Parallel.ForEach`, manually started threads such as `new Thread(...)`, or cross-thread `IEngine`/`Engine`-derived objects (`Element`, dummy, `ScriptParam`/memory, sub-script, `IDms`, etc.). If any appears, treat it as a script defect and fix the script first; headless hosting does not make it acceptable.
+
+An external async-only library may be synchronously consumed with `GetAwaiter().GetResult()` only with detached non-DataMiner inputs and plain detached results. All Automation/DataMiner work continues on the original `Run` thread.
 
 ---
 
@@ -42,7 +61,7 @@ See `references/websocket-protocol.md` for IAS-specific message formats (flow di
 **Key points:**
 - `LaunchAutomationScript` is required — without it the WebSocket never receives dialog events.
 - `HasFindInteractiveClient` must be `false` in the script settings — otherwise the script races with the manual launch.
-- Wait for **all** `AsyncCalls` dropdown updates before sending `ContinueAutomationScript`. Sending too early means missing options and errors.
+- The client must still await **all** `AsyncCalls` dropdown updates before sending `ContinueAutomationScript`. Sending too early means missing options and errors. This required wire-protocol synchronization does **not** authorize script-side worker threads or cross-thread Engine use.
 - **Dropdown options arrive via two paths:** (1) asynchronously via `DMAAutomationScriptUIDropDownUpdate` messages (counted by `AsyncCalls`), or (2) inline in the layout component's `Options` array (set synchronously during re-renders). Always extract options from both.
 
 ---
@@ -61,7 +80,7 @@ When the user provides the script source, read it to extract everything needed t
 - `ButtonPrevious.Pressed += …` → goes back
 - When a dialog has both "Next" and "Save/Create", prefer "Next" to go through all dialogs.
 
-**Async data** — `Task.Run(...)` calls in init methods load data for dropdowns. Each async task = one `DMAAutomationScriptUIDropDownUpdate` on the WebSocket. The `AsyncCalls` count tells you how many to wait for.
+**Wire-protocol async updates** — Read the `AsyncCalls` count in each `DMAAutomationScriptUIUpdate` and wait for that many `DMAAutomationScriptUIDropDownUpdate` messages before continuing. Do not infer that a source-level `Task.Run`, parallel loop, or manual thread is acceptable from this protocol field. If the source contains one—or moves Engine-derived/DataMiner objects across threads—stop and fix that script defect first.
 
 **Conditional widgets** — Checkboxes with `WantsOnChange` that toggle `IsVisible` on another widget. These hidden widgets have no DestVar in the initial layout — they only appear after a re-render.
 
@@ -167,5 +186,5 @@ Previous/Back buttons are **server-side navigation**, not local UI state. Clicki
 | Dependent dropdowns        | `DropDown.Changed` repopulates another dropdown                  | `_onchange` on parent → re-render; read child options from layout `Options` array (inline, not async) |
 | Template/workflow selector | Dropdown `Changed` updates multiple fields across the dialog     | Trigger re-render → read updated values from new layout    |
 | Skip-ahead                 | Both "Save" and "Next" buttons on same dialog                    | Click "Save" to skip remaining dialogs if allowed          |
-| Async data load            | `Task.Run(() => handler.GetAll…())` in init                      | Count matches `AsyncCalls`; wait for all before submitting |
+| Wire-protocol async updates | `AsyncCalls` on the UI update and matching dropdown-update messages | Wait for every advertised update before submitting; this does not authorize script worker threads |
 | FocusLost textbox          | `TextBox.FocusLost += (s, e) => model.Prop = e.Value;` with `WantsOnFocusLost: true` | Two-step submit: (1) send `_onfocuslost` targeting the textbox, wait for re-render, (2) click Save button |

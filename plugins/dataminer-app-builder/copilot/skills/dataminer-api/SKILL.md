@@ -5,9 +5,16 @@ argument-hint: Use for DataMiner-only API integrations with strict endpoint veri
 license: LicenseRef-Skyline-Agent-Marketplace
 user-invocable: true
 metadata:
-  updated: 2026-05-27
-  version: 1.0
+  updated: 2026-09-11
+  version: 1.1
 ---
+
+## Changelog
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.1 | 2026-09-11 | Removed the dead Web Services v0 method-index link and documented that v0 is obsolete and disabled by default. |
+| 1.0 | 2026-05-27 | Initial release. |
 
 # DataMiner API Skill
 
@@ -34,7 +41,7 @@ Make sure you don't skip any of these rules and follow them to ensure correct an
 
 Official references:
 
-- WS v0: https://docs.dataminer.services/develop/webservices/WS_v0/WS_Methods_v0/WS_Methods_v0.html
+- WS v0 is obsolete and disabled by default. Do not use it for new integrations: https://docs.dataminer.services/release-notes/Breaking_changes/Breaking_changes.html
 - WS v1: https://docs.dataminer.services/develop/webservices/WS_v1/WS_Methods_v1/WS_Methods_v1_overview.html
 
 ---

@@ -3,6 +3,8 @@ name: DataMiner App Builder
 description: An app builder agent that builds static frontend applications that can be used for deployment inside Skyline DataMiner.
 disable-model-invocation: false
 user-invocable: true
+version: "1.2"
+updated: 2026-09-28
 ---
 
 # DataMiner App Builder

@@ -3,6 +3,9 @@ name: dataminer-frontend
 description: If you need to create or update user interfaces use this skill. This skill contains everything you need to know before building or making changes to UI. It makes sure you're consistent with other DataMiner interfaces and follow best practices.
 license: LicenseRef-Skyline-Agent-Marketplace
 user-invocable: true
+metadata:
+  updated: 2026-09-11
+  version: 1.0
 ---
 
 # DataMiner Frontend Design Skill

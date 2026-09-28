@@ -3,7 +3,14 @@ name: dataminer-debug-issues
 description: Use when the user says something is broken, not working, has a bug, or behaves unexpectedly. Open the running app in a browser and use Playwright to inspect console logs, network requests, and WebSocket frames to find the cause yourself before asking the user.
 license: LicenseRef-Skyline-Agent-Marketplace
 user-invocable: true
+metadata:
+  updated: 2026-09-11
+  version: 1.0
 ---
+
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-browser-automation`, `dataminer-qaops`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-browser-automation`: Optional authenticated live-browser capture; ordinary mocked frontend debugging does not require it.
+> - `dataminer-qaops`: Optional real-system verification route, separate from local frontend diagnosis.
 
 # Debug in the browser
 

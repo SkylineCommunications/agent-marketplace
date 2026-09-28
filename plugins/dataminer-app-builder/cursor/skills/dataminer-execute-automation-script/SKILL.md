@@ -2,11 +2,16 @@
 name: dataminer-execute-automation-script
 description: Use when implementing or debugging a call to the DataMiner ExecuteAutomationScriptWithOutput JSON API. Contains the exact JSON request structure, scriptOptions fields, and how parameters are encoded.
 license: LicenseRef-Skyline-Agent-Marketplace
+metadata:
+  updated: 2026-09-16
+  version: 1.1
 ---
 
 # Execute Automation Script With Output Skill
 
 Execute an automation script and receive its output via the DataMiner JSON API.
+
+Use this skill for an explicit DataAPI execution route. It is not a substitute for Cube, web/low-code IAS, QAOps, or post-deployment verification. Before execution, record the target environment, caller identity/permissions, script version, parameter contract, timeout, lock behavior, and whether the call is expected to be interactive.
 
 ## Endpoint
 
@@ -93,6 +98,13 @@ All defined parameters should be included in every call — use `"null"` for any
 ```
 
 A non-zero `ErrorCode` or an exception message in the response indicates the script failed.
+
+## Execution completion gate
+
+- Treat `ErrorCode: 0` as an API-call result, not proof that the script's semantic output is correct.
+- Validate the returned output contract (names, keys, cardinality, and non-sensitive values) against the script's documented behavior.
+- Do not place credentials, tokens, raw sensitive payloads, or exception details in the request, output, logs, or UI.
+- Record the target, script identity/version, request correlation, result, and cleanup/rollback action. Use QAOps for repeatable live-system regression rather than ad hoc API calls.
 
 ## Frontend Wrapper
 

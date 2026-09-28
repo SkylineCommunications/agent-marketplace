@@ -8,6 +8,9 @@ metadata:
   version: 1.0
 ---
 
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-sdk`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-sdk`: Routing away from frontend apps to a separately installed on-box development workflow.
+
 # DataMiner Create New App Skill
 
 ## Changelog

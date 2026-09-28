@@ -1,14 +1,14 @@
 {
-  "manifestVersion": "0.0.5",
+  "manifestVersion": "0.0.6",
   "marketplace": "skyline-agent-marketplace",
   "sourceRepository": "SkylineCommunications/.github-private",
-  "sourceCommitSha": "0fbb7aa77bfffaf00b892cc3d7aefa341e165757",
-  "builtAtUtc": "2026-09-22T11:10:03.8334362+00:00",
+  "sourceCommitSha": "e1690f0559555345f04f74452d5a1b6fe04e3d1d",
+  "builtAtUtc": "2026-09-28T12:04:26.5597274+00:00",
   "publisherToolVersion": "1.0.0.0",
   "plugins": [
     {
       "id": "dataminer-app-builder",
-      "version": "0.0.5",
+      "version": "0.0.6",
       "path": "plugins/dataminer-app-builder",
       "rootAgents": [
         "dataminer-app-builder"
@@ -27,7 +27,8 @@
         "dataminer-performing-actions",
         "dataminer-headless-ias",
         "dataminer-debug-issues"
-      ]
+      ],
+      "instructions": null
     }
   ]
 }

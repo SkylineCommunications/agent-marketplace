@@ -7,6 +7,9 @@ metadata:
   version: 1.1
 ---
 
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-user-defined-api`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-user-defined-api`: Backing API authoring is outside this frontend consumer-selection skill.
+
 ## Changelog
 
 | Version | Date | Changes |

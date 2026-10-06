@@ -11,7 +11,7 @@ metadata:
 
 # Data Discovery Skill
 
-> **Note:** NL2GQI (`CreateAIGeneratedQuery`) requires the **DataMiner Assistant DxM** (v1.0.0+) to be installed and running. If it is missing, the HTTP call returns `{"d":null}` but no query arrives over the WebSocket (you get a `WebSocketError` `DMAEvent` and the discovery times out). Install it first: https://docs.dataminer.services/dataminer/Functions/DataMiner_Assistant/Assistant_DxM.html
+> **Note:** NL2GQI (`CreateAIGeneratedQuery`) requires the **DataMiner Assistant DxM** (v1.0.0+) to be installed and running. If it is missing, the HTTP call returns `{"d":null}` but no query arrives over the WebSocket (you get a `WebSocketError` `DMAEvent` and the discovery times out). Install it first: https://aka.dataminer.services/assistant-dx-m
 
 GQI is for data that is **NOT** available through the standard DataMiner Web API endpoints. Use GQI for DOM instances, ad hoc data sources, and custom queries. Do **NOT** use GQI for elements, alarms, views, or services — those are available through the **dataminer-api** skill.
 
@@ -21,8 +21,8 @@ The full flow is two steps:
 2. **Build**: Hardcode the discovered query into the production app and execute it using `OpenQuerySessionAsync`. See the **dataminer-execute-query** skill for the full production execution flow.
 
 Official references:
-- GQI: https://docs.dataminer.services/dataminer/Functions/Dashboards_and_Low_Code_Apps/GQI/About_GQI.html
-- NL2GQI: https://docs.dataminer.services/dataminer/Functions/DataMiner_Assistant/NL2GQI.html
+- GQI: https://aka.dataminer.services/about-gqi
+- NL2GQI: https://aka.dataminer.services/nl2-gqi
 
 ---
 

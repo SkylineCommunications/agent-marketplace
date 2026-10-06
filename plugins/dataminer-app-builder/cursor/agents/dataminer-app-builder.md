@@ -92,7 +92,7 @@ This agent and its companion skills are maintained centrally in a repository. To
 
 * DataMiner system running version 10.5 or higher
 * [Node.js](https://nodejs.org/en/download)
-* [Assistant DxM](https://docs.dataminer.services/dataminer/Functions/DataMiner_Assistant/Assistant_DxM.html)
+* [Assistant DxM](https://aka.dataminer.services/assistant-dx-m)
 * [Git](https://git-scm.com/install)
 * Github Copilot license
 

@@ -41,8 +41,8 @@ Make sure you don't skip any of these rules and follow them to ensure correct an
 
 Official references:
 
-- WS v0 is obsolete and disabled by default. Do not use it for new integrations: https://docs.dataminer.services/release-notes/Breaking_changes/Breaking_changes.html
-- WS v1: https://docs.dataminer.services/develop/webservices/WS_v1/WS_Methods_v1/WS_Methods_v1_overview.html
+- WS v0 is obsolete and disabled by default. Do not use it for new integrations: https://aka.dataminer.services/breaking-changes
+- WS v1: https://aka.dataminer.services/ws-methods-v1-overview
 
 ---
 

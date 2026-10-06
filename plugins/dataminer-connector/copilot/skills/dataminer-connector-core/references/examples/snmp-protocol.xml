@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocol xmlns="http://www.skyline.be/protocol">
+	<Name>Vendor Device SNMPv2</Name>
+	<Description>Vendor Device SNMPv2 DataMiner Driver</Description>
+	<Version>1.0.0.1</Version>
+	<IntegrationID>DMS-DRV-1234</IntegrationID>
+	<Provider>Skyline Communications</Provider>
+	<Vendor>Vendor Inc</Vendor>
+	<VendorOID>1.3.6.1.4.1.8813.2.1234</VendorOID>
+	<DeviceOID>1</DeviceOID>
+	<SNMP includepages="true">auto</SNMP>
+	<ElementType>Switch</ElementType>
+	<Type relativeTimers="true">snmpv2</Type>
+	<Display defaultPage="General" pageOrder="General;Power Sources;-----;Webinterface#http://[Polling Ip]/" wideColumnPages="" />
+	<Compliancies>
+		<CassandraReady>true</CassandraReady>
+		<MinimumRequiredVersion>10.4.0.0 - 14003</MinimumRequiredVersion>
+	</Compliancies>
+	<Params>
+		<Param id="1" trending="false" save="false">
+			<Name>afterStartup</Name>
+			<Description>After Startup</Description>
+			<Information>
+				<Subtext>Internal trigger parameter for after-startup initialization.</Subtext>
+			</Information>
+			<Type>dummy</Type>
+			<Display>
+				<RTDisplay>false</RTDisplay>
+			</Display>
+		</Param>
+		<Param id="100" trending="false">
+			<Name>systemDescription</Name>
+			<Description>System Description</Description>
+			<Information>
+				<Subtext>A textual description of the entity.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.1.1.0</OID>
+				<Type>octetstring</Type>
+			</SNMP>
+		</Param>
+		<Param id="101" trending="true">
+			<Name>systemUpTime</Name>
+			<Description>System up Time</Description>
+			<Information>
+				<Subtext>Time since the network management subsystem was initialized.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>s</Units>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="time">number</Type>
+			</Measurement>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.1.3.0</OID>
+				<Type>timeticks</Type>
+			</SNMP>
+		</Param>
+		<Param id="102" trending="false">
+			<Name>systemContact</Name>
+			<Description>System Contact</Description>
+			<Information>
+				<Subtext>Contact person for the managed node.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Row>2</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.1.4.0</OID>
+				<Type>octetstring</Type>
+			</SNMP>
+		</Param>
+		<Param id="152" trending="false" snmpSetAndGet="true">
+			<Name>systemContact</Name>
+			<Description>System Contact</Description>
+			<Information>
+				<Subtext>New contact person for the managed node.</Subtext>
+			</Information>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Row>2</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.2.1.1.4.0</OID>
+				<Type>octetstring</Type>
+			</SNMP>
+		</Param>
+		<Param id="1000" trending="false">
+			<Name>devicePowerSources</Name>
+			<Description>Device Power Sources</Description>
+			<Information>
+				<Subtext>Power source entries reported by the device.</Subtext>
+			</Information>
+			<Type>array</Type>
+			<ArrayOptions index="0">
+				<NamingFormat>,1002</NamingFormat>
+				<ColumnOption idx="0" pid="1001" type="snmp" options="" />
+				<ColumnOption idx="1" pid="1002" type="snmp" options="" />
+				<ColumnOption idx="2" pid="1003" type="snmp" options=";disableHeaderSum;disableHeatmap;disableHistogram" />
+			</ArrayOptions>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Power Sources</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:1001|0-1002|1-1003|2,lines:25,width:100-180-120,sort:STRING-STRING-INT,filter:true">table</Type>
+			</Measurement>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="multipleGetBulk">1.3.6.1.4.1.9999.1.1</OID>
+			</SNMP>
+		</Param>
+		<Param id="1001" trending="false">
+			<Name>devicePowerSourcesIndex</Name>
+			<Description>Index</Description>
+			<Information>
+				<Subtext>Unique power source index.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<SNMP>
+				<OID>1.3.6.1.4.1.9999.1.1.1.1</OID>
+			</SNMP>
+		</Param>
+		<Param id="1002" trending="false">
+			<Name>devicePowerSourcesName</Name>
+			<Description>Name</Description>
+			<Information>
+				<Subtext>Human-readable power source name.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<SNMP>
+				<OID>1.3.6.1.4.1.9999.1.1.1.2</OID>
+			</SNMP>
+		</Param>
+		<Param id="1003" trending="false">
+			<Name>devicePowerSourcesStatus</Name>
+			<Description>Status</Description>
+			<Information>
+				<Subtext>Operational power source status.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>1</Normal>
+				<MaH>2</MaH>
+				<CH>3</CH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Online</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Offline</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Fault</Display>
+						<Value>3</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+			<SNMP>
+				<OID>1.3.6.1.4.1.9999.1.1.1.3</OID>
+			</SNMP>
+		</Param>
+	</Params>
+	<QActions>
+		<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
+		<QAction id="2" name="After Startup" encoding="csharp" triggers="1" />
+	</QActions>
+	<Groups>
+		<Group id="1">
+			<Name>PollDynamicScalars</Name>
+			<Description>Poll Dynamic Scalars</Description>
+			<Type>poll</Type>
+			<Content>
+				<Param>101</Param>
+			</Content>
+		</Group>
+		<Group id="2">
+			<Name>PollStaticScalars</Name>
+			<Description>Poll Static Scalars</Description>
+			<Type>poll</Type>
+			<Content multipleGet="true">
+				<Param>100</Param>
+				<Param>102</Param>
+			</Content>
+		</Group>
+		<Group id="3">
+			<Name>PollPowerSourcesTable</Name>
+			<Description>Poll Power Sources Table</Description>
+			<Type>poll</Type>
+			<Content>
+				<Param>1000</Param>
+			</Content>
+		</Group>
+		<Group id="10">
+			<Name>After Startup</Name>
+			<Description>After Startup initialization group</Description>
+			<Type>poll action</Type>
+			<Content>
+				<Action>2</Action>
+			</Content>
+		</Group>
+	</Groups>
+	<Triggers>
+		<Trigger id="1">
+			<Name>After Startup</Name>
+			<On>protocol</On>
+			<Time>after startup</Time>
+			<Type>action</Type>
+			<Content>
+				<Id>1</Id>
+			</Content>
+		</Trigger>
+	</Triggers>
+	<Actions>
+		<Action id="1">
+			<Name>After Startup Group</Name>
+			<On id="10">group</On>
+			<Type>execute</Type>
+		</Action>
+		<Action id="2">
+			<Name>After Startup QAction</Name>
+			<On id="1">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+	</Actions>
+	<Timers>
+		<Timer id="1">
+			<Name>FastTimer</Name>
+			<Time initial="true">30000</Time>
+			<Interval>75</Interval>
+			<Content>
+				<Group>1</Group>
+				<Group>3</Group>
+			</Content>
+		</Timer>
+		<Timer id="2">
+			<Name>SlowTimer</Name>
+			<Time initial="true">3600000</Time>
+			<Interval>75</Interval>
+			<Content>
+				<Group>2</Group>
+			</Content>
+		</Timer>
+	</Timers>
+	<PortSettings name="SNMP Connection">
+		<BusAddress>
+			<Disabled>true</Disabled>
+		</BusAddress>
+		<IPport>
+			<DefaultValue>161</DefaultValue>
+		</IPport>
+		<PortTypeSerial>
+			<Disabled>true</Disabled>
+		</PortTypeSerial>
+	</PortSettings>
+	<VersionHistory>
+		<Branches>
+			<Branch id="1">
+				<Comment>Main Branch</Comment>
+				<SystemVersions>
+					<SystemVersion id="0">
+						<MajorVersions>
+							<MajorVersion id="0">
+								<MinorVersions>
+									<MinorVersion id="1">
+										<Date>2026-09-11</Date>
+										<Provider>
+											<Author>SLC</Author>
+											<Company>Skyline Communications</Company>
+										</Provider>
+										<Changes>
+											<NewFeature>Initial version</NewFeature>
+										</Changes>
+									</MinorVersion>
+								</MinorVersions>
+							</MajorVersion>
+						</MajorVersions>
+					</SystemVersion>
+				</SystemVersions>
+			</Branch>
+		</Branches>
+	</VersionHistory>
+</Protocol>

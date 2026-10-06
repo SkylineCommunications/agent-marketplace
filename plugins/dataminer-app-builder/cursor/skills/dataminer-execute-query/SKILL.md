@@ -17,7 +17,7 @@ This skill covers executing a **known** GQI query in a production app. A query o
 - **Provided directly** by the user as a query object
 
 Official references:
-- GQI: https://docs.dataminer.services/dataminer/Functions/Dashboards_and_Low_Code_Apps/GQI/About_GQI.html
+- GQI: https://aka.dataminer.services/about-gqi
 
 For **real-time (push) updates** — subscribing to live row changes via `ObserveQuerySessionAsync` instead of repeated one-shot fetches — see `references/realtime-updates.md`.
 

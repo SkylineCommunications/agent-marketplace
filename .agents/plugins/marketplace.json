@@ -15,6 +15,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer tools"
+    },
+    {
+      "name": "dataminer-connector",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dataminer-connector/codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
     }
   ]
 }

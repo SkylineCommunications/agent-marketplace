@@ -1,0 +1,9 @@
+{
+  "name": "dataminer-connector",
+  "version": "0.1.0",
+  "description": "DataMiner connector orchestration, XML, QAction, validation, testing, documentation, and simulation agents.",
+  "author": {
+    "name": "Skyline Communications",
+    "url": "https://github.com/SkylineCommunications"
+  }
+}

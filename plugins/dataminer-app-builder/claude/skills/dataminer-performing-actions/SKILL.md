@@ -35,11 +35,11 @@ See the [execute-automation-script](../dataminer-execute-automation-script/SKILL
 ### User-Defined APIs (UDAPIs)
 Every UDAPI is backed by an Automation Script: you define the API on top of a script, and the API trigger runs that
 script — via the version-supported `OnApiTrigger` entry point (recommended) or the legacy `Run` method (see [Using
-an existing script as a User-Defined API](https://docs.dataminer.services/dataminer/Functions/User-Defined_APIs/Defining_an_API/UD_APIs_Using_existing_scripts.html)).
+an existing script as a User-Defined API](https://aka.dataminer.services/ud-ap-is-using-existing-scripts)).
 For authoring or reviewing the backing script, load `dataminer-user-defined-api`; this skill covers consumer choice
 and must not be used to infer the trigger's input/output members.
 
-Do not call the [UDAPI](https://docs.dataminer.services/dataminer/Functions/User-Defined_APIs/UD_APIs.html) HTTP
+Do not call the [UDAPI](https://aka.dataminer.services/UDA) HTTP
 endpoint directly from the app — UDAPIs need a bearer token, and embedding one in client-side code exposes it.
 Instead, run the backing script directly via `ExecuteAutomationScriptWithOutput` (see above), authenticated by the
 DataMiner session — no bearer token needed. This executes the script's `Run` entry point (not `OnApiTrigger`), so

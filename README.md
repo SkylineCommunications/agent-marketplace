@@ -7,7 +7,7 @@
 
 Skyline Communications' public marketplace for AI agents and reusable skills.
 
-- **Version:** `0.0.6`
+- **Version:** `0.1.0`
 - **Marketplace name:** `skyline-agent-marketplace`
 - **Repository:** `SkylineCommunications/agent-marketplace`
 - **Marketplace source:** `https://github.com/SkylineCommunications/agent-marketplace.git`
@@ -20,6 +20,7 @@ Skyline Communications' public marketplace for AI agents and reusable skills.
 | Plugin | Agents | Skills |
 | --- | --- | --- |
 | [`dataminer-app-builder`](plugins/dataminer-app-builder) | `dataminer-app-builder` | `dataminer-create-new-app`<br>`dataminer-e2e-testing`<br>`dataminer-frontend`<br>`dataminer-api`<br>`dataminer-data-discovery`<br>`dataminer-execute-query`<br>`dataminer-execute-automation-script`<br>`dataminer-performing-actions`<br>`dataminer-headless-ias`<br>`dataminer-debug-issues` |
+| [`dataminer-connector`](plugins/dataminer-connector) | `dataminer-connector-orchestrator`<br>`dataminer-scaffolder`<br>`dataminer-xml-author`<br>`dataminer-qaction-writer`<br>`dataminer-validator`<br>`dataminer-reviewer`<br>`dataminer-test-writer`<br>`dataminer-investigator`<br>`dataminer-help-writer`<br>`dataminer-simulation-generator` | `dataminer-connector-core`<br>`dataminer-connector-help`<br>`dataminer-dcf`<br>`dataminer-dis`<br>`dataminer-docs-house-style`<br>`dataminer-github-example-finder`<br>`dataminer-http-communication`<br>`dataminer-logging`<br>`dataminer-manifest`<br>`dataminer-nugets`<br>`dataminer-orchestrator`<br>`dataminer-protocol-validator-prevention`<br>`dataminer-protocol-xml-reference`<br>`dataminer-qaction`<br>`dataminer-qaction-helper-generator`<br>`dataminer-qaops`<br>`dataminer-qaops-integration-testing`<br>`dataminer-sdk`<br>`dataminer-toon-simulation`<br>`dataminer-unit-testing`<br>`dataminer-validation`<br>`dataminer-validation-gates`<br>`dataminer-xml-authoring`<br>`dataminer-catalog-hygiene`<br>`dataminer-connector-debugging`<br>`dataminer-dmprotocol-packaging`<br>`dataminer-idms`<br>`dataminer-polling-manager`<br>`dataminer-qaops-simulators`<br>`dataminer-qaops-test-runs`<br>`project-type-identification` |
 
 Each plugin is independently installable. The **Agents** and **Skills** columns are generated from the publication manifest and show the complete plugin closure published in this marketplace.
 

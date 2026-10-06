@@ -1,0 +1,427 @@
+{
+  "schemaVersion": 1,
+  "scope": "dataminer-protocol-xml-reference",
+  "capturedOn": "2026-09-11",
+  "consumerRepository": {
+    "repository": "https://github.com/SkylineCommunications/agent-marketplace",
+    "baselineRevision": "9038033cb7df40c1c063b3f02c9a0fda05453103"
+  },
+  "selectionPolicy": {
+    "targetVersions": "Resolve the target DataMiner, Dev Pack, and related package versions for each task. An observed latest version is a maintenance signal, not an automatic authoring default.",
+    "schemaAuthority": "Use only the generated local references during connector work. Updating an upstream pin does not authorize newer schema content until the references are regenerated and validated.",
+    "vendorOid": "Use the VendorOID supplied in the user prompt. If it is absent, ask the user. Never invent a VendorOID, and validate the supplied value against the selected target schema."
+  },
+  "localBaseline": {
+    "previousSchemaPackage": {
+      "id": "Skyline.DataMiner.XmlSchemas.Protocol",
+      "version": "1.1.7",
+      "packageSha256": "7ccfe135e02951982d4eda737d29b126ce739685cc6153a32c0b7eeae26bf232",
+      "protocolXsdSha256": "decfa7e260e1255f100449583904a41dc3bd55628b40bb5c4bc164f28ef1f105",
+      "uomXsdSha256": "99735e6615e1b52a77d3968440f11bcee3667680aeb394a46e6ffb8d52047a02"
+    },
+    "declaredSchemaPackage": {
+      "id": "Skyline.DataMiner.XmlSchemas.Protocol",
+      "version": "1.1.10",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.xmlschemas.protocol/1.1.10/skyline.dataminer.xmlschemas.protocol.1.1.10.nupkg",
+      "packageSha256": "6e97d22e57e85106f5fe13026d72aacb3d60500998804091fec518a1d846add7",
+      "artifacts": [
+        {
+          "path": "content/Skyline/XSD/protocol.xsd",
+          "sha256": "3c8930086edd481c182d16bd6e89b673925157aeb16c336f1c845fe51b5a51f7"
+        },
+        {
+          "path": "content/Skyline/XSD/uom.xsd",
+          "sha256": "8136176a292aa02a41803544fe898642da390e7197d2cbdb52b30ff9cc510fc7"
+        }
+      ]
+    },
+    "referenceFiles": [
+      "protocol-advanced-features.md",
+      "protocol-dataminer-versions.md",
+      "protocol-display-ui.md",
+      "protocol-driver-type-gate.md",
+      "protocol-execution.md",
+      "protocol-http-headers.md",
+      "protocol-http.md",
+      "protocol-icons.md",
+      "protocol-monitoring.md",
+      "protocol-params.md",
+      "protocol-portsettings-connections.md",
+      "protocol-qactions.md",
+      "protocol-root.md",
+      "protocol-serial-smartserial.md",
+      "protocol-snmp.md",
+      "protocol-tables.md",
+      "protocol-types-and-enums.md",
+      "protocol-uom.md",
+      "protocol-validation-workflow.md",
+      "protocol-websocket.md"
+    ],
+    "status": "synchronized",
+    "note": "The local references were refreshed from schema package 1.1.10 in A1.1. The previous 1.1.7 package fingerprints are retained above for auditability."
+  },
+  "upstreamSources": [
+    {
+      "id": "dataminer-docs",
+      "role": "conceptual-and-published-reference",
+      "kind": "git",
+      "repository": "https://github.com/SkylineCommunications/dataminer-docs",
+      "revision": "103263b74f73d172b7c7bc3fc10c3bae6d8ffc2c",
+      "immutableSource": "https://github.com/SkylineCommunications/dataminer-docs/tree/103263b74f73d172b7c7bc3fc10c3bae6d8ffc2c",
+      "publishedBaseUrl": "https://aka.dataminer.services/1148BLexz",
+      "contentRoots": [
+        "develop/devguide/Connector",
+        "develop/schemadoc/Protocol",
+        "develop/codingguidelines/Protocol",
+        "develop/TOOLS/DIS",
+        "develop/TOOLS/NuGet",
+        "develop/CICD"
+      ]
+    },
+    {
+      "id": "protocol-schema",
+      "role": "normative-xml-schema",
+      "kind": "nuget",
+      "packageId": "Skyline.DataMiner.XmlSchemas.Protocol",
+      "version": "1.1.10",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.xmlschemas.protocol/1.1.10/skyline.dataminer.xmlschemas.protocol.1.1.10.nupkg",
+      "packageSha256": "6e97d22e57e85106f5fe13026d72aacb3d60500998804091fec518a1d846add7",
+      "repository": "https://github.com/SkylineCommunications/Skyline.DataMiner.XmlSchemas",
+      "repositoryCommit": "d7b5c9ac6865f3e56804bf95e536d460b5e50e36",
+      "artifacts": [
+        {
+          "path": "content/Skyline/XSD/protocol.xsd",
+          "sha256": "3c8930086edd481c182d16bd6e89b673925157aeb16c336f1c845fe51b5a51f7",
+          "rawUrl": "https://raw.githubusercontent.com/SkylineCommunications/Skyline.DataMiner.XmlSchemas/d7b5c9ac6865f3e56804bf95e536d460b5e50e36/Protocol/protocol.xsd"
+        },
+        {
+          "path": "content/Skyline/XSD/uom.xsd",
+          "sha256": "8136176a292aa02a41803544fe898642da390e7197d2cbdb52b30ff9cc510fc7",
+          "rawUrl": "https://raw.githubusercontent.com/SkylineCommunications/Skyline.DataMiner.XmlSchemas/d7b5c9ac6865f3e56804bf95e536d460b5e50e36/Protocol/uom.xsd"
+        }
+      ]
+    },
+    {
+      "id": "protocol-validator",
+      "role": "validator-rules-and-cli",
+      "kind": "git-and-nuget",
+      "repository": "https://github.com/SkylineCommunications/Skyline.DataMiner.CICD.Validators",
+      "revision": "00ad6ee0cc2c702fe7f604a6360a6b56e213ffd0",
+      "packages": [
+        {
+          "id": "Skyline.DataMiner.CICD.Tools.Validator",
+          "version": "3.5.1",
+          "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.cicd.tools.validator/3.5.1/skyline.dataminer.cicd.tools.validator.3.5.1.nupkg",
+          "sha256": "b53d9c28482a34ca84ebb64621f82c839a5c0d185165102583eb9cf59db65a78"
+        },
+        {
+          "id": "Skyline.DataMiner.CICD.Validators.Protocol",
+          "version": "3.5.1",
+          "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.cicd.validators.protocol/3.5.1/skyline.dataminer.cicd.validators.protocol.3.5.1.nupkg",
+          "sha256": "9533ece8c89f8a6cb5eb0d07af07d4f136e1de79e1bb2784d40b471f558d21f9"
+        }
+      ],
+      "localVerifiedCliVersion": "3.2.0",
+      "localVerifiedCliPackageSha256": "36a0085d79e3db285387cfe989cac884ba0b7f73ad05f75e550d740d05350938"
+    },
+    {
+      "id": "visual-studio-templates",
+      "role": "official-project-structure-and-template-options",
+      "kind": "nuget",
+      "packageId": "Skyline.DataMiner.VisualStudioTemplates",
+      "version": "2.8.14",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.visualstudiotemplates/2.8.14/skyline.dataminer.visualstudiotemplates.2.8.14.nupkg",
+      "packageSha256": "fff84ca90810755d01f4c2a9e2f63ff21b65544cea7851054e7535813460b2a6",
+      "repository": "https://github.com/SkylineCommunications/Skyline.DataMiner.VisualStudioTemplates",
+      "repositoryCommit": "86c5f0383ad93e3eb7a6a037469b1aff18f84969"
+    },
+    {
+      "id": "protocol-dev-pack",
+      "role": "target-specific-connector-api-surface",
+      "kind": "nuget",
+      "packageId": "Skyline.DataMiner.Dev.Protocol",
+      "observedVersion": "10.6.9.1",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.dev.protocol/10.6.9.1/skyline.dataminer.dev.protocol.10.6.9.1.nupkg",
+      "packageSha256": "2533036a8ac4a50da32d76d7302b824d2977ad4055e4730439bf7999258c54be",
+      "selection": "Select from the requested target DataMiner version; do not always use observedVersion."
+    },
+    {
+      "id": "csharp-analysis",
+      "role": "connector-csharp-analysis",
+      "kind": "nuget",
+      "packageId": "Skyline.DataMiner.CICD.CSharpAnalysis.Analyzer",
+      "version": "2.1.2",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.cicd.csharpanalysis.analyzer/2.1.2/skyline.dataminer.cicd.csharpanalysis.analyzer.2.1.2.nupkg",
+      "packageSha256": "2d23bca16c8f91b40019620f4a4ea731c7a1edad757d2753145e1c1cb1a4452f",
+      "repository": "https://github.com/SkylineCommunications/Skyline.DataMiner.CICD.CSharpAnalysis",
+      "repositoryCommit": "ecf7b745cf398195a4744ac32fa884c0a7f7fb0d"
+    },
+    {
+      "id": "secure-coding-analysis",
+      "role": "connector-security-analysis",
+      "kind": "nuget",
+      "packageId": "Skyline.DataMiner.Utils.SecureCoding.Analyzers",
+      "version": "2.2.3",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.utils.securecoding.analyzers/2.2.3/skyline.dataminer.utils.securecoding.analyzers.2.2.3.nupkg",
+      "packageSha256": "54a960045d1871ce54c7a21c2aa044d343ad6a58389777cfc731d5739e211b62",
+      "repository": "https://github.com/SkylineCommunications/Skyline.DataMiner.Utils.SecureCoding",
+      "repositoryCommit": "b96f484b019eaad342489ba375e99bc4c114476b"
+    },
+    {
+      "id": "secure-coding-runtime",
+      "role": "secure-json-and-runtime-security-helpers",
+      "kind": "nuget",
+      "packageId": "Skyline.DataMiner.Utils.SecureCoding",
+      "version": "2.2.3",
+      "packageUrl": "https://api.nuget.org/v3-flatcontainer/skyline.dataminer.utils.securecoding/2.2.3/skyline.dataminer.utils.securecoding.2.2.3.nupkg",
+      "packageSha256": "0b66bf89f86c1ccca94cff57dd0a70e476c0c23e6a54a9083bed30651252273e",
+      "repository": "https://github.com/SkylineCommunications/Skyline.DataMiner.Utils.SecureCoding",
+      "repositoryCommit": "b96f484b019eaad342489ba375e99bc4c114476b"
+    }
+  ],
+  "requiredFacts": [
+    {
+      "id": "protocol-target-namespace",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "targetNamespace=\"http://www\\.skyline\\.be/protocol\"",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "Target namespace: `http://www\\.skyline\\.be/protocol`"
+        }
+      ]
+    },
+    {
+      "id": "swarming-root-element",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:element name=\"Swarming\" minOccurs=\"0\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`Swarming`"
+        },
+        {
+          "path": "protocol-advanced-features.md",
+          "pattern": "## Swarming"
+        }
+      ]
+    },
+    {
+      "id": "swarming-bypass-checks",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:element name=\"BypassChecks\" minOccurs=\"0\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`BypassChecks`"
+        },
+        {
+          "path": "protocol-advanced-features.md",
+          "pattern": "`BypassChecks`"
+        }
+      ]
+    },
+    {
+      "id": "swarming-check-cardinality",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:element name=\"Check\" minOccurs=\"1\" maxOccurs=\"unbounded\" type=\"EnumSwarmingBypassCheck\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`Check` one or more times"
+        },
+        {
+          "path": "protocol-advanced-features.md",
+          "pattern": "`Check` one or more times"
+        }
+      ]
+    },
+    {
+      "id": "swarming-smart-serial-server-enum",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:enumeration value=\"smartSerialAsServer\">",
+      "references": [
+        {
+          "path": "protocol-types-and-enums.md",
+          "pattern": "`smartSerialAsServer`"
+        }
+      ]
+    },
+    {
+      "id": "version-history-fix-introduced-in",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:attribute name=\"introducedIn\" type=\"dis:TypeProtocolVersion\" use=\"optional\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`Fix@introducedIn`"
+        },
+        {
+          "path": "protocol-dataminer-versions.md",
+          "pattern": "`Fix@introducedIn`"
+        }
+      ]
+    }
+  ],
+  "requiredFacts": [
+    {
+      "id": "protocol-target-namespace",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "targetNamespace=\"http://www\\.skyline\\.be/protocol\"",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "Target namespace: `http://www\\.skyline\\.be/protocol`"
+        }
+      ]
+    },
+    {
+      "id": "swarming-root-element",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:element name=\"Swarming\" minOccurs=\"0\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`Swarming`"
+        },
+        {
+          "path": "protocol-advanced-features.md",
+          "pattern": "## Swarming"
+        }
+      ]
+    },
+    {
+      "id": "swarming-bypass-checks",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:element name=\"BypassChecks\" minOccurs=\"0\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`BypassChecks`"
+        },
+        {
+          "path": "protocol-advanced-features.md",
+          "pattern": "`BypassChecks`"
+        }
+      ]
+    },
+    {
+      "id": "swarming-check-cardinality",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:element name=\"Check\" minOccurs=\"1\" maxOccurs=\"unbounded\" type=\"EnumSwarmingBypassCheck\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`Check` one or more times"
+        },
+        {
+          "path": "protocol-advanced-features.md",
+          "pattern": "`Check` one or more times"
+        }
+      ]
+    },
+    {
+      "id": "swarming-smart-serial-server-enum",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:enumeration value=\"smartSerialAsServer\">",
+      "references": [
+        {
+          "path": "protocol-types-and-enums.md",
+          "pattern": "`smartSerialAsServer`"
+        }
+      ]
+    },
+    {
+      "id": "version-history-fix-introduced-in",
+      "artifact": "protocol.xsd",
+      "schemaPattern": "<xs:attribute name=\"introducedIn\" type=\"dis:TypeProtocolVersion\" use=\"optional\">",
+      "references": [
+        {
+          "path": "protocol-root.md",
+          "pattern": "`Fix@introducedIn`"
+        },
+        {
+          "path": "protocol-dataminer-versions.md",
+          "pattern": "`Fix@introducedIn`"
+        }
+      ]
+    }
+  ],
+  "ownership": [
+    {
+      "localPaths": [
+        "protocol-root.md",
+        "protocol-types-and-enums.md",
+        "protocol-dataminer-versions.md",
+        "protocol-uom.md",
+        "protocol-http-headers.md",
+        "protocol-icons.md",
+        "protocol-driver-type-gate.md",
+        "protocol-params.md",
+        "protocol-tables.md",
+        "protocol-http.md",
+        "protocol-snmp.md",
+        "protocol-serial-smartserial.md",
+        "protocol-websocket.md",
+        "protocol-portsettings-connections.md",
+        "protocol-execution.md",
+        "protocol-display-ui.md",
+        "protocol-monitoring.md",
+        "protocol-qactions.md",
+        "protocol-advanced-features.md"
+      ],
+      "sourceIds": [
+        "protocol-schema"
+      ],
+      "authority": "Generated schema facts"
+    },
+    {
+      "localPaths": [
+        "protocol-validation-workflow.md"
+      ],
+      "sourceIds": [
+        "protocol-schema",
+        "protocol-validator",
+        "dataminer-docs"
+      ],
+      "authority": "Schema and validator workflow"
+    }
+  ],
+  "knownDrift": [
+    {
+      "id": "protocol-schema-version",
+      "local": "1.1.10",
+      "observedUpstream": "1.1.10",
+      "status": "resolved",
+      "remediationTask": "A1.1"
+    },
+    {
+      "id": "protocol-validator-cli-version",
+      "local": "3.2.0",
+      "observedUpstream": "3.5.1",
+      "status": "confirmed",
+      "remediationTask": "A4.1"
+    },
+    {
+      "id": "documentation-revision",
+      "local": "not previously pinned",
+      "observedUpstream": "103263b74f73d172b7c7bc3fc10c3bae6d8ffc2c",
+      "status": "captured",
+      "remediationTask": "A5.3"
+    }
+  ],
+  "maintenance": {
+    "updateWhen": [
+      "The Protocol XML schema package changes.",
+      "The validator CLI or validator rule source changes.",
+      "The official connector template package changes.",
+      "An authoritative connector documentation page used by a local reference changes."
+    ],
+    "requiredActions": [
+      "Verify the new artifact and checksum.",
+      "Regenerate or review every owned local reference.",
+      "Run affected connector contract evals.",
+      "Update this manifest only in the same change as the reviewed references."
+    ]
+  }
+}

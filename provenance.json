@@ -1,14 +1,14 @@
 {
-  "manifestVersion": "0.0.6",
+  "manifestVersion": "0.1.0",
   "marketplace": "skyline-agent-marketplace",
   "sourceRepository": "SkylineCommunications/.github-private",
-  "sourceCommitSha": "e1690f0559555345f04f74452d5a1b6fe04e3d1d",
-  "builtAtUtc": "2026-09-28T12:04:26.5597274+00:00",
+  "sourceCommitSha": "b37f7a3a1049e154edfc5687ea49c47d9808033f",
+  "builtAtUtc": "2026-10-06T12:58:05.1256906+00:00",
   "publisherToolVersion": "1.0.0.0",
   "plugins": [
     {
       "id": "dataminer-app-builder",
-      "version": "0.0.6",
+      "version": "0.1.0",
       "path": "plugins/dataminer-app-builder",
       "rootAgents": [
         "dataminer-app-builder"
@@ -29,6 +29,69 @@
         "dataminer-debug-issues"
       ],
       "instructions": null
+    },
+    {
+      "id": "dataminer-connector",
+      "version": "0.1.0",
+      "path": "plugins/dataminer-connector",
+      "rootAgents": [
+        "dataminer-connector-orchestrator"
+      ],
+      "agents": [
+        "dataminer-connector-orchestrator",
+        "dataminer-scaffolder",
+        "dataminer-xml-author",
+        "dataminer-qaction-writer",
+        "dataminer-validator",
+        "dataminer-reviewer",
+        "dataminer-test-writer",
+        "dataminer-investigator",
+        "dataminer-help-writer",
+        "dataminer-simulation-generator"
+      ],
+      "skills": [
+        "dataminer-connector-core",
+        "dataminer-connector-help",
+        "dataminer-dcf",
+        "dataminer-dis",
+        "dataminer-docs-house-style",
+        "dataminer-github-example-finder",
+        "dataminer-http-communication",
+        "dataminer-logging",
+        "dataminer-manifest",
+        "dataminer-nugets",
+        "dataminer-orchestrator",
+        "dataminer-protocol-validator-prevention",
+        "dataminer-protocol-xml-reference",
+        "dataminer-qaction",
+        "dataminer-qaction-helper-generator",
+        "dataminer-qaops",
+        "dataminer-qaops-integration-testing",
+        "dataminer-sdk",
+        "dataminer-toon-simulation",
+        "dataminer-unit-testing",
+        "dataminer-validation",
+        "dataminer-validation-gates",
+        "dataminer-xml-authoring",
+        "dataminer-catalog-hygiene",
+        "dataminer-connector-debugging",
+        "dataminer-dmprotocol-packaging",
+        "dataminer-idms",
+        "dataminer-polling-manager",
+        "dataminer-qaops-simulators",
+        "dataminer-qaops-test-runs",
+        "project-type-identification"
+      ],
+      "instructions": [
+        {
+          "file": "dataminer-protocol-xml.instructions.md",
+          "skill": "dataminer-protocol-xml-reference"
+        },
+        {
+          "file": "dataminer-qaction.instructions.md",
+          "skill": "dataminer-qaction"
+        }
+      ]
     }
   ]
 }

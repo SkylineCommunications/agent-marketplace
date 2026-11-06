@@ -67,7 +67,7 @@ Use separate read and write parameters for user-editable values.
 - The read parameter displays or stores the current value.
 - The write parameter receives user input.
 - With setter behavior, writing to the write parameter automatically copies to the read parameter.
-- Read/write pairs represent the same logical value and can share a name/description pattern.
+- Read/write pairs represent the same logical value and **MUST** have character-for-character identical `<Name>`, `<Description>`, and `<Positions>`. DataMiner uses the exact `<Name>` and `<Description>` match at the shared position to link the read and write parameters into a single UI control; if either `<Name>` or `<Description>` differs (for example, appending `_Write`, `Write`, `(Write)`, or `Set`), the UI will not render them properly even if they share the same position.
 - Verify device-side sets by re-reading or refreshing the value after the write, because local write handling can update DataMiner optimistically.
 
 Buttons are an exception: a button write parameter normally invokes logic and should not be modeled as a read/write value pair unless it represents a real value.
@@ -76,20 +76,11 @@ Buttons are an exception: a button write parameter normally invokes logic and sh
 
 Use a consistent parameter ID allocation model so the protocol remains readable and read/write pairs can stay adjacent in the XML.
 
-Default connector allocation model:
-
-| Range | Use |
-|---|---|
-| `1-99` | General, internal, startup, metadata-style, or low-level helper parameters. |
-| `100-999` | Standalone read parameters, regardless of UI page. |
-| `1000+` | Table array parameters and table column parameters. |
-
 Rules:
 
-- Keep standalone non-table read parameters in `100-999`.
-- Do not put standalone response-body, status, or helper read parameters in the `1000+` table range.
-- Use `1000+` for table array and column parameters.
+- Order all `<Param>` elements in `<Params>` physically from low ID to high ID across the entire section, with only the read/write parameter pair exception. Never group `<Params>` by UI page, API endpoint, or feature in a way that places higher-ID parameters (such as table and column parameters) before lower-ID parameters.
 - Keep related parameter IDs close together; avoid large gaps inside a feature group.
+- Keep each table array parameter and its column parameters grouped in a contiguous ID block.
 - Read/write parameter pairs should use a fixed offset from read to write.
 - Prefer read `+50` for write parameters; `+100` is acceptable.
 - Do not exceed a `+100` write offset.

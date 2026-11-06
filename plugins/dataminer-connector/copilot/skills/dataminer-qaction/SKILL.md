@@ -4,14 +4,15 @@ description: 'QAction (C#) development for DataMiner connectors: writing QAction
 argument-hint: 'Describe the QAction task: e.g. "parse JSON response into table", "write QAction for SNMP trap processing"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-22
-  version: 2.5
+  updated: 2026-10-23
+  version: 2.6
 ---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.6 | 2026-10-23 | Documented multi-file folder/namespace structure inside `QAction_1/` (and `QAction_N/`), enforced `using` inside `namespace` (`CS1529`/`SA1200`), and standardized `ProjectReference` + `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` wiring. |
 | 2.5 | 2026-10-22 | Documented exact `QAction_Helper` `Parameter` all-lowercase constant rules, `<Type>dummy</Type>` exclusion from `Parameter`, and mandatory real helper generation before lookup. |
 | 2.4 | 2026-10-16 | Enforced strict .NET Framework 4.8 (`net48`) and C# 7.3 rules (forbidding C# 8/9+ syntax and `<LangVersion>` overrides) and added the hard zero-error compilation gate before returning code or opening a PR. |
 | 2.3 | 2026-10-07 | Updated paired agent reference to dataminer-connector-qaction-writer. |
@@ -493,13 +494,26 @@ Be defensive at **trust boundaries** — anywhere data enters the QAction from *
 
 ## Code Organization
 
-### Entry-Point Rule
+### Entry-Point Rule & Multi-File Project Structure
 
-The `public static class QAction` entry point must always be at **global scope** — never inside a namespace. All other supporting types (helpers, parsers, data models) should be organized in namespaces below the entry-point class in the same file, or extracted to the precompile QAction.
+The `public static class QAction` entry point must always be at **global scope** in `QAction_N/QAction_N.cs` — never inside a namespace. Keep `QAction_N/QAction_N.cs` as a **thin entry-point orchestrator** that reads inputs, delegates to well-structured domain/parser/helper classes, and writes outputs.
 
-### Local Helper Classes
+**Code does NOT have to live in a single giant `QAction_1.cs` or `QAction_N.cs` file.** Because SDK-style `QAction_*.csproj` projects (`Microsoft.NET.Sdk`) and the DataMiner CICD assembler/validator (`ProtocolSolution` / `ProtocolBuilder`) automatically compile and combine every `**/*.cs` file inside `QAction_<id>/`, you can and should structure QAction projects into subfolders, namespaces, and dedicated `.cs` files (one primary type per file):
 
-For QAction-local helpers that are not shared with other QActions, define them **below** the entry-point class in the same `.cs` file, inside a namespace:
+- **Shared code across two or more QActions (or reusable domain models/DTOs, parsers, table builders, API clients, managers, and enums)**: Place in **`QAction_1/`** (`options="precompile"`), organized into folders and sub-namespaces (e.g., `QAction_1/Models/`, `QAction_1/Parsers/`, `QAction_1/Helpers/`, `QAction_1/Handlers/`).
+- **Non-trivial classes used by only one QAction (`QAction_N`)**: Either place them in `QAction_1/` for reusability and testability, or organize them into subfolders/separate `.cs` files inside `QAction_N/` alongside `QAction_N.cs`. Only keep supporting classes in the same `QAction_N.cs` file when the QAction is small and self-contained.
+- **Legacy non-SDK `.csproj` note**: Scaffolded SDK-style `QAction_*.csproj` projects automatically include all `**/*.cs` files; only legacy non-SDK `.csproj` files require explicit `<Compile Include="..." />` entries.
+
+> **CRITICAL — `using` Directives MUST Be Inside `namespace` Blocks in Multi-File Projects (`CS1529` & `SA1200`)**
+>
+> When the DataMiner CICD assembler/validator (`ProtocolBuilder.CombineProjectFiles`) packages or validates a multi-file QAction project, it concatenates all `.cs` files in `QAction_<id>/` into a single compilation unit.
+> - In **every namespaced `.cs` file** (all files in `QAction_1/`, and any secondary `.cs` files or namespace blocks in `QAction_N/`), place all `using` directives **inside** the `namespace` block (`System.*` namespaces first).
+> - If a second `.cs` file places `using` directives at the top of the file *outside* the `namespace` block, concatenation places those `using` statements after the first file's namespace declaration, failing with **`[Critical][3.4.1] CompilationFailure` (`error CS1529: A using clause must precede all other elements defined in the namespace`)** and StyleCop **`SA1200`**.
+> - Only the global-scope `public class QAction` entry-point file (`QAction_N/QAction_N.cs`) places its `using` directives at the top of the file outside a namespace.
+
+### Local Helper Classes (Small Single-QAction Scope Only)
+
+For a small, single-file QAction with a tiny QAction-local helper not shared with other QActions, define it **below** the entry-point class in `QAction_N.cs` inside a `namespace` (with its `using` directives inside the namespace). For multiple models, parsers, or shared logic, use separate `.cs` files in `QAction_1/` (or `QAction_N/` subfolders) instead:
 
 ```csharp
 using System;
@@ -526,6 +540,7 @@ public class QAction
 
 namespace StatusParsing
 {
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using Skyline.DataMiner.Utils.SecureCoding.SecureSerialization.Json.Newtonsoft;
 
@@ -549,26 +564,50 @@ namespace StatusParsing
 }
 ```
 
-### Precompile QAction (QAction 1) — Shared Code
+### Precompile QAction (QAction 1) — Shared Code & Project Structure
 
-All code used by **two or more QActions** must live in **QAction 1** with `options="precompile"`. It is compiled first; other QActions import it via `dllImport="QAction_1.dll"`.
+All code used by **two or more QActions** (as well as shared domain models, DTOs, parsers, rate/table helpers, and managers) must live in **QAction 1** with `options="precompile"`.
 
-QAction 1 contains **only** namespaced classes — no entry-point `Run` method is needed.
+**Do NOT dump all shared classes into a single monolithic `QAction_1/QAction_1.cs` file.** Instead, structure the `QAction_1/` project into logical folders, namespaces, and one class/interface/enum per `.cs` file:
 
-**XML:**
-```xml
-<QAction id="1"   name="Precompile"    encoding="csharp" options="precompile" />
-<QAction id="100" name="ParseDevices"  encoding="csharp" triggers="100" dllImport="QAction_1.dll" />
+```text
+QAction_1/
+├── QAction_1.csproj
+├── Models/
+│   └── DeviceItem.cs          (namespace Skyline.Protocol.Models)
+├── Parsers/
+│   └── DeviceItemParser.cs    (namespace Skyline.Protocol.Parsers)
+└── Helpers/
+    └── DeviceTableBuilder.cs  (namespace Skyline.Protocol.Helpers)
 ```
 
-**QAction_1/QAction_1.cs** — data models and shared helpers:
-```csharp
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Skyline.DataMiner.Utils.SecureCoding.SecureSerialization.Json.Newtonsoft;
+**Key rules for `QAction_1` (`options="precompile"`):**
+1. **No global `public class QAction` entry point**: `QAction_1` is a shared class library (`options="precompile"`, no `triggers`) and must **never** declare a global `public class QAction` or `Run` method (doing so causes compiler warning/error `CS0436` when `QAction_N` references `QAction_1.csproj`).
+2. **Clean up the scaffolded stub**: The official connector template scaffolds `QAction_1/QAction_1.cs` with an empty `Skyline.Protocol.MyExtension.MyClass` placeholder. When adding structured `.cs` files to `QAction_1/`, either replace `QAction_1.cs` with a real class or delete the unused `QAction_1.cs` stub so dead placeholder code does not remain.
+3. **Compile-time reference (`QAction_N/QAction_N.csproj`)**: Every QAction project that consumes types from `QAction_1` must include `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in its `.csproj` (and keep NuGet `PackageReference` versions consolidated across `QAction_1.csproj` and `QAction_N.csproj` to avoid `[Major][3.38.1] UnconsolidatedPackageReference`).
+4. **Runtime reference (`protocol.xml`)**: Every `<QAction id="N">` that consumes `QAction_1` must declare `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"`.
+5. **All `using` directives inside `namespace`**: Every `.cs` file in `QAction_1/` must place its `using` directives inside its `namespace` declaration (`System` namespaces first).
 
-namespace MyConnector.Common
+**XML (`protocol.xml`):**
+```xml
+<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
+<QAction id="100" name="ParseDevices" encoding="csharp" triggers="100" dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll" />
+```
+
+**Consuming project (`QAction_100/QAction_100.csproj`):**
+```xml
+<ItemGroup>
+  <ProjectReference Include="..\QAction_1\QAction_1.csproj" />
+  <ProjectReference Include="..\QAction_Helper\QAction_Helper.csproj" />
+</ItemGroup>
+```
+
+**`QAction_1/Models/DeviceItem.cs`** — data model in its own file:
+```csharp
+namespace Skyline.Protocol.Models
 {
+    using Newtonsoft.Json;
+
     /// <summary>Represents a single device item from the API response.</summary>
     public class DeviceItem
     {
@@ -581,13 +620,24 @@ namespace MyConnector.Common
         [JsonProperty("value")]
         public double Value { get; set; }
     }
+}
+```
+
+**`QAction_1/Parsers/DeviceItemParser.cs`** — parser in its own file:
+```csharp
+namespace Skyline.Protocol.Parsers
+{
+    using System;
+    using System.Collections.Generic;
+    using Skyline.DataMiner.Utils.SecureCoding.SecureSerialization.Json.Newtonsoft;
+    using Skyline.Protocol.Models;
 
     /// <summary>Parses raw JSON into a list of <see cref="DeviceItem"/> objects.</summary>
     public static class DeviceItemParser
     {
         public static List<DeviceItem> Parse(string json)
         {
-            if (string.IsNullOrWhiteSpace(json))
+            if (String.IsNullOrWhiteSpace(json))
             {
                 return new List<DeviceItem>();
             }
@@ -599,11 +649,13 @@ namespace MyConnector.Common
 }
 ```
 
-**QAction_100/QAction_100.cs** — entry point delegates to shared helpers:
+**`QAction_100/QAction_100.cs`** — thin entry point delegates to `QAction_1`:
 ```csharp
 using System;
+using System.Collections.Generic;
 using Skyline.DataMiner.Scripting;
-using MyConnector.Common;   // imported from QAction_1.dll
+using Skyline.Protocol.Models;
+using Skyline.Protocol.Parsers;
 
 public class QAction
 {
@@ -612,7 +664,7 @@ public class QAction
         try
         {
             string raw = Convert.ToString(protocol.GetParameter(Parameter.rawresponse));
-            var items = DeviceItemParser.Parse(raw);
+            List<DeviceItem> items = DeviceItemParser.Parse(raw);
 
             if (items.Count == 0)
             {

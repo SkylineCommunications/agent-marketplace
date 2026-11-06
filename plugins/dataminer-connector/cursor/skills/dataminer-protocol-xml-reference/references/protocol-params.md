@@ -9,7 +9,7 @@ Coverage: complete for `/Protocol/Params`, `/Protocol/Params/Param`, and nested 
 - `/Protocol/Params/Param` uses `xs:all`; each direct child occurs at most once unless this file says otherwise.
 - Required `Param@id`: `TypeParamId`.
 - Required direct children: `Name`, `Type`.
-- `Param/Name`: `TypeNonEmptyString`; unique under `/Protocol/Params`.
+- `Param/Name`: `TypeNonEmptyString`; unique per logical parameter under `/Protocol/Params`, **except for read/write parameter pairs**, where the paired `read` and `write` `<Param>` elements **MUST** have the exact same `<Name>` and `<Description>` (never append `_Write`, `Write`, `(Write)`, or `Set` to a write parameter's `<Name>` or `<Description>`).
 - `Param@id`: unique under `/Protocol/Params`.
 
 Allowed `Param` attributes:

@@ -116,8 +116,7 @@ Locate the `<HTTP>` block in protocol.xml:
 
 For each `<Connection>`:
 - `verb` from `<Request verb="...">`
-- `url` from `<Request url="...">`
-- If URL contains parameter references (e.g., `url="/api/v1/device/{pid:50}"`), keep as-is with the parameter reference notation
+- `url` from `<Request url="...">` (or if `<Request pid="...">` is used because a parameter contains the URL, resolve the URL path pattern or default value constructed for that parameter in the QAction/Param definition)
 
 ### Step 3: Identify Response Content PIDs
 

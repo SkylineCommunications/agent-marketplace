@@ -4,14 +4,18 @@ description: 'Orchestrator reference material for DataMiner connector developmen
 argument-hint: 'Describe the connector task: e.g. "create SNMP connector for Vendor X", "add HTTP polling group to existing connector", "fix validator error 2.5.1", "investigate why table is not populating", "review my connector", "generate help documentation"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-22
-  version: 2.14
+  updated: 2026-10-27
+  version: 2.18
 ---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.18 | 2026-10-27 | Updated `plan-templates.md` to require ordering planned parameters strictly from low PID to high PID (with only the read/write pair exception; never grouped or interleaved by page/endpoint) and using `Request@pid` instead of `Request@url` when a parameter holds an HTTP request URL. |
+| 2.17 | 2026-10-26 | Added explicit planning rule in `plan-templates.md` requiring read/write parameter pairs to be planned with identical `<Name>`, `<Description>`, and `<Positions>` (never `_Write` or `(Write)` suffixes). |
+| 2.16 | 2026-10-23 | Added auto-generated worktree placeholder branch detection and prompt-aligned semantic branch naming constraint via rename_branch and rename_session. |
+| 2.15 | 2026-10-23 | Updated Connector Map and FEATURE/NEW plan templates to plan multi-file folder/namespace structures inside `QAction_1/` (`precompile`) and explicit `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` / `ProjectReference` wiring instead of assuming a single `QAction_1.cs` file. |
 | 2.14 | 2026-10-22 | Clarified that conditional `QAction_Helper.cs` generation applies to both existing and planned QAction consumers (including NEW connectors with empty scaffold stubs) and forbade manual helper synthesis. |
 | 2.13 | 2026-10-21 | Added dynamic minimum DataMiner version retrieval from official Software Support Lifecycles docs to avoid prompting users for omitted target versions. |
 | 2.12 | 2026-10-16 | Enforced .NET Framework 4.8 (`net48`) and C# 7.3 for connector QActions and added the hard compilation gate forbidding non-compiling code from being returned to the user or committed/pushed to a PR. |
@@ -106,6 +110,7 @@ REVIEW/INVESTIGATION bypass implementation repair gates and apply
 
 ## Constraints
 
+- **ALWAYS verify and rename auto-generated worktree branches.** If the current branch is an auto-generated random placeholder (e.g. `<user>-<adjective>-<noun>`) or `<branch_rename_request>` is active, call `rename_branch` and `rename_session` on Turn 1 with a semantic name matching the connector change before planning or editing files.
 - **NEVER skip the planning phase.** Every task gets a plan before implementation.
 - **NEVER implement before building the Connector Map** (for existing connectors).
 - **NEVER propose parameter/group/timer IDs without checking existing IDs** in the Connector Map.

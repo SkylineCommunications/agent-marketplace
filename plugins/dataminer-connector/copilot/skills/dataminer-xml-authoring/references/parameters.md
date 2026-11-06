@@ -243,20 +243,40 @@ After writing any read/write pair, verify both parameters before proceeding:
 
 ## Ascending ID Order Rule
 
-> **NEVER write XML elements in conceptual/logical order and then leave them unordered. Low-numbered internal parameters (e.g. AfterStartup at PID 2) MUST physically appear before any higher-numbered parameter in the XML — even if you author them last.**
+> **NEVER write XML elements in conceptual/logical/page order and then leave them unordered. Low-numbered parameters (e.g. AfterStartup at PID 2, or lower-ID standalone parameters across different pages/endpoints) MUST physically appear before any higher-numbered parameter (such as higher-ID table array or column parameters) in the XML, even when authoring page-by-page or endpoint-by-endpoint.**
 >
-> **Invalid ordering:**
+> **Invalid ordering (low-ID helper after higher IDs):**
 > ```xml
 > <Param id="10"></Param>
 > <Param id="13"></Param>
 > <Param id="2"></Param>
 > ```
 >
-> **Correct ordering:**
+> **Invalid ordering (interleaving page/endpoint scalars `200s`, `300s`, `400s` with tables `1000s`, `2000s`, `3000s`):**
+> ```xml
+> <Param id="200"></Param>
+> <Param id="250"></Param>
+> <Param id="1000"></Param>
+> <Param id="1001"></Param>
+> <Param id="300"></Param>
+> <Param id="350"></Param>
+> <Param id="2000"></Param>
+> <Param id="2001"></Param>
+> ```
+>
+> **Correct ordering (strictly low to high across `<Params>`, with only read/write pairs adjacent):**
 > ```xml
 > <Param id="2"></Param>
 > <Param id="10"></Param>
 > <Param id="13"></Param>
+> <Param id="200"></Param>
+> <Param id="250"></Param>
+> <Param id="300"></Param>
+> <Param id="350"></Param>
+> <Param id="1000"></Param>
+> <Param id="1001"></Param>
+> <Param id="2000"></Param>
+> <Param id="2001"></Param>
 > ```
 
 > **Forbidden offset anti-patterns**: Write parameter ID = read ID + **50** (preferred) or **+100** (maximum). The offset must never exceed 100. Three patterns are always forbidden: "50000 + read ID", "1000 + read ID" (writes grouped in 1000+), and "large-offset table column write" (reads in 2000s, writes in 10000+). All three break ascending-ID adjacency.

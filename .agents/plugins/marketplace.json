@@ -17,6 +17,18 @@
       "category": "Developer tools"
     },
     {
+      "name": "dataminer-automation",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dataminer-automation/codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
+    },
+    {
       "name": "dataminer-connector",
       "source": {
         "source": "local",

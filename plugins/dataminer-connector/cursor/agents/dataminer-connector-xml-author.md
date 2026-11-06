@@ -9,6 +9,9 @@ description: "Author and modify DPML XML content in DataMiner connector protocol
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.30 | 2026-10-27 | Enforced strict low-to-high `<Params>` ordering across all pages/tables (never interleaving higher-ID tables before lower-ID parameters) and HTTP `Request@pid` vs `Request@url` (forbidding `[param:...]` placeholders inside `Request@url`). |
+| 2.29 | 2026-10-26 | Added explicit read/write parameter pair `<Name>`, `<Description>`, and `<Positions>` identity check to Step 3b so write parameters never get `_Write`, `Write`, `(Write)`, or `Set` suffixes. |
+| 2.28 | 2026-10-23 | Added `<QAction>` precompile and `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` registration rule when QActions consume shared code from `QAction 1`. |
 | 2.27 | 2026-10-20 | Enabled model invocation (`disable-model-invocation: false`) while keeping `user-invocable: false` to allow orchestrator delegation. |
 | 2.26 | 2026-10-07 | Renamed agent display name to DataMiner Connector XML Author and updated handoff targets. |
 | 2.25 | 2026-10-05 | Added gate for discrete parameters with numeric backends (double) for pre-known values to support alarming and trending. |
@@ -61,6 +64,7 @@ Load the `dataminer-connector-core` and `dataminer-xml-authoring` skills before 
 When adding **multiple SNMP tables** (2 or more), use an incremental approach to avoid large monolithic edits that risk tool failures or context issues:
 
 0. **Add General page scalars FIRST (mandatory prerequisite)**: Before writing the first `<Param type="array">` table, verify that at least one scalar read parameter with `<Page>General</Page>` inside its `<Positions>` block already exists in the connector. If not, add it now — for SNMP connectors this is typically System Description (`1.3.6.1.2.1.1.1.0`), Device Name, or Firmware Version. A connector whose `pageOrder` lists `"General"` but has no parameter actually positioned on that page fails the Completeness check (**WARN: "No 'General' page found"**) and the validator (**MAJOR: "Specified page 'General' does not exist"**). **Do NOT defer this to the Step 5 final check — write General page params before the first table.**
+   Also write **all lower-ID standalone scalar and read/write parameters across all pages/endpoints in ascending ID order BEFORE higher-ID table parameters** — never interleave a page's lower-ID standalone scalars after an earlier higher-ID table.
 1. **Add one table at a time**: For each table, add the table array `<Param>`, all column `<Param>` elements, the SNMP polling `<Group>`, and the `<Timer>` content entry in a single edit operation. Run the per-table inline gate (Step 3 checks) before moving to the next table.
 2. **Update shared sections last**: After all tables are added, make a final edit to update `<Display pageOrder="...">`, ensure all valid operational health, status, and telemetry parameters have `<Alarm><Monitored>true</Monitored>` blocks configured with thresholds or 2.5.1 suppression, and verify `<Positions>` on table array params. There is no root `<Alarming>` element.
 3. **Never batch all tables into one edit**: Splitting into per-table edits ensures each table is syntactically correct before proceeding, and avoids losing all work if a single large edit fails.
@@ -75,6 +79,7 @@ When adding **multiple SNMP tables** (2 or more), use an incremental approach to
 
    **3b. Parameter naming normalization (required before writing any `<Param>/<Name>`)**:
    - Every parameter `<Name>` starts with a lowercase letter and contains only alphanumeric characters.
+   - For every read/write parameter pair, the `read` and `write` `<Param>` elements **MUST** have character-for-character identical `<Name>`, `<Description>`, and `<Positions>`. Never append `_Write`, `Write`, `(Write)`, or `Set` to the write parameter's `<Name>` or `<Description>` — different names or descriptions prevent DataMiner from rendering them properly as a single UI control even when they share the same position.
    - For each table, record the table parameter's exact `<Name>` and `<Description>`.
    - Every referenced column `<Name>` starts with that exact table `<Name>` value, including pluralization.
    - When columns in different tables share a description, append the table description or a clear abbreviation in parentheses.
@@ -118,8 +123,8 @@ When adding **multiple SNMP tables** (2 or more), use an incremental approach to
 
    **6a. Tab indentation**: New or modified XML lines must use tabs, one per nesting level. Preserve indentation, line endings, and whitespace on untouched lines.
 
-   **6b. Ascending-ID ordering**: When adding, removing, or moving an ID-based element, verify the affected section is ordered by **ascending numeric ID**. Reorder only elements made necessary by this task. The sections are:
-   - `<Params>` — all `<Param id="...">` elements
+   **6b. Ascending-ID ordering**: When adding, removing, or moving an ID-based element, verify the affected section is ordered by **ascending numeric ID** from low to high across the entire section. Reorder any elements written out of order by this task (for example, lower-ID standalone parameters that were placed after higher-ID table parameters because they were authored per page or per endpoint). The sections are:
+   - `<Params>` — all `<Param id="...">` elements (strictly from low ID to high ID across the entire section, never grouped by page or endpoint in a way that places higher-ID parameters before lower-ID parameters)
    - `<Groups>` — all `<Group id="...">` elements
    - `<Triggers>` — all `<Trigger id="...">` elements
    - `<Actions>` — all `<Action id="...">` elements
@@ -132,7 +137,7 @@ When adding **multiple SNMP tables** (2 or more), use an incremental approach to
 
    **6c. Read/Write pair exception**: The ONLY exception to strict ascending order — a **write parameter** must appear **immediately after** its corresponding read parameter, even if its ID is higher than the next unrelated parameter. Example: `<Param id="100">` (read) → `<Param id="150">` (write) → `<Param id="101">` (next read) is correct.
 
-   **6d. Verification**: After reordering, confirm the affected section is correctly ordered (respecting 6c). Report pre-existing unrelated ordering issues rather than silently expanding the task scope.
+   **6d. Verification**: Deterministically extract the sequence of `<Param id="...">` attributes in document order and confirm every parameter ID increases monotonically from low to high (except a write parameter immediately following its paired read parameter). Report pre-existing unrelated ordering issues rather than silently expanding the task scope.
 
    **6e. Comment hygiene**: Do not add comments. Remove disallowed comments introduced by this change; do not rewrite unrelated pre-existing comments. Perform a whole-file cleanup only when explicitly requested.
 
@@ -166,11 +171,12 @@ If a **manifest path** or **log directory** is provided, load the `dataminer-man
 - Before writing XML, check `<Type>` to determine connection type and only include applicable sections — see the `dataminer-xml-authoring` skill's Connection-Type-Specific Sections table for the full rules.
 - HTTP polling groups: ALWAYS use `<Type>poll</Type>` with `<Content><Session>N</Session></Content>`. NEVER use `poll action`.
 - HTTP connectors should include a **ping group** (Group ID `-1`) referencing a lightweight health-check session for automatic timeout recovery. See `dataminer-http-communication` skill for details.
-- HTTP session URLs: DataMiner auto-prepends `http://<Element IP>:<Port>/` — only specify the path in the `url` attribute. If both `url` and `pid` are specified, `pid` is ignored.
+- HTTP session URLs: DataMiner auto-prepends `http://<Element IP>:<Port>/` — for static URLs, specify only the literal relative path in `Request@url` (`Protocol.HTTP.Session.Connection.Request-url`). When a parameter contains the URL, use `Request@pid="<paramId>"` (`Protocol.HTTP.Session.Connection.Request-pid`) and omit `url`. **NEVER** put `[param:...]`, `{pid:...}`, or parameter placeholders inside `Request@url`. If both `url` and `pid` are specified, `pid` is ignored.
 - HTTP response parameters (status code, response body, parsed scalars) MUST use `<Type>read</Type>` with `<RTDisplay>false</RTDisplay>` — **NEVER** `<Type>dummy</Type>`. `dummy` is reserved for internal trigger parameters (e.g. AfterStartup) that carry no stored response data. This runtime distinction applies even though generated helper versions can expose dummy `SLProtocolExt` properties.
 - `defaultPage` MUST always be `"General"` — see Pre-Completion Checklist in `dataminer-xml-authoring` skill.
 - `<PortSettings>` MUST include the `name` attribute and follow connection-specific defaults (SNMP: `BusAddress` disabled, `IPport` 161, `PortTypeSerial` disabled; HTTP: `BusAddress` bypassProxy, `IPport` 80/443, `PortTypeUDP` and `PortTypeSerial` disabled; Serial: standard framing defaults, `BusAddress` disabled unless RS-485).
 - Parameters with pre-known values (enumerations, states, modes, statuses, boolean conditions) MUST use numeric backend interpretation (`<Interprete><Type>double</Type>`) and discrete measurement (`discreet` or `togglebutton`) with numeric `<Value>` and clear operator-facing `<Display>` text.
+- **Precompile QAction (`QAction 1`) & `dllImport` wiring**: Keep `<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />` without `triggers`. Whenever any triggered `<QAction id="N">` consumes shared classes/models/parsers/helpers from `QAction 1`, include `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` on `<QAction id="N">`.
 
 
 ## Skills

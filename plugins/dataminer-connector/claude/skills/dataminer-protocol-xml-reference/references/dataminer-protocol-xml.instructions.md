@@ -1,8 +1,8 @@
 ---
 description: "Quick-reference guard rails for editing DataMiner connector protocol.xml files."
 applyTo: "**/protocol.xml"
-version: "1.8"
-updated: "2026-10-05"
+version: "1.10"
+updated: "2026-10-27"
 ---
 
 # DataMiner Protocol XML — Guard Rails
@@ -50,7 +50,7 @@ updated: "2026-10-05"
 
 ## Element Ordering (Ascending ID)
 
-All ID-based XML sections must have their elements ordered by **ascending numeric ID**. This replaces the removed XML fix CLI — apply this rule to every edit.
+All ID-based XML sections must have their elements ordered by **ascending numeric ID** from low to high across the entire section. This replaces the removed XML fix CLI — apply this rule to every edit.
 
 **Applicable sections**: `<Params>`, `<Groups>`, `<Triggers>`, `<Actions>`, `<Timers>`, `<Commands>`, `<Responses>`, `<Pairs>`, `<HTTP>` (Session elements), `<QActions>`.
 
@@ -58,8 +58,9 @@ All ID-based XML sections must have their elements ordered by **ascending numeri
 
 **Rules**:
 - Never place a low-ID element after higher-ID elements (e.g., `<Param id="2">` after `<Param id="13">` is invalid).
+- **Never group `<Params>` by UI page, endpoint, or feature when that breaks ascending numeric ID order**: placing higher-ID parameters (such as table and column parameters) before lower-ID parameters (such as standalone scalars for a later page or endpoint) is **INVALID**. All `<Param>` elements MUST physically appear in strictly ascending numeric ID order from low to high across the entire `<Params>` section (with only the Read/Write pair exception).
 - When inserting new elements, place them at the correct sorted position — do not append at the end.
-- After any edit, verify the section remains in ascending order (respecting the Read/Write exception).
+- After any edit, deterministically verify the `<Param id="...">` sequence from top to bottom remains in ascending order from low to high (respecting only the Read/Write pair exception).
 
 ## Valid `<Param>` Child Elements
 
@@ -79,6 +80,7 @@ Schema docs: `https://aka.dataminer.services/protocol-params-param`
 Apply these rules to `<Protocol><Params><Param>` elements:
 
 - Every parameter `<Name>` starts with a lowercase letter.
+- For every read/write parameter pair, the `read` and `write` `<Param>` elements **MUST** share the exact same `<Name>`, `<Description>`, and `<Positions>` (never append `_Write`, `Write`, `(Write)`, or `Set`).
 - For each table array parameter, every referenced column `<Name>` starts with the table parameter's exact `<Name>` value.
 - When columns in different tables share a description, disambiguate them by appending the table description or a clear abbreviation in parentheses.
 
@@ -102,7 +104,8 @@ These five rules cause the most bulk findings when violated. For the **full rule
   - **Serial**: `<Type><DefaultValue>serial</DefaultValue></Type>`, `<BusAddress><Disabled>true</Disabled></BusAddress>` (unless RS-485), standard framing defaults, `<IPport><DefaultValue>4001</DefaultValue></IPport>`, `<PortTypeUDP><Disabled>true</Disabled></PortTypeUDP>`.
   - **Smart Serial**: `<Type><DefaultValue>ip</DefaultValue></Type>`, `<BusAddress><Disabled>true</Disabled></BusAddress>`, `<IPport><DefaultValue>50000</DefaultValue></IPport>`, `<PortTypeSerial><Disabled>true</Disabled></PortTypeSerial>`.
   - **SSH**: `<Type><DefaultValue>ip</DefaultValue></Type>`, `<BusAddress><Disabled>true</Disabled></BusAddress>`, `<IPport><DefaultValue>22</DefaultValue></IPport>`, `<PortTypeUDP><Disabled>true</Disabled></PortTypeUDP>`, `<PortTypeSerial><Disabled>true</Disabled></PortTypeSerial>`.
-- **Read/write pairs: `<Name>` MUST be identical** — this is the primary key DataMiner uses to link them into a combined UI control. Different names → two separate unlinked controls. Never append "Write", "Set", or any suffix to the write param's `<Name>`. The **read parameter MUST always have the lower ID** (write ID = read ID + 50 preferred, +100 max) so the read appears first in sorted order.
+- **Read/write pairs: `<Name>`, `<Description>`, and `<Positions>` MUST be identical** — DataMiner uses the exact `<Name>` and `<Description>` match at the shared position to link them into a combined UI control. Different names or descriptions → broken/separate controls even on the same position. Never append `_Write`, `Write`, `(Write)`, `Set`, or any suffix to the write param's `<Name>` or `<Description>`. The **read parameter MUST always have the lower ID** (write ID = read ID + 50 preferred, +100 max) so the read appears first in sorted order.
+- **HTTP `<Request>` URL vs PID (`url` vs `pid`)** — on `<HTTP><Session><Connection><Request>`, `url` (`Protocol.HTTP.Session.Connection.Request-url`) is strictly for a literal URL path/URI (e.g., `<Request verb="GET" url="/api/v1/status">`). It **NEVER** interpolates parameter tokens such as `[param:105]`, `{pid:105}`, or `[105]`. When a parameter contains the request URL, use `pid` (`Protocol.HTTP.Session.Connection.Request-pid`) and omit `url` (e.g., `<Request verb="GET" pid="105">`).
 - **Alarm tags**: exactly `CH`, `MaH`, `MiH`, `WaH`, `Normal`, `WaL`, `MiL`, `MaL`, `CL`, `Info` — never invent abbreviations or use full names.
 
 ## XSD-Critical Enum Values

@@ -71,8 +71,8 @@ Do not claim PASS or READY when required runtime, human, administrative, vendor,
 - [ ] Table column `<Name>` follows `tableNameColumnName` camelCase format
 - [ ] Duplicate table column descriptions are disambiguated with `Column Name (Table Description)` or a clear table abbreviation; unique descriptions do not require a suffix
 - [ ] Write parameter ID = read ID + 50 (or +100); never > +100 and never in a remote high range
-- [ ] Standalone read parameters are in the 100–999 range; table parameters start at 1000+
-- [ ] All protocol element IDs are in ascending order in the XML
+- [ ] Read/write parameter pairs have character-for-character identical `<Name>`, `<Description>`, and `<Positions>` (no `_Write`, `Write`, `(Write)`, or `Set` suffix on the write parameter)
+- [ ] All protocol element IDs are in ascending order from low to high in the XML (with only the read/write parameter pair exception — never grouped or interleaved by page, endpoint, or feature in a way that places higher-ID parameters before lower-ID parameters)
 - [ ] Write parameters appear immediately after their read parameters in the XML
 - [ ] Display key (resolved via NamingFormat) is meaningful to the operator — raw numeric IDs or GUIDs are never acceptable as display keys
 
@@ -116,7 +116,8 @@ Do not claim PASS or READY when required runtime, human, administrative, vendor,
 - [ ] Every `Run` entry point has a `try/catch(Exception ex)` wrapper
 - [ ] All logging uses `ex.ToString()` — not `ex.Message`
 - [ ] Log format is `QA{protocol.QActionID}|MethodName|message`
-- [ ] `public class QAction` is at global scope — not inside a namespace
+- [ ] `public class QAction` is at global scope in triggered QActions (`QAction_N/QAction_N.cs`) — never inside a namespace, and never declared in `QAction_1` (`precompile`)
+- [ ] Shared code across multiple QActions (and non-trivial models, parsers, and helpers) is placed in `QAction_1` (`options="precompile"`), organized into logical folders, namespaces, and separate `.cs` files (with `using` directives inside the `namespace` block) rather than a single giant `QAction_1.cs`, and consumed via `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` and `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"`
 - [ ] `FillArray`, `FillArrayNoDelete`, `FillArrayWithColumn`, `SetRow`, `AddRow`, and `DeleteRow` are called directly on `SLProtocol`
 - [ ] `GetColumns`/`SetColumns` are used only with the `Skyline.DataMiner.Utils.Protocol.Extension` package and namespace
 - [ ] When using generated helper properties/tables, QAction entry point uses `SLProtocolExt protocol` directly (no casting); helper-free QActions use `SLProtocol protocol`
@@ -138,6 +139,7 @@ Do not claim PASS or READY when required runtime, human, administrative, vendor,
 - [ ] `<Type>http</Type>` in protocol header
 - [ ] No `<SNMP>` element in an HTTP connector
 - [ ] HTTP groups use `<Session>N</Session>` — not `<Param>`
+- [ ] HTTP `<Request>` uses `url` only for literal URL paths (`Protocol.HTTP.Session.Connection.Request-url`) and uses `pid` (omitting `url`, per `Protocol.HTTP.Session.Connection.Request-pid`) when a parameter contains the URL — never `url="[param:...]"`
 - [ ] `statusCode` on `<Response>` is a parameter ID — not an HTTP status code value
 - [ ] QAction-filled table columns use `type="retrieved"` — not `type="snmp"`
 

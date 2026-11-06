@@ -114,15 +114,16 @@ Use row context only when the triggering/polling pattern supports it and row-spe
 - The official connector template currently includes a generated helper project and QAction project reference by default.
 - That helper reference is required only when source code consumes generated `Parameter`, `SLProtocolExt`, table, or row types. A helper-free QAction project can compile against `Skyline.DataMiner.Dev.Protocol` alone.
 - Without precompile behavior, compilation happens on first trigger.
-- Shared/no-trigger QActions should be precompiled.
+- Shared/no-trigger QActions should be precompiled (`<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />`).
 - Referenced generic QActions must be precompiled and defined earlier when another precompiled QAction depends on them.
-- Use protocol name/version placeholders in DLL imports to avoid version churn.
+- Use protocol name/version placeholders in DLL imports (`dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"`) to avoid version churn, and add `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in the consuming `QAction_N.csproj` so `dotnet build` resolves shared namespaces and types.
+- **Multi-file QAction project structure**: SDK-style `QAction_*.csproj` projects (`Microsoft.NET.Sdk`) and the DataMiner CICD assembler/validator (`ProtocolSolution` / `ProtocolBuilder`) automatically compile and combine all `**/*.cs` files inside `QAction_<id>/` and its subfolders. Code in `QAction_1` (or any complex `QAction_N`) does **not** have to live in one giant `QAction_1.cs` file — organize shared models, parsers, helpers, and managers into logical folders, sub-namespaces, and separate `.cs` files (one primary public type per file, with `using` directives placed **inside** the `namespace` block so multi-file concatenation never triggers `CS1529` or StyleCop `SA1200`). Never declare a global `public class QAction` entry point in `QAction_1` (`CS0436`).
 - Edited QAction DLLs require an element restart to load new versions.
 - Edited third-party DLLs require a DataMiner restart.
 - QActions compile strictly with **C# 7.3** (`<LangVersion>7.3</LangVersion>`) and target **.NET Framework 4.8** (`<TargetFramework>net48</TargetFramework>`). Never use C# 8.0/9.0+ syntax (such as target-typed `new()`, file-scoped namespaces, `record`, `init`, switch expressions, `is not null`, `using var`, or `<Nullable>enable</Nullable>`) or bump `<LangVersion>` above `7.3`.
 - Only fully compiling QAction solutions (`dotnet build` with 0 errors) may ever be returned to the user or committed/pushed to a PR.
 
-Reusable code should live in a shared precompiled QAction rather than being duplicated in individual QActions.
+Reusable code should live in the shared precompiled `QAction_1` project (structured into clean folders, namespaces, and class files) rather than being duplicated in individual QActions or crammed into a single monolithic `QAction_1.cs`.
 
 ## Queued And Concurrent QActions
 

@@ -1,13 +1,14 @@
 ---
-description: "Guard rails for DataMiner connector QAction C# code. Enforces .NET Framework 4.8 (net48), C# 7.3, zero-error compilation, and prevents hallucinated SLProtocol methods, namespace errors, and common C# anti-patterns."
-applyTo: "**/QAction_*.cs"
-version: "1.7"
-updated: "2026-10-22"
+description: "Guard rails for DataMiner connector QAction C# code. Enforces .NET Framework 4.8 (net48), C# 7.3, zero-error compilation, multi-file QAction_1 project structure, and prevents hallucinated SLProtocol methods, namespace errors, and common C# anti-patterns."
+applyTo: "**/QAction_*/**/*.cs,**/QAction_*.cs"
+version: "1.8"
+updated: "2026-10-23"
 ---
 
 # DataMiner QAction C# — Guard Rails
 
 > For comprehensive QAction patterns, load the `dataminer-qaction` skill and `dataminer-qaction/references/example-json-table.md`.
+> **Scope**: These guard rails apply to all C# source files in `QAction_<id>/` projects (including nested folder/class files under `QAction_1/` and `QAction_N/`). Do not manually edit auto-generated `QAction_Helper/QAction_Helper.cs`, and use `dataminer-unit-testing` for `QAction_Tests/` unit test projects.
 
 ## Target Framework, Language Version & Compilation Gate (CRITICAL)
 
@@ -138,10 +139,14 @@ updated: "2026-10-22"
 - **No blank line immediately after `{` or before `}` (SA1505/SA1508).** For empty stub bodies, use `// TODO: Implement.` — never leave blank lines inside braces.
 - **No blank lines at the end of a file (SA1518).** The last line of every `.cs` file must be the closing `}` with no trailing blank lines after it.
 - **NEVER use Hungarian notation prefixes on variable names (SA1305).** Name variables by semantic role, never by type. Rename: `swVersion` → `softwareVersion`, `strName` → `name`, `bEnabled` → `isEnabled`, `nCount` → `count`, `objResult` → `result`.
-- **`public class QAction` entry point**: `using` directives at file top, before the class. No enclosing namespace.
-- **All other classes/helpers**: `using` directives inside the namespace declaration. `System` usings first.
+- **`public class QAction` entry point**: `using` directives at file top, before the class. No enclosing namespace. Keep `QAction_N/QAction_N.cs` as a thin orchestrator focused on the entry point.
+- **All other classes/helpers**: `using` directives **inside** the `namespace` declaration (`System` usings first). When multiple `.cs` files exist in a QAction project, `ProtocolBuilder.CombineProjectFiles` concatenates them; top-level `using` statements outside a `namespace` in secondary files cause compiler error `CS1529` (`[Critical][3.4.1] CompilationFailure`) and StyleCop `SA1200`.
 - **Allman bracing**: opening brace on its own line. Never omit optional braces.
-- Reusable code goes in **QAction 1 with `precompile` option** — not duplicated across individual QActions.
+- **QAction 1 (`precompile`) project structure — avoid one giant `.cs` file**:
+  - Place code shared across multiple QActions (and reusable domain models/DTOs, parsers, table builders, API helpers, managers, and enums) in **QAction 1 (`options="precompile"`)** — never duplicated across individual QActions.
+  - **Code in `QAction_1` (or any complex `QAction_N` project) does NOT have to stay in `QAction_1.cs`.** Organize `QAction_1/` into logical folders, sub-namespaces, and separate `.cs` files (one primary public type per file, e.g., `QAction_1/Models/DeviceItem.cs`, `QAction_1/Parsers/DeviceItemParser.cs`, `QAction_1/Helpers/TableHelper.cs`). SDK-style `QAction_*.csproj` and the DataMiner CICD assembler/validator automatically compile and combine all `**/*.cs` files in the project directory.
+  - **Never declare a global `public class QAction` entry point in `QAction_1`** (`precompile` has no triggers; a global `QAction` class causes `CS0436` type conflicts when referenced by `QAction_N`). Replace or remove the scaffolded `MyClass` placeholder stub in `QAction_1/QAction_1.cs` when adding real structured class files.
+  - When `QAction_N` consumes types from `QAction_1`, add `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` to `QAction_N/QAction_N.csproj` (keeping NuGet `PackageReference` versions identical across QAction projects to prevent `[Major][3.38.1] UnconsolidatedPackageReference`) and set `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` on `<QAction id="N">` in `protocol.xml`.
 
 ## Canonical Pattern Reference
 

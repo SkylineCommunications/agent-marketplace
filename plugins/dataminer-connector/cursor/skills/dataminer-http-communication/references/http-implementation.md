@@ -16,43 +16,49 @@ Detailed implementation of HTTP requests and responses in DataMiner connectors.
 
 ### Request Attributes
 
-| Attribute | Required | Description |
-|-----------|----------|-------------|
-| `verb` | Yes | HTTP method: GET, POST, PUT, PATCH, DELETE, etc. |
-| `url` | Yes* | Request path (can include query string) |
-| `pid` | No | Parameter ID containing URL (alternative to `url`) |
-
-*Either `url` or `pid` required.
+| Attribute | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `verb` | `EnumHttpRequestVerb` | No | Specifies the verb to be used in the HTTP request (default: `GET`; `CONNECT` is not supported). See [`Protocol.HTTP.Session.Connection.Request-verb`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-verb.html). |
+| `url` | `string` | No | Specifies the URL of the request. If omitted (and `pid` is not set), the root directory of the server specified in the element wizard is used. See [`Protocol.HTTP.Session.Connection.Request-url`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-url.html). |
+| `pid` | `unsignedInt` | No | Replaces the `url` attribute. The value from this parameter will be used as the URL. See [`Protocol.HTTP.Session.Connection.Request-pid`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-pid.html). |
 
 ### URL Construction & Base Path Concatenation
 
-DataMiner automatically constructs the full request URL by concatenating:
+If the specified value for `url` (or the parameter value referenced by `pid`) does **not** contain `://`, DataMiner assumes it is a relative URL and constructs the full URL using the polling IP and port of the corresponding connection:
 
 ```
-http://<Element IP Address>:<Port>/<url attribute value>
+http://<Element IP Address>:<Port>/<url attribute value or parameter value from pid>
 ```
 
-You only define the **path** portion (optionally including query string and fragment). The scheme, host, and port come from the element connection settings configured in the element wizard.
+If neither `url` nor `pid` is specified, DataMiner uses the root directory of the server configured in the element wizard.
 
-**Key rules:**
-- The `url` attribute value is the path segment only (e.g. `/api/v1/status` or `v1/status`)
+**Key rules (per official schema documentation):**
+- Neither `url` nor `pid` is required by the schema; use `url` for a static URL, `pid` to replace `url` with a parameter's value, or omit both to target the server root directory.
+- If `url` does not contain `://`, it is treated as a relative URL against the connection's polling IP and port; if it contains `://`, it is used as an absolute URL.
+- No restrictions apply to the length of the URL path.
+- The `url` attribute value is a **literal** URL string — it **never** interpolates parameter tokens such as `[param:105]`, `{pid:105}`, or `[105]`.
+- When the URL is stored in a parameter (e.g. built dynamically by a QAction), use `pid="105"` (`<Request verb="GET" pid="105">`), which replaces the `url` attribute.
 - When using `pid`, the referenced parameter value does **not** need a leading slash (`/`)
-- If **both** `url` and `pid` are specified on the same `<Request>`, the `pid` attribute is **ignored** — only `url` is used. Always specify only one.
-- The `url` attribute can include a query string (e.g. `url="/api/data?format=json"`)
-- The parameter referenced by `pid` must be of type `string`
+- If **both** `url` and `pid` are specified on the same `<Request>`, the `pid` attribute is **ignored** — only `url` is used. Never specify both.
+- The `url` attribute can include a literal query string (e.g. `url="/api/data?format=json"`)
+- The parameter referenced by `pid` must be of type `string` (`<Type>read</Type>`, `<RTDisplay>false</RTDisplay>`)
 
 ### URL Options
 
-**Static URL:**
+**Static URL (`url` attribute):**
 ```xml
 <Request verb="GET" url="/api/v1/status" />
 ```
 
-**Dynamic URL from parameter:**
+**Dynamic URL from parameter (`pid` attribute — replaces `url`):**
 ```xml
-<Request verb="GET" pid="100" />
-<!-- Parameter 100 contains: "api/v1/status" (no leading slash needed) -->
+<Request verb="GET" pid="105" />
+<!-- Parameter 105 contains: "rest/v1/satellite/positions/..." (no leading slash needed) -->
 ```
+
+> **CRITICAL — NEVER use `[param:...]` inside `url`**:
+> - ❌ `<Request verb="GET" url="[param:105]" />` — `Request@url` is strictly for a literal URL string (`Protocol.HTTP.Session.Connection.Request-url.html`). It does **not** resolve `[param:105]`; DataMiner sends the literal characters `[param:105]` in the HTTP request path.
+> - ✅ `<Request verb="GET" pid="105" />` — `Request@pid` (`Protocol.HTTP.Session.Connection.Request-pid.html`) replaces `url` and reads the URL from parameter `105`.
 
 **Absolute URL (use sparingly):**
 ```xml

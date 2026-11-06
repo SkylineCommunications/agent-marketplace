@@ -209,11 +209,9 @@ A special value that tells DataMiner to keep the existing cell value unchanged d
 ## ID Management
 
 **Parameter ID**
-A unique integer identifying a parameter within a connector. Ranges:
+A unique integer identifying a parameter within a connector. Platform-defined and reserved ranges:
 
-- 1–99: Protocol metadata
-- 100–999: Standalone scalars (read and write)
-- 1000+: Table array and column parameters
+- 1–63,999: Standard user-defined connector parameters (standalone parameters, tables, and columns)
 - 64,000–64,299: DataMiner module communication (only specific assigned IDs)
 - 64,300–69,999: Reserved by DataMiner (general parameters)
 - 70,000–79,999: Mediation/base protocols only

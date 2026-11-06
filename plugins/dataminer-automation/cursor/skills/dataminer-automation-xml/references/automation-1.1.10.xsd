@@ -1,0 +1,1036 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+***********************************************
+*  Copyright (c), Skyline Communications NV.  *
+***********************************************
+-->
+<xs:schema id="AutomationScript"
+    targetNamespace="http://www.skyline.be/automation"
+    elementFormDefault="qualified"
+    xmlns="http://www.skyline.be/automation"
+    xmlns:tns="http://www.skyline.be/automation"
+    xmlns:mstns="http://www.skyline.be/automation"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>DataMiner Automation script XML Schema.</xs:documentation>
+    </xs:annotation>
+    <xs:element name="DMSScript">
+        <xs:annotation>
+            <xs:documentation>Defines a DMS script.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="Name" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the name of the automation script.</xs:documentation>
+                        <xs:appinfo>
+                            <schemaDoc xmlns="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                                <ddue:summary>
+                                    <ddue:para>Specifies the name of the automation script.</ddue:para>
+                                </ddue:summary>
+                                <ddue:remarks>
+                                    <ddue:content>
+                                        <ddue:list class="bullet">
+                                            <ddue:listItem>
+                                                <ddue:para>The name of the script must be unique.</ddue:para>
+                                            </ddue:listItem>
+                                            <ddue:listItem>
+                                                <ddue:para>Automation scripts are saved in the Scripts folder of DataMiner. The name of the Automation script file is as follows: Script_[Name].xml, where [Name] is the specified name.</ddue:para>
+                                            </ddue:listItem>
+                                        </ddue:list>
+                                    </ddue:content>
+                                </ddue:remarks>
+                                <examples>
+                                    <ddue:content>
+                                        <ddue:code language="xml">
+                                        </ddue:code>
+                                    </ddue:content>
+                                </examples>
+                            </schemaDoc>
+                        </xs:appinfo>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="^(?!\s)(?!.*[\/:*?&quot;&lt;&gt;|°;])[\S ]+(?&lt;!\s)$" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Description" type="xs:string" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the description of the automation script.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Type" fixed="Automation" minOccurs ="1" maxOccurs="1" type="NonEmptyStringType">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the type of script. For Automation scripts, the value is "Automation".</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Author" default="SKYLINE2\"  type="xs:string" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the author of the script.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="CheckSets" type="EnumTrueFalse" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Specifies whether after executing a Set command, the read parameter has been set to the new value.</xs:documentation>
+                        <xs:appinfo>
+                            <schemaDoc xmlns="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                                <ddue:summary>
+                                    <ddue:para>Specifies whether after executing a Set command, the read parameter has been set to the new value.</ddue:para>
+                                </ddue:summary>
+                                <ddue:remarks>
+                                    <ddue:content>
+                                        <ddue:alert class="note">
+                                            <ddue:para>This setting is disregarded by Cube, but can be used when launching the script from a protocol or another script.</ddue:para>
+                                        </ddue:alert>
+                                    </ddue:content>
+                                </ddue:remarks>
+                            </schemaDoc>
+                        </xs:appinfo>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Folder" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the folder in which this automation script is saved.</xs:documentation>
+                        <xs:appinfo>
+                            <schemaDoc xmlns="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                                <ddue:summary>
+                                    <ddue:para>Specifies the folder in which this automation script is saved.</ddue:para>
+                                </ddue:summary>
+                                <ddue:remarks>
+                                    <ddue:content>
+                                        <ddue:alert class="note">
+                                            <ddue:list class="bullet">
+                                                <ddue:listItem>
+                                                    <ddue:para>The folders only exist in Cube. All Automation scripts are present in the Scripts folder of DataMiner.</ddue:para>
+                                                </ddue:listItem>
+                                                <ddue:listItem>
+                                                    <ddue:para>The following characters are prohibited: : * ? " &lt; &gt; | ° ;</ddue:para>
+                                                </ddue:listItem>
+                                                <ddue:listItem>
+                                                    <ddue:para>When updating this value in the script itself, the update will only be shown after removing all *.txf files in the Scripts folder and restarting DataMiner.</ddue:para>
+                                                </ddue:listItem>
+                                            </ddue:list>
+                                        </ddue:alert>
+                                    </ddue:content>
+                                </ddue:remarks>
+                                <examples>
+                                    <ddue:content>
+                                        <ddue:code language="xml">
+                                        </ddue:code>
+                                    </ddue:content>
+                                </examples>
+                            </schemaDoc>
+                        </xs:appinfo>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:union>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:maxLength value="0"></xs:maxLength>
+                                </xs:restriction>
+                            </xs:simpleType>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:pattern value="^[^\\:;\*\?&gt;&lt;\|°&quot;]*$" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:union>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Interactivity" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Defines the interactivity options for an Automation script.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="Auto">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        Old behavior. In the background the script will be read to try to find out if interactivity is needed.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="Never">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        The script will never be interactive. This means that the script will not show any UI elements.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="Optional">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        The script will be interactive if it needs to be. This means that the script will show UI elements if needed.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="Always">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        The script will always be interactive. This means that the script will always show UI elements.
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Protocols" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Contains the dummy script variables defined in the script.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Protocol" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Defines a dummy script variable. When the script is run, an actual element will be linked to each dummy.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Description" type="NonEmptyStringType">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the name of the dummy variable.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Name" type="NonEmptyStringType">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the name of the protocol.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Version" type="NonEmptyStringType">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the version of the protocol.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="DefaultElement">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the default element. Format: "Agent ID/Element ID" (E.g.: 200/160).</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:simpleType>
+                                                <xs:union>
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:maxLength value="0"></xs:maxLength>
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:pattern value="^[0-9]+/[0-9]+$" />
+                                                            <!-- Agent ID/Element ID -->
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:union>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required" type="xs:positiveInteger">
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the unique ID of the dummy script variable.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                    <xs:unique name="idUnique">
+                        <xs:selector xpath="tns:Protocol"></xs:selector>
+                        <xs:field xpath="@id"></xs:field>
+                    </xs:unique>
+                </xs:element>
+                <xs:element name="Memory" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Contains the memory files.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:sequence>
+                                <xs:element name="File">
+                                    <xs:annotation>
+                                        <xs:documentation>Defines a memory file.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element name="Description" type="NonEmptyStringType">
+                                                <xs:annotation>
+                                                    <xs:documentation>Specifies the memory file name.</xs:documentation>
+                                                </xs:annotation>
+                                            </xs:element>
+                                        </xs:sequence>
+                                        <xs:attribute name="id" use="required" type="xs:positiveInteger">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the unique ID of the memory file.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:attribute>
+                                        <xs:attribute name="volatile" type="EnumTrueFalseLowerCase" use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>Indicates whether the memory file is a memory file created within the script (true) or a permanent memory file (false).</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:attribute>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:choice>
+                    </xs:complexType>
+                    <xs:unique name="idUniqueM">
+                        <xs:selector xpath="tns:Memory"></xs:selector>
+                        <xs:field xpath="@id"></xs:field>
+                    </xs:unique>
+                </xs:element>
+                <xs:element name="Parameters" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Contains the parameter script variables defined in the script.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ScriptParameter" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Defines a parameter script variable. Parameter script variables are typically used to get input from the outside world, e.g. from an operator.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Description" type="NonEmptyStringType">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the name of the parameter script variable.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required" type="xs:unsignedInt">
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the unique ID of the parameter script variable.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="type" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the parameter type.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="string">
+                                                    <xs:annotation>
+                                                        <xs:documentation>String</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="values" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the name of the memory file that holds the values to choose from. If you do not want to restrict the possible values to the entries of a memory file, leave this empty.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                    <xs:unique name="idUniqueP">
+                        <xs:selector xpath="tns:Parameters"></xs:selector>
+                        <xs:field xpath="@id"></xs:field>
+                    </xs:unique>
+                </xs:element>
+                <xs:element name="Script" minOccurs ="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Contains the script actions.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Exe" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Defines a script action.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                        <xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies a condition. In case the right hand operand of the Boolean expression is a condition that uses a specific value, the content of this element specifies the value.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="combination">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the logical operator to be applied.</xs:documentation>
+                                                            </xs:annotation>
+                                                            <xs:simpleType>
+                                                                <xs:restriction base="xs:string">
+                                                                    <xs:enumeration value="and">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>And</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="or">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Or</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                </xs:restriction>
+                                                            </xs:simpleType>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="compare">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the operator to use in the Boolean expression.</xs:documentation>
+                                                            </xs:annotation>
+                                                            <xs:simpleType>
+                                                                <xs:restriction base="xs:string">
+                                                                    <xs:enumeration value="eq">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Equal to</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="lt">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Less than</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="lte">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Less than or equal to</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="noteq">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Not equal to</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="gte">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Greater than or equal to</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="gt">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Greater than</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                </xs:restriction>
+                                                            </xs:simpleType>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="pid" type="xs:positiveInteger">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the ID of the parameter that is referred to.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="protocol" type="xs:positiveInteger">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the ID of the dummy script variable that is referred to.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="ref" type="xs:string">
+                                                            <xs:annotation>
+                                                                <xs:documentation>In case the right hand operand is a script variable, this attribute specifies the script variable that is referred to.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="type">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies whether the left hand operand of the Boolean expression is a script variable or a parameter value.</xs:documentation>
+                                                            </xs:annotation>
+                                                            <xs:simpleType>
+                                                                <xs:restriction base="xs:string">
+                                                                    <xs:enumeration value="param">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Parameter</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="variable">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Variable</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                </xs:restriction>
+                                                            </xs:simpleType>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="var" type="xs:string">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the name of the script variable.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="Destination" minOccurs="0" maxOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the destination</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="type" use="required">
+                                                            <!-- used with action "report", "notification". -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the destination type.</xs:documentation>
+                                                            </xs:annotation>
+                                                            <xs:simpleType>
+                                                                <xs:restriction base="xs:string">
+                                                                    <xs:enumeration value="email">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies that an email will be sent.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="sms">
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies that an SMS will be sent.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                </xs:restriction>
+                                                            </xs:simpleType>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="title" type="NonEmptyStringType">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the title.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="cc" type="xs:string">
+                                                            <!-- TODO: implement regex for email addresses? -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the carbon copy (CC) recipient(s).</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="bcc" type="xs:string">
+                                                            <!-- TODO: implement regex for email addresses? -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the blind carbon copy (BCC) recipient(s).</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="Include"	minOccurs="0" maxOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies an item to be included.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="params" type="xs:string">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the parameters to be included.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="MemoryPos" minOccurs="0" maxOccurs="1" type="xs:string">
+                                            <!-- Used with type "get", "set". -->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the memory position to get or set. Format "memory file ID:position of the item to retrieve or set" e.g. "2:100".</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Message" minOccurs ="1" maxOccurs="1">
+                                            <!-- used with action type "csharp", but not clear what its use is (seems required though). 
+											used with "comment"
+                                            used with "notification"
+											used with "exit"
+											used with "findinteractiveclient"
+											used with "information"
+											used with logmessage
+											used with "report"
+											-->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the message.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="ref" type="xs:string">
+                                                            <xs:annotation>
+                                                                <xs:documentation>Used with script actions of type "logmessage". Refers to the variable that should be logged.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="Param"  minOccurs="0" maxOccurs="unbounded">
+                                            <!-- Used with script actions of type “assigndummy”, “csharp”, “get”, “script”, “set”. -->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies a parameter.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="protocol" type="xs:positiveInteger">
+                                                            <!-- Used with script actions of type “assigndummy”, “get” and “set”. -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the ID of the dummy script variable that is referred to.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="type">
+                                                            <!-- Used with script actions of type “csharp”, “script”. -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the type of data this parameter holds.</xs:documentation>
+                                                            </xs:annotation>
+                                                            <xs:simpleType>
+                                                                <xs:restriction base="xs:string">
+                                                                    <xs:enumeration value="CHECKSETS">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Used with type "script". Specifies that after executing a SET command, it is checked that the read parameter has been set to the new value.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="debug">
+                                                                        <!-- used with type "csharp". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies that this parameter holds the compile in debug mode flag.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="DEFER">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>*** No documentation available. ***</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="OPTIONS">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>*** No documentation available. ***</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="libraryName">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies the name of the library. Supported since DataMiner 9.6.13.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="PARAMETER">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>*** No documentation available. ***</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="PARAMETERLINK">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>*** No documentation available. ***</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="preCompile">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies that this C# action must be compiled as a library. The value is either "true" or "false". Default: "false". Supported since DataMiner 9.6.13.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="ref">
+                                                                        <!-- used with type "csharp". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies that this parameter holds the DLL references.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="scriptRef">
+                                                                        <!-- used with type "script". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies a reference to another script. The expected format is the name of the Automation script where the script resides followed by a colon and the name of the referenced script (this is the name as specified in the libraryName attribute of the script). To refer to a script in the current Automation script, the [AutomationScriptName] placeholder can be used. E.g. "[AutomationScriptName]:MyCSharpAction".</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                    <xs:enumeration value="using">
+                                                                        <!-- used with type "csharp". -->
+                                                                        <xs:annotation>
+                                                                            <xs:documentation>Specifies that this parameter holds the namespace references.</xs:documentation>
+                                                                        </xs:annotation>
+                                                                    </xs:enumeration>
+                                                                </xs:restriction>
+                                                            </xs:simpleType>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="Protocol" minOccurs="0" maxOccurs="1" type="xs:positiveInteger">
+                                            <!-- used with action type "settemplate", "changestate" -->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies a dummy script variable.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Script" minOccurs="0" maxOccurs="1" type="NonEmptyStringType">
+                                            <!-- used with "script"-->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the name of the script.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="ScriptSuccess" minOccurs="0" maxOccurs="1" type="EnumTrueFalse">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies whether the script execution is considered successful (TRUE) or failed (FALSE).</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Template" minOccurs="0" maxOccurs="1" type="NonEmptyStringType">
+                                            <!-- used with type "report"-->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the name of the template.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Timeout" minOccurs="0" maxOccurs="1" type="xs:positiveInteger">
+                                            <!-- used with "findinteractiveclient": range restricted to 1s - 15 min. -->
+                                            <!-- used with "sleep": range restricted to 1-900000 ms.
+											used with "wait": range restricted to 1s - 1day.
+											-->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the timeout value.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="Type" minOccurs="0" maxOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies the state to which the dummy element has to be set.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <!-- Used with script action of type "settemplate". -->
+                                                    <xs:enumeration value="alarm">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Alarm</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <xs:enumeration value="trending">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Trending</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <!-- Used with script action of type "get" and "set". -->
+                                                    <xs:enumeration value="memory">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Memory</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <!-- Used with script action of type "if". -->
+                                                    <xs:enumeration value="conditions">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Conditions</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <!-- Used with script action of type "changestate". -->
+                                                    <xs:enumeration value="mask">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Mask</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <xs:enumeration value="pause">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Pause</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <xs:enumeration value="restart">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Restart</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <xs:enumeration value="start">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Start</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <xs:enumeration value="stop">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Stop</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                    <xs:enumeration value="unmask">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Unmask</xs:documentation>
+                                                        </xs:annotation>
+                                                    </xs:enumeration>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="Value" minOccurs ="0" maxOccurs="1">
+                                            <!-- Used with script actions of type “assigndummy”,  “csharp”, “settemplate”, “clearmemory”, “get”, “goto”, “label”, “set”, “ui”. -->
+                                            <xs:annotation>
+                                                <xs:documentation>Specifies a value.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="ref" type="xs:string">
+                                                            <!-- Used with script actions of type “assigndummy”, “settemplate”, “clearmemory” (int) and “set”. -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Refers to an item. The item that is referred to depends on the type of script action.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                        <xs:attribute name="offset" type="xs:double">
+                                                            <!-- used with action "get", "set". -->
+                                                            <xs:annotation>
+                                                                <xs:documentation>Specifies the offset to use.</xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:choice>
+                                    <xs:attribute name="id" use="required" type="xs:positiveInteger">
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the unique ID of the parameter script variable.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="type" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the action type.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="assign">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Assigns a value.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="assigndummy">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Assigns an automation script’s dummy to a specific element by using a variable or a value.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="assigntemplate">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Assigns an alarm or trend template to a dummy.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="changestate">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Sets the state of a dummy in an automation script.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="clearmemory">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Clears the content of an automation script’s memory file.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="comment">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Adds an extra comment to the script.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="csharp">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Executes a block of C# code.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="else">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Marks the start of the else clause of an If-Else statement.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="endif">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Marks the end of the If-Else statement.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="exit">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Terminates the automation script without delay.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="get">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Gets a parameter or memory value.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="goto">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Jumps to the specified label.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="findinteractiveclient">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Asks an interactive user to attach to the script.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="if">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Defines an If condition to make certain actions in the script depend on one or more conditions.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="information">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Generates an information event in the alarm console.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="label">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Adds a label allowing to jump to this point through a goto action.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="logmessage">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Creates a log message that will be saved in the SLAutomation.txt log file.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="notification">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Sends a notification via email or SMS.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="report">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Uploads a report to an FTP server or a shared folder.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="script">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Runs another automation script from within the current script.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="set">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Sets a parameter, memory position or variable.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="sleep">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Pauses the automation script for the specified period of time.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="ui">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Configures of a dialog box asking for a user response.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                                <xs:enumeration value="wait">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Defines a wait for a positive result.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:enumeration>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="destvar" type="xs:string">
+                                        <!-- used with type "get". -->
+                                        <xs:annotation>
+                                            <xs:documentation>Specifies the destination variable.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                    <xs:unique name="idUniqueS">
+                        <xs:selector xpath="tns:Script"></xs:selector>
+                        <xs:field xpath="@id"></xs:field>
+                    </xs:unique>
+                </xs:element>
+            </xs:all>
+            <xs:attribute name ="options" type="xs:positiveInteger" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        <![CDATA[Specifies different options. The value is the decimal representation of a hexadecimal bit flag combination.
+                    The meaning of the different flags is as follows:
+                    0x000: None
+                    0x008: Debug Mode
+                    0x010: AllowUndef
+                    0x020: RequireInteractive
+                    0x040: SupportsBackForward
+                    0x080: SkipElementChecks
+                    0x100: SavedFromCube
+                    0x200: SkipInfoEventsSet
+                    0x400: HasFindInteractiveClient
+                    ]]>
+                    </xs:documentation>
+                    <xs:appinfo>
+                        <schemaDoc xmlns="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                            <ddue:summary>
+                                <ddue:para>Specifies different options.</ddue:para>
+                            </ddue:summary>
+                            <ddue:remarks>
+                                <ddue:content>
+                                    <ddue:para>The value is the decimal representation of a hexadecimal bit flag combination. The meaning of the different flags is as follows:</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>0x000: None</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x008: Debug Mode</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x010: AllowUndef</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x020: RequireInteractive</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x040: SupportsBackForward</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x080: SkipElementChecks</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x100: SavedFromCube</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x200: SkipInfoEventsSet</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x400: HasFindInteractiveClient</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                    <ddue:para>When creating a new Automation script from Cube, the options attribute has the decimal value “472” by default. This is “0x1D8” in hexadecimal notation, meaning that the following flags are configured by default:</ddue:para>
+                                    <ddue:list class="bullet">
+                                        <ddue:listItem>
+                                            <ddue:para>0x008: Debug Mode</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x010: AllowUndef</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x040: SupportsBackForward</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x080: SkipElementChecks</ddue:para>
+                                        </ddue:listItem>
+                                        <ddue:listItem>
+                                            <ddue:para>0x100: SavedFromCube</ddue:para>
+                                        </ddue:listItem>
+                                    </ddue:list>
+                                </ddue:content>
+                            </ddue:remarks>
+                            <examples>
+                                <ddue:content>
+                                    <ddue:code language="xml">
+                                    </ddue:code>
+                                </ddue:content>
+                            </examples>
+                        </schemaDoc>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+        <xs:unique name="idUniqueInScript">
+            <xs:annotation>
+                <xs:documentation>IDs must be unique.</xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath=".//*"></xs:selector>
+            <xs:field xpath="@id"></xs:field>
+        </xs:unique>
+    </xs:element>
+    <xs:simpleType name="NonEmptyStringType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EnumTrueFalse">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TRUE">
+                <xs:annotation>
+                    <xs:documentation>True</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FALSE">
+                <xs:annotation>
+                    <xs:documentation>False</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EnumTrueFalseLowerCase">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="true">
+                <xs:annotation>
+                    <xs:documentation>True</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="false">
+                <xs:annotation>
+                    <xs:documentation>False</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

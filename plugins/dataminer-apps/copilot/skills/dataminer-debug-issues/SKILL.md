@@ -28,8 +28,8 @@ Use whichever URL applies everywhere this skill says `<APP_URL>`. Remote hosts a
 ## Steps
 
 1. Determine the app URL (see [Pick the host first](#pick-the-host-first)). For local debugging, make sure the dev server is running (`npm run dev`); start it if needed and note the URL it prints. For a remote host, use the URL the user provides.
-2. Open the page with `open_browser_page`.
-3. If the app redirects to the DataMiner sign-in page → **See [Authenticate](#authenticate) below before going any further.**
+2. For a remote DataMiner host, check for the reusable saved sign-in **before opening a Playwright/MCP page**. If it is absent, use the visible headed `dm-login.mjs` flow in `dataminer-browser-automation`; do not ask the user to sign in through browser automation.
+3. Once the saved state exists and is configured, open the page with `open_browser_page`. If it redirects to the DataMiner sign-in page, the session has expired → **see [Authenticate](#authenticate) below before going any further.**
 4. Use `run_playwright_code` to attach listeners, then trigger the broken flow.
 5. Read what came back, find the mistake, fix it, re-check.
 
@@ -37,22 +37,24 @@ Use whichever URL applies everywhere this skill says `<APP_URL>`. Remote hosts a
 
 ## Authenticate
 
-Do this immediately after opening the page — before reading source code, before any analysis.
+For a remote DataMiner host, do this as a preflight before opening the page. If a configured
+state later redirects to login, do it immediately before reading source code or continuing analysis.
 
 Check the current URL of the shared browser page:
 
 - If it contains `/auth/login` or any other sign-in path → the app has redirected to the DataMiner login page.
 - **First, check for a saved sign-in.** If a Playwright storage-state file exists (default `~/.copilot/playwright-auth/dataminer-storage-state.json`), the browser can be started with it and no manual step is needed — load the `dataminer-browser-automation` skill, which owns that setup, then come straight back here to continue debugging.
-- If there is no saved sign-in (or it has expired), send this message to the user:
+- If there is no saved sign-in (or it has expired), stop using the current browser for authentication. Load `dataminer-browser-automation` and run its `dm-login.mjs` flow, which opens a visible headed browser window. Send this message to the user:
 
-  > "The app redirected to the DataMiner sign-in page. Please sign in at `<URL>` in the shared browser, then let me know once you're past the login and I'll continue."
+  > A visible browser window has opened for DataMiner sign-in. Please sign in **in that window** and tick "Keep me signed in" if appropriate. Do not enter credentials in chat or in a shared, hidden, or headless automation browser. I'll continue after the saved sign-in is ready.
 
-Or, to avoid this every time, I can set up a reusable sign-in — see the `dataminer-browser-automation` skill.
+The script saves a storage state outside repositories, prunes it to DataMiner-only cookies, and restricts it to the current user. Only after it completes may you start or resume headless/MCP automation with that state.
 
 Rules:
 
-- Wait for the user to confirm they're signed in before doing anything else.
-- Never ask for credentials — the user signs in themselves in the browser.
+- **Never ask the user to sign in in the shared, hidden, or headless browser.** User interaction happens only in `dm-login.mjs`'s visible headed browser window.
+- Never ask for, type, print, or log credentials. Never commit or print the storage-state bearer cookies.
+- Wait for the user to complete the visible-browser sign-in before doing anything else.
 - Never skip this step
 
 ---

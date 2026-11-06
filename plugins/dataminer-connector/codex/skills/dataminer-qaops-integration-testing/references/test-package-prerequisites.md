@@ -26,7 +26,9 @@ The default same-solution inclusion only covers **SDK-style** DataMiner projects
 
 Harvest the connector into a `.dmprotocol` yourself and add it as package content. Full tool detail (install, CLI, MSBuild wiring, the trailing-backslash `--output` gotcha, verification) is in **`dataminer-dmprotocol-packaging`**. The Test-Package-specific wiring:
 
-1. **Generate the `.dmprotocol`** with `Skyline.DataMiner.CICD.Tools.Packager` (`dataminer-package-create dmprotocol`) as a pre-build step of the Test Package project, writing it into a `*.generated` dependency folder (e.g. `TestPackageContent/Dependencies/connector.generated/`). Prefer a repo-local tool manifest (`.config/dotnet-tools.json`) + `dotnet tool restore` so CI is deterministic.
+> **Never place raw `.dmprotocol` files anywhere under `TestPackageContent/Dependencies`, including nested folders.** QAOps recursively uploads deployable files from `Dependencies` through the app-package installer. A classic `.dmprotocol` has no `AppInfo.xml`, so dependency installation fails before `1.TestPackageSetup.ps1` can run. Keep the connector under `TestPackagePipeline/connector.generated/` and explicitly deploy it from the setup script. Moving the file without updating the build output and setup-script lookup is not sufficient.
+
+1. **Generate the `.dmprotocol`** with `Skyline.DataMiner.CICD.Tools.Packager` (`dataminer-package-create dmprotocol`) as a pre-build step of the Test Package project, writing it into a `*.generated` pipeline-content folder (e.g., `TestPackageContent/TestPackagePipeline/connector.generated/`). Prefer a repo-local tool manifest (`.config/dotnet-tools.json`) + `dotnet tool restore` so CI is deterministic.
 2. **Deploy it before the tests run** from `TestPackageContent/TestPackagePipeline/1.TestPackageSetup.ps1` with the DataMinerDeploy CLI. The deploy command **requires the target DataMiner location and credentials** — `dataminer-package-deploy from-artifact --path-to-artifact "<...>.dmprotocol"` **alone fails with exit code 1** (`dataminer-package-deploy returned exit code 1`). Pass `--dm-server-location 'localhost'` plus the `WinEncryptedKeys` credentials the QAOps runner provides:
 
    ```powershell
@@ -34,7 +36,7 @@ Harvest the connector into a `.dmprotocol` yourself and add it as package conten
    $u = (& WinEncryptedKeys --name 'QAOpsDataMinerUser'     2>&1 | ? { ([string]$_).Trim() } | Select-Object -Last 1).Trim()
    $p = (& WinEncryptedKeys --name 'QAOpsDataMinerPassword' 2>&1 | ? { ([string]$_).Trim() } | Select-Object -Last 1).Trim()
 
-   $dmprotocol = Get-ChildItem -Path (Join-Path $PathToTestPackageContent 'Dependencies\connector.generated') -Filter '*.dmprotocol' | Select-Object -First 1
+   $dmprotocol = Get-ChildItem -Path (Join-Path $PathToTestPackageContent 'TestPackagePipeline\connector.generated') -Filter '*.dmprotocol' | Select-Object -First 1
    if (-not $dmprotocol) { throw "No .dmprotocol harvested — the Test Package build did not produce the connector package." }
 
    & dataminer-package-deploy from-artifact --path-to-artifact $dmprotocol.FullName --dm-server-location 'localhost' --dm-user $u --dm-password $p --deploy-timeout-in-seconds 3600
@@ -42,7 +44,7 @@ Harvest the connector into a `.dmprotocol` yourself and add it as package conten
    ```
 
    (The same `WinEncryptedKeys` `QAOpsDataMinerUser`/`QAOpsDataMinerPassword` credentials are used everywhere the setup script needs to reach the localhost DataMiner — see `references/migrating-existing-tests.md`.)
-3. **Verify** the `.dmprotocol` is actually inside the built `.dmtest` (under `AppInstallContent\DmTest\Dependencies\...`) — extract and check, the same way you verify the harvested test assembly.
+3. **Verify** the `.dmprotocol` is actually inside the built `.dmtest` (under `AppInstallContent\DmTest\TestPackagePipeline\connector.generated\...`) — extract and check, the same way you verify the harvested test assembly.
 
 This is the only way the classic connector reaches the clean DaaS. SDK-style connectors in the same solution do not need this — they install via the default same-solution inclusion.
 

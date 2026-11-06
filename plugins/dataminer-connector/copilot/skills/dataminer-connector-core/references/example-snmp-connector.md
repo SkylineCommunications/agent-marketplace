@@ -573,4 +573,3 @@ Element starts
 | `<Measurement><Type>discreet</Type>` on table array | `<Measurement><Type>table</Type>` on table array |
 | Index column with `<RawType>numeric text</RawType>` / `<Type>double</Type>` | Index column must be `<RawType>other</RawType>` / `<Type>string</Type>` / `<Measurement><Type>string</Type>` |
 | Setting `multipleGet="true"` on a table group | `multipleGet` can only be used on groups with 2+ scalar parameters; NEVER on groups containing table parameters |
-| Scalar read param ID 2000 | Scalar read param ID stays in 100–999 range |

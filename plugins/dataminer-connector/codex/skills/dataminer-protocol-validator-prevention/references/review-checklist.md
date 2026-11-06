@@ -42,6 +42,7 @@ evidence is reported as `UNVERIFIED` or `BLOCKED`, not silently passed.
 - Handle timeouts proactively — do not wait for the protocol timeout.
 - Prefer XML `<Condition>` constructs over QAction `if`-checks.
 - Use QActions only when no XML construct can achieve the goal.
+- For HTTP `<Request>` elements, verify that `url` is used only for static literal URL paths (`Protocol.HTTP.Session.Connection.Request-url`) and `pid` is used (omitting `url`) when a parameter contains the dynamic URL (`Protocol.HTTP.Session.Connection.Request-pid`) — flag any `url="[param:...]"` or `{pid:...}` placeholder inside `url` as a Critical/Major bug.
 
 ## Performance
 
@@ -81,6 +82,7 @@ evidence is reported as `UNVERIFIED` or `BLOCKED`, not silently passed.
 ## Conditions vs QActions
 
 - Flag QActions that only contain simple `if`-checks that could be replaced with XML `<Condition>` elements on groups, timers, or triggers.
+- Verify that code shared across two or more QActions (and non-trivial models, parsers, and helpers) lives in `QAction_1` (`options="precompile"`), organized into logical folders, namespaces, and dedicated `.cs` files (with `using` directives inside the `namespace` block) rather than a single monolithic `QAction_1.cs`.
 
 ## VersionHistory
 
@@ -107,6 +109,8 @@ evidence is reported as `UNVERIFIED` or `BLOCKED`, not silently passed.
 
 ## UI — Parameters
 
+- All `<Param id="...">` elements in `<Params>` are physically ordered from low ID to high ID across the entire section, with only the read/write parameter pair exception (where the write parameter immediately follows its read parameter); never grouped or interleaved by page, endpoint, or feature in a way that places higher-ID parameters before lower-ID parameters.
+- Read/write parameter pairs share the exact same `<Name>`, `<Description>`, and `<Positions>` (never append `_Write`, `Write`, `(Write)`, or `Set` to the write parameter's `<Name>` or `<Description>`, otherwise the UI will not render them properly even on the same position).
 - Avoid True/False display values.
 - All applicable params must have a unit; for dimensionless numbers (counts, IDs, indices, etc.) suppress validator rule 2.9.7 instead.
 - Displayed params must have `<Subtext>` tooltips describing the parameter in plain language (never include technical details like SNMP OIDs).

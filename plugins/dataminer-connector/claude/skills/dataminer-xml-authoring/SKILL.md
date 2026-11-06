@@ -4,14 +4,17 @@ description: 'DPML XML authoring for DataMiner connectors: protocol structure, p
 argument-hint: 'Describe the XML change: e.g. "add SNMP table with 5 columns", "create HTTP polling session", "configure alarming thresholds", "add DVE child element"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-12
-  version: 2.46
+  updated: 2026-10-27
+  version: 2.49
 ---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.49 | 2026-10-27 | Enforced strict low-to-high `<Params>` ordering (forbidding page/feature interleaving of higher-ID tables before lower-ID standalone scalars), removed fixed standalone/table ID range qualifiers, and clarified HTTP `Request@pid` vs `Request@url` (forbidding `[param:...]` placeholders inside `Request@url`). |
+| 2.48 | 2026-10-26 | Added explicit Pre-Completion Checklist verification that read/write parameter pairs share character-for-character identical `<Name>`, `<Description>`, and `<Positions>`. |
+| 2.47 | 2026-10-23 | Documented `<QAction id="1" ... options="precompile" />` and `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` registration for QActions consuming shared `QAction_1` code. |
 | 2.46 | 2026-10-12 | Added Version and VersionHistory authoring guidance and template snippets for adding MinorVersion entries and managing version synchronization. |
 | 2.45 | 2026-10-07 | VendorOID, DeviceOID, and IntegrationID default to 1.3.6.1.4.1.8813.2.XX, XX, and DMS-DRV-XXXX when omitted by user. |
 | 2.44 | 2026-10-07 | Updated paired agent reference and routing rules to dataminer-connector-xml-author. |
@@ -135,7 +138,11 @@ Put explanations in `<Description>`, `<Information><Subtext>`, surrounding Markd
   <Actions>...</Actions>
   <Timers>...</Timers>
   <PortSettings>...</PortSettings>
-  <QActions>...</QActions>
+  <QActions>
+    <QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
+    <QAction id="2" name="After Startup" encoding="csharp" triggers="2" />
+    <QAction id="100" name="Parse Response" encoding="csharp" triggers="100" dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll" />
+  </QActions>
   <VersionHistory>
     <Branches>
       <Branch id="1">
@@ -325,7 +332,7 @@ Parameters are the fundamental data units. **Full XML examples, attribute tables
 > **⚠ INLINE AUTHORING GATE — apply at the moment you write each `<Name>` and `<Description>`, not during a post-generation scan:**
 > Before committing any `<Name>` value, confirm its first character is **lowercase**. PascalCase names look plausible and are invisible in a quick visual review — they surface as NamingConventions WARN or FAIL findings after submission.
 >
-> **PIDs 100–999 (system-info scalars such as `SystemName`, `SystemDescription`, `SystemUptime`) are a common source of NamingConventions WARN findings.** Before finalising, inspect the `<Name>` children of `<Protocol><Params><Param>` elements and correct uppercase-first values. Do not scan unrelated protocol-level `<Name>` elements.
+> **System-info and device-identity scalars (such as `SystemName`, `SystemDescription`, `SystemUptime`) are a common source of NamingConventions WARN findings.** Before finalising, inspect the `<Name>` children of `<Protocol><Params><Param>` elements and correct uppercase-first values. Do not scan unrelated protocol-level `<Name>` elements.
 >
 > **This rule applies equally to table column `<Name>` elements.** The prefix derived from the table `<Name>` must keep its own casing — a table named `interfaces` produces column prefix `interfaces` (lowercase `i`), **not** `Interfaces`. Example: table `<Name>interfaces</Name>` → columns `interfacesName`, `interfacesIpAddress`, `interfacesLinkState`. Writing `InterfacesName` is a NamingConventions WARN or FAIL even though it starts with the correct prefix word.
 >
@@ -339,11 +346,11 @@ Parameters are the fundamental data units. **Full XML examples, attribute tables
 |---|---|---|
 | `Hostname` | `hostname` | Single word: all lowercase |
 | `SoftwareVersion` | `softwareVersion` | Multi-word: first word lowercase |
-| `SystemDescription` | `systemDescription` | PID 100–999 prime source |
-| `SystemName` | `systemName` | PID 100–999 prime source |
-| `SystemUptime` | `systemUptime` | PID 100–999 prime source |
+| `SystemDescription` | `systemDescription` | System-info scalar prime source |
+| `SystemName` | `systemName` | System-info scalar prime source |
+| `SystemUptime` | `systemUptime` | System-info scalar prime source |
 | `AdminStatus` | `adminStatus` | |
-| `FirmwareVersion` | `firmwareVersion` | PID 1–10 common |
+| `FirmwareVersion` | `firmwareVersion` | Device-identity scalar |
 | `IpAddress` | `ipAddress` | Acronym as first word: fully lowercase |
 | `SerialNumber` | `serialNumber` | |
 | `DeviceModel` | `deviceModel` | |
@@ -386,7 +393,7 @@ Two separate `<Param>` elements — one `read`, one `write`. DataMiner links the
 2. `<Description>` is **identical** on both
 3. `<Positions>` are **identical** on both
 
-Write ID = read ID + **50** (preferred) or **+100** (max). **NEVER** use offset > 100 (❌ read 103 → write 1103). Write param appears **immediately after** read param in XML. All params ordered by ascending ID.
+Write ID = read ID + **50** (preferred) or **+100** (max). **NEVER** use offset > 100 (❌ read 103 → write 1103). Write param appears **immediately after** read param in XML. All params in `<Params>` **MUST** be ordered from low ID to high ID across the entire section (the read/write pair is the **only** exception) — **never** group `<Params>` by UI page, API endpoint, or feature in a way that places higher-ID parameters (such as table and column parameters) before lower-ID parameters.
 
 > **Full XML examples and Read/Write Pair Pre-Completion Checklist**: `dataminer-xml-authoring/references/parameters.md`
 
@@ -815,7 +822,7 @@ Rate calculations convert incrementing counters into per-second rates. Each rate
 ```xml
 <HTTP>
   <Session id="1" name="Get Device Status">
-    <Connection id="0">
+    <Connection id="1" name="Get Device Status">
       <Request verb="GET" url="/api/v1/status">
         <Headers>
           <Header key="Accept">application/json</Header>
@@ -827,10 +834,24 @@ Rate calculations convert incrementing counters into per-second rates. Each rate
       </Response>
     </Connection>
   </Session>
+  <Session id="2" name="Get Dynamic Endpoint">
+    <Connection id="1" name="Get Dynamic Endpoint">
+      <Request verb="GET" pid="105">
+        <Headers>
+          <Header key="Accept">application/json</Header>
+        </Headers>
+      </Request>
+      <Response statusCode="210">
+        <Content pid="110"></Content>
+      </Response>
+    </Connection>
+  </Session>
 </HTTP>
 ```
 
-> `Session@id` is required; `Session@name` is optional. `Session@key` is not a schema attribute. Every request `<Header>` requires its own `key` attribute. For authentication patterns, load `dataminer-xml-authoring/references/http-auth-patterns.md`.
+> `Session@id` is required; `Session@name` is optional. `Session@key` is not a schema attribute.
+> On `<Request>`, use `url="/literal/path"` for static URLs ([`Request-url`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-url.html)), or use `pid="105"` (omitting `url`) when parameter `105` contains the URL ([`Request-pid`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-pid.html)). **NEVER** write `url="[param:105]"` or `url="{pid:105}"` — `Request@url` is a literal string and does not interpolate parameter placeholders.
+> Every request `<Header>` requires its own `key` attribute. For authentication patterns, load `dataminer-xml-authoring/references/http-auth-patterns.md`.
 
 ---
 
@@ -948,6 +969,8 @@ Before finishing any XML authoring task, explicitly verify each item and fix fai
 - [ ] **WebInterface page present**: `pageOrder` contains `Webinterface#http://[Polling Ip]/` for non-virtual connectors. Added as the last entry after a `-----` separator. **NEVER** add a `<WebInterface>` XML element.
 - [ ] **NamingFormat uses separator-based PID references — NEVER `displayColumn` attribute, NEVER `naming=` in `<ArrayOptions options>`**: **NEVER** use the `displayColumn="N"` attribute on `<ArrayOptions>` — it is deprecated and causes MINOR "Unrecommended use of displayColumn" for every affected table. ❌ `<ArrayOptions index="0" displayColumn="1">` → ✅ `<ArrayOptions index="0"><NamingFormat>,1002</NamingFormat>`. Every table's `<NamingFormat>` uses the separator-based format (first char = separator, e.g. `,`) with at least one bare parameter ID referencing an actual column PID (e.g. `<NamingFormat>,1002</NamingFormat>`). A static string with no parameter IDs, or bracket syntax like `[1002]`, causes a MAJOR error. **Also verify that no `<ArrayOptions>` element has a `naming=` token in its `options` attribute** — `naming=` in `ArrayOptions@options` causes MAJOR "Option 'naming' in attribute 'ArrayOptions@options' references a non-existing Param". Display keys belong **exclusively** in the `<NamingFormat>` child element; if a `naming=` token is present in `<ArrayOptions options="...">`, remove it and add/correct `<NamingFormat>,pid</NamingFormat>` as a child.
 - [ ] **Table column naming**: Each column `<Name>` is camelCase `tableNameColumnName`, where `tableName` is the exact value in the table's `<Name>` element. Removing a redundant `Table` suffix is recommended, but consistency is mandatory: the column prefix must match the chosen table name character-for-character. Disambiguate duplicate column descriptions across tables with a parenthetical table description or abbreviation.
+- [ ] **All `<Param>` elements ordered from low ID to high ID**: Scan the entire `<Params>` section from top to bottom and verify that `<Param id="N">` elements appear in strictly ascending numeric order, with the **only** exception being a write parameter (`read ID + 50` or `+100`) placed immediately after its paired read parameter. **NEVER group `<Params>` by UI page, API endpoint, or feature when that places higher-ID parameters (such as tables) before lower-ID parameters** (❌ `200..220` → `1000..1009` → `300..314` → `2000..2012`; ✅ `200..220` → `300..314` → `400..411` → `1000..1009` → `2000..2012` → `3000..3007`).
+- [ ] **HTTP `<Request>` uses `pid` (never `url="[param:...]"`) when a parameter holds the URL**: In every `<HTTP><Session><Connection><Request>`, verify that `url` is used only for a literal URL string (`Protocol.HTTP.Session.Connection.Request-url`) and `pid="<paramId>"` (omitting `url`) is used whenever a parameter contains the URL (`Protocol.HTTP.Session.Connection.Request-pid`). ❌ `<Request verb="GET" url="[param:105]">` → ✅ `<Request verb="GET" pid="105">`.
 - [ ] **Parameter `<Name>` is camelCase — NEVER PascalCase**: The NamingConventions check enforces lowercase-first on **standalone `read` parameters** and on **all table column parameters**. For every other `<Param>` (`write`, `dummy`, `fixed`, `bus`, `group`) keep the `<Name>` camelCase as a style convention even though the check does not currently flag them. Scan ALL params including write params in read/write pairs and internal params like AfterStartup. Common violations: ❌ `<Name>Hostname</Name>` → ✅ `<Name>hostname</Name>`; ❌ `<Name>SoftwareVersion</Name>` → ✅ `<Name>softwareVersion</Name>`; ❌ `<Name>StatusCodeVMs</Name>` → ✅ `<Name>statusCodeVMs</Name>`; ❌ `<Name>SystemDescription</Name>` → ✅ `<Name>systemDescription</Name>`. **Single-word device-property names (`Hostname`, `Version`, `Uptime`, `Status`, `Model`) are the prime violation source** — they look like normal noun capitalizations but the NamingConventions check requires lowercase-first on `read` params and table columns. If any checked `<Name>` begins with uppercase, correct it before finishing — each violation is a separate NamingConventions finding.
 - [ ] **Multi-table page layout — no overlapping table positions**: For every page that has more than one table array param positioned on it, verify that each table has a **unique Row** (0, 1, 2 …). No two tables may share the same Page + Row + Column. Default column is 0; Column 1 is allowed only for narrow tables (very few columns). ❌ Multiple tables all at `<Row>0</Row><Column>0</Column>` on the same page → all overlap silently. ✅ Tables stacked: Row 0, Row 1, Row 2 …
 - [ ] **No orphaned parameter content**: After every `</Param>` closing tag, the next element is either another `</Param>` or a `<Param id="X">` opening tag.

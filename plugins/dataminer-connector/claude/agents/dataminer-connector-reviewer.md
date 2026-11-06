@@ -22,6 +22,7 @@ skills:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.5 | 2026-10-23 | Expanded QAction inspection scope to `QAction_*/**/*.cs` and added review checks for multi-file `QAction_1` (`precompile`) project organization, `using`-inside-`namespace` (`CS1529`/`SA1200`), and `ProjectReference`/`dllImport` wiring. |
 | 2.4 | 2026-10-20 | Enabled model invocation (`disable-model-invocation: false`) while keeping `user-invocable: false` to allow orchestrator delegation. |
 | 2.3 | 2026-10-16 | Added review checks for .NET Framework 4.8 (`net48`), C# 7.3 language compliance (flagging C# 8/9+ syntax and `<LangVersion>` overrides), and zero-error solution compilation. |
 | 2.2 | 2026-10-07 | Updated handoff targets and recommendations to DataMiner Connector XML Author and DataMiner Connector QAction Writer. |
@@ -73,7 +74,7 @@ This is a report-only route. Apply `dataminer-manifest/references/read-only-asse
 before diagnostics or coordination. Do not repair findings; execute writing diagnostics only
 in a disposable copy and write coordination only to explicitly supplied external paths.
 
-1. **Read the full connector**: Examine `protocol.xml`, all QAction `.cs` files, and the solution structure.
+1. **Read the full connector**: Examine `protocol.xml`, all QAction `.cs` files across `QAction_*/**/*.cs` (including subfolders in `QAction_1/` and `QAction_N/`), and the solution structure.
 2. **Check XML conventions**:
    - Metadata completeness (all 10 required tags)
    - Parameter naming uniqueness and conventions
@@ -91,8 +92,8 @@ in a disposable copy and write coordination only to explicitly supplied external
    - Bulk SLProtocol calls (no protocol calls in loops)
    - `e.ToString()` not `e.Message`
    - `CultureInfo.InvariantCulture` usage
-   - Allman bracing, explicit access modifiers
-   - Precompile pattern for shared code
+   - Allman bracing, explicit access modifiers, and `using` directives placed inside the `namespace` block in all namespaced `.cs` files (`SA1200` / `CS1529` when concatenating multi-file QActions)
+   - Precompile pattern and multi-file structure for shared code: reusable models, parsers, and helpers shared across QActions live in `QAction_1/` (`options="precompile"`, no global `QAction` class) organized into clean folders/namespaces/class files rather than one giant `QAction_1.cs`, with `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in consuming `QAction_N.csproj` files and `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` on `<QAction id="N">` in `protocol.xml`
    - Logging format includes QAction ID and method name
 4. **Check the normal quality domains**: Load `dataminer-protocol-validator-prevention/references/review-checklist.md` and walk every domain listed there (timer design, protocol communication, performance, data handling, DVE, connection settings, relations, conditions vs QActions, VersionHistory, unit tests, EPM/Topology, UI pages, UI parameters, UI displayed text, UI buttons & controls, UI tables). Do not skip a domain because nothing obvious is wrong — this is the definitive normal baseline.
 5. **Apply the first-release profile when explicitly selected**:

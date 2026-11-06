@@ -4,8 +4,8 @@ description: Create or wire MSTestV2 integration tests that run on QAOps DataMin
 argument-hint: 'Describe what to integration-test or migrate: e.g. "test if my Automation script stops all elements of protocol X", "add a QAOps Test Package for our Playwright tests", "migrate our integration tests to QAOps"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-02
-  version: 2.16
+  updated: 2026-10-26
+  version: 2.17
 ---
 
 > **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-api`, `dataminer-automation-unit-testing`, `dataminer-dataapi`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
@@ -17,6 +17,7 @@ metadata:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.17 | 2026-10-26 | Keep manually harvested classic `.dmprotocol` files out of `Dependencies`; use `TestPackagePipeline/connector.generated/`, deploy from `1.TestPackageSetup.ps1`, and verify the matching archive path. |
 | 2.16 | 2026-10-02 | Added guidance to derive expected values from the MIB/real walk and to read exported DVE table columns as table cells. |
 | 2.15 | 2026-09-18 | Added specialized Automation fixture boundaries and explicit connector lifecycle handoff, artifact ownership, and final evidence gates for build, package, QAOps execution, publication, deployment, and verification. |
 | 2.14 | 2026-09-15 | Added specialized Automation fixture boundaries for GQI, SRM, User-Defined API, and Node Recovery runtime checks. |
@@ -114,7 +115,7 @@ Decide which task this is **before** following the workflow below — they diver
 6. Record the newly added or changed MSTest class/method names; these names are the acceptance criteria for the later packaged-discovery gate.
 7. Reuse or create a DataMiner Test Package project.
 8. Provision the Catalog key user-secrets file when `CatalogReferences.xml` entries will be needed (see `references/test-package-wiring.md` → "Catalog Key via User Secrets" — do this immediately after the project exists, not at first build failure).
-9. Add prerequisite package content required on the QAOps DataMiner. **If the connector under test is a classic `protocol.xml` + `QAction_*` solution, it is NOT auto-included — harvest it into a `.dmprotocol` and deploy it from the InstallScript** (see `references/test-package-prerequisites.md` → "Classic (Legacy) Connector Solutions Are NOT Auto-Included" and the `dataminer-dmprotocol-packaging` skill).
+9. Add prerequisite package content required on the QAOps DataMiner. **If the connector under test is a classic `protocol.xml` + `QAction_*` solution, it is NOT auto-included — harvest it into a `.dmprotocol` under `TestPackageContent/TestPackagePipeline/connector.generated/` and deploy it from `1.TestPackageSetup.ps1`, never from `Dependencies`** (see `references/test-package-prerequisites.md` → "Classic (Legacy) Connector Solutions Are NOT Auto-Included" and the `dataminer-dmprotocol-packaging` skill).
 10. If tests need large or per-run external inputs that should not be embedded in the `.dmtest`, design them as supplementary files and resolve them through machine-level `QAOPS_SUPPLEMENTARY_FILES` (see below).
 11. Add post-build copy targets so built test output is harvested by the Test Package project.
 12. Replace the placeholder `TestPackageContent/TestHarvesting/TestDiscovery.ps1` so harvested output is actually packaged (see `references/test-package-wiring.md` → "TestDiscovery.ps1" — without this the `.dmtest` will not contain the tests).

@@ -145,14 +145,22 @@ dotnet new dataminer-connector-solution \
 │       ├── qaction-debug.ruleset
 │       ├── qaction-release.ruleset
 │       └── stylecop.json
-├── QAction_1/                    # First QAction project
-│   ├── QAction_1.cs
-│   └── QAction_1.csproj
+├── QAction_1/                    # Precompiled shared library project (options="precompile")
+│   ├── QAction_1.cs              # Initial template stub (replace or split into subfolders/class files)
+│   ├── QAction_1.csproj
+│   ├── Models/                   # Optional: shared DTOs / domain models (one class per .cs file)
+│   ├── Parsers/                  # Optional: response parsers / serializers
+│   └── Helpers/                  # Optional: shared table builders / utilities
+├── QAction_2/                    # After Startup QAction project (triggers="2")
+│   ├── QAction_2.cs
+│   └── QAction_2.csproj
 └── QAction_Helper/               # Generated convenience project included by the template
     ├── QAction_Helper.cs
     ├── QAction_Helper.csproj
     └── Directory.Build.props
 ```
+
+> **Multi-file `QAction_1` structure**: The scaffolded `QAction_1/QAction_1.cs` file (which starts with an empty `Skyline.Protocol.MyExtension.MyClass` placeholder) is only a starting point, **not** a constraint that all shared code must live in `QAction_1.cs`. Because `QAction_1.csproj` is an SDK-style project (`Microsoft.NET.Sdk`), MSBuild and the DataMiner CICD assembler/validator (`ProtocolSolution` / `ProtocolBuilder`) automatically include and combine all `**/*.cs` files inside `QAction_1/`. Organize shared models, parsers, helpers, and managers into logical folders, namespaces, and dedicated `.cs` files (placing `using` directives **inside** each `namespace` block), replace or remove the unused `MyClass` stub in `QAction_1.cs`, and wire consuming `QAction_N` projects with `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` and `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"`.
 
 > **Solution file format**: the pinned template 2.8.14 generates a classic `.sln` by default. A `.slnx` can be produced from it at any time via `dotnet sln <ConnectorName>.sln migrate` (requires a `.slnx`-capable SDK, e.g. .NET 9+) if the team prefers the newer format. Downstream tooling — the official `dataminer-validator` CLI and `dotnet build` — was verified to work identically against either format, so both are safe to use throughout the connector flow.
 

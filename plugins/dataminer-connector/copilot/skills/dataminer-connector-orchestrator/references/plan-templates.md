@@ -63,8 +63,8 @@ Build this map by reading `protocol.xml` completely before proposing any changes
 - **VendorOID**: [value and source: existing protocol.xml | user prompt | default: 1.3.6.1.4.1.8813.2.XX; schema validation result]
 - **DeviceOID**: [value and source: existing protocol.xml | user prompt | default: XX]
 - **Parameter ID Ranges**:
-  - Standalone (1-999): [list, highest = X]
-  - **Tables (1000+)**:
+  - Standalone: [list/ranges in use, highest = X]
+  - **Tables**:
     For SNMP connectors, include the `SNMP Table OID` column and show each column's OID suffix. For non-SNMP connectors, omit the `SNMP Table OID` column.
     | Table PID | Name | SNMP Table OID | Columns (PID: name [OID suffix]) | Purpose | Measurement options |
     |-----------|------|----------------|----------------------------------|---------|---------------------|
@@ -83,7 +83,7 @@ Build this map by reading `protocol.xml` completely before proposing any changes
 - **Timers**: [ID, interval, which groups]
 - **Triggers**: [ID, on what, condition]
 - **Actions**: [ID, type]
-- **QActions**: [ID, trigger PID, .cs file]
+- **QActions**: [ID, trigger PID, options/dllImport, project & .cs file/folder structure (including QAction_1 shared folders/namespaces/files)]
 - **Pages**: [name, parameters displayed]
 - **Next Available IDs**:
   - Parameter: [next standalone], [next table PID]
@@ -164,6 +164,9 @@ Build this map by reading `protocol.xml` completely before proposing any changes
 |-----|------|-------------|------|-----------------------|-----------------------|--------------------|-------------------|------|
 
 > For parameters with pre-known values, plan them as discrete with numeric backend mapping (e.g., `discreet (1: Online, 2: Offline, 3: Fault)` or `togglebutton (1: Disabled, 2: Enabled)`) to support alarming and trending.
+> For read/write parameter pairs, plan both the `read` and `write` rows with the **exact same `Name`, `Description`, and `Page`/position** (write PID = read PID + 50 preferred, +100 max, placed immediately after the read row). Never append `_Write`, `Write`, `(Write)`, or `Set` to the write parameter's `Name` or `Description`, or the UI will fail to link them as a combined control even on the same position.
+> **Order the Parameters table strictly from low PID to high PID** (with only the read/write pair exception where each write row immediately follows its paired read row). Never group rows by UI page, API endpoint, or feature in a way that places higher-PID parameters (such as table and column parameters) before lower-PID parameters.
+> For HTTP connectors where a parameter contains the dynamic request URL, plan `<Request verb="..." pid="<paramId>">` (`Protocol.HTTP.Session.Connection.Request-pid`) and omit `url` — never plan `url="[param:<paramId>]"`.
 
 #### Groups
 | ID | Type | Content | Connection | Timer | Cadence |
@@ -186,8 +189,10 @@ Build this map by reading `protocol.xml` completely before proposing any changes
 |------------|-----|-----------|-----------|-------------|
 
 #### QActions (if needed)
-| ID | Trigger PID | Purpose | File |
-|----|-------------|---------|------|
+| ID | Trigger PID | Options / dllImport | Purpose | Project / File Structure |
+|----|-------------|---------------------|---------|--------------------------|
+
+> **Multi-file `QAction_1` (`precompile`) planning rule**: Code in `QAction_1` does **not** have to live in a single giant `QAction_1/QAction_1.cs` file. Whenever code is shared across multiple QActions or a connector has non-trivial C# domain models/DTOs, parsers, table builders, or helpers, plan `QAction_1` (`options="precompile"`, no `triggers`) with a clean folder, namespace, and class-per-file layout inside the `QAction_1/` project (e.g., `QAction_1/Models/<Model>.cs`, `QAction_1/Parsers/<Parser>.cs`, `QAction_1/Helpers/<Helper>.cs`), and keep triggered QActions (`QAction_N/QAction_N.cs`) as thin entry points with `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` in `protocol.xml` and `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in `QAction_N.csproj`.
 
 #### NuGet Packages
 List any Skyline utility packages needed for C# implementation. Load `dataminer-nugets` and consult `dataminer-connector-core/references/nuget-packages.md`.

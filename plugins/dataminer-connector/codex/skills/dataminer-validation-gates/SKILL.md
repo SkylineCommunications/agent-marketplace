@@ -4,14 +4,16 @@ description: 'Run inline validation gates during connector development: schema v
 argument-hint: 'Describe the validation task: e.g. "validate XML after authoring", "check build quality after QAction changes", "run schema verification gate"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-16
-  version: 2.2
+  updated: 2026-10-27
+  version: 2.4
 ---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.4 | 2026-10-27 | Added explicit Step 2 checks for strict low-to-high `<Params>` ordering (never interleaving higher-ID tables before lower-ID parameters) and HTTP `Request@pid` vs `Request@url` (forbidding `url="[param:...]"`). |
+| 2.3 | 2026-10-23 | Expanded Step 3 C# Style Gate scope from `QAction_*/QAction_*.cs` to `QAction_*/**/*.cs` to cover multi-file QAction projects and enforced `using`-inside-`namespace` (`SA1200`/`CS1529`). |
 | 2.2 | 2026-10-16 | Enforced .NET Framework 4.8 (`net48`) and C# 7.3 in Step 4 and made a zero-error `dotnet build` a hard blocker before returning code to the user or committing/pushing to a PR. |
 | 2.1 | 2026-10-07 | Updated agent reference to dataminer-connector-qaction-writer. |
 | 2.0 | 2026-05-27 | Removed EcsAgent CLI dependency. XML validation is now agent-driven using `dataminer-protocol-xml-reference` schema files. C# style is prevention-only (no post-hoc CLI fixer). Build validation uses plain `dotnet build`. |
@@ -61,7 +63,8 @@ Run after any `protocol.xml` changes, before QAction_Helper regeneration.
    - Required children and attributes are present
    - Enum values use exact casing and spelling
    - IDs match simple-type patterns
-   - Elements are ordered by ascending ID within their section
+   - Elements are ordered by ascending ID from low to high within their section (in `<Params>`, only read/write pairs are adjacent at the read parameter's ID position — never grouped or interleaved by page, endpoint, or feature in a way that places higher-ID parameters before lower-ID parameters)
+   - For HTTP `<Request>` elements, `url` contains only a literal URL path (`Protocol.HTTP.Session.Connection.Request-url`) and `pid` is used (omitting `url`) when a parameter contains the URL (`Protocol.HTTP.Session.Connection.Request-pid`) — never `url="[param:...]"`
 
 4. **If violations are found**: fix them directly using the Error-to-Fix Mapping (Step 4 below), then re-read the affected section to confirm the fix is correct.
 
@@ -86,8 +89,9 @@ If these issues slip through (visible in build output), fix them directly via fi
 2. Remove any blank line immediately before `}`
 3. Remove trailing whitespace from affected lines
 4. Insert `// TODO: Implement.` in empty `try`/`catch`/method bodies
+5. Ensure all namespaced `.cs` files (including every file in `QAction_1/` and any secondary `.cs` files in `QAction_N/`) place `using` directives **inside** the `namespace` declaration (`SA1200` / `CS1529` when concatenating multi-file QActions)
 
-Scope: Only check `QAction_*/QAction_*.cs` files. Skip `QAction_Helper` (auto-generated).
+Scope: Check all C# files across QAction projects (`QAction_*/**/*.cs`). Skip `QAction_Helper` (auto-generated) and `QAction_Tests` (unit test projects).
 
 ## Step 4: Build Quality Gate — Hard Compilation Gate (after C# code)
 

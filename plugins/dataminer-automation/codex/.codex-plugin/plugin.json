@@ -1,0 +1,6 @@
+{
+  "name": "dataminer-automation",
+  "version": "0.1.0",
+  "description": "DataMiner Automation script planning, authoring, testing, investigation, and review agents.",
+  "skills": "./skills/"
+}

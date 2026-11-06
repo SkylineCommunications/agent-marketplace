@@ -4,8 +4,8 @@ description: Foundation skill for all DataMiner connector tasks. Explains what D
 argument-hint: 'Describe the task or question: e.g. "implement HTTP polling", "write a QAction", "create a new connector", "understand parameter change events"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-07
-  version: 4.10
+  updated: 2026-10-27
+  version: 4.13
 ---
 
 > **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-dataapi`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
@@ -15,6 +15,9 @@ metadata:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 4.13 | 2026-10-27 | Clarified low-to-high `<Params>` ordering (forbidding page/feature interleaving of higher-ID tables before lower-ID standalone scalars), removed fixed standalone/table parameter ID range mandates, and clarified HTTP `Request@url` vs `Request@pid` across core references. |
+| 4.12 | 2026-10-26 | Updated `protocol.xml` authoring routing to include `dataminer-xml-authoring` and `dataminer-protocol-validator-prevention`, and strengthened read/write parameter pair `<Name>`, `<Description>`, and `<Positions>` identity rules. |
+| 4.11 | 2026-10-23 | Documented multi-file folder/namespace project structure for `QAction_1` (`precompile`) and aligned HTTP QAction IDs and review checklist rules. |
 | 4.10 | 2026-10-07 | Updated skill routing to dataminer-connector-orchestrator. |
 | 4.9 | 2026-10-07 | Clarified session parameter resolution when reusing a session across multiple queued groups (requests are not identical using only the last set values). |
 | 4.8 | 2026-10-07 | Documented HTTP status code handling (1XX-6XX) and the three code classes that always contribute to Element Timeout (4XX, 5XX, 6XX System Errors). |
@@ -172,7 +175,7 @@ Use this table to decide which skill(s) to load for a task.
 | Task | Load Skill(s) |
 |------|---------------|
 | Create a new connector from scratch | `dataminer-sdk` (load `references/connector-template-reference.md`) |
-| Write or edit `protocol.xml` structure, tags, attributes, enum values, IDs, keyrefs | `dataminer-protocol-xml-reference` |
+| Write or edit `protocol.xml` structure, tags, attributes, enum values, IDs, keyrefs | `dataminer-xml-authoring` + `dataminer-protocol-xml-reference` + `dataminer-protocol-validator-prevention` |
 | Understand DataMiner runtime behavior before making XML changes | Relevant `logic-*` reference file(s) in this skill |
 | Write or modify C# QAction code | `dataminer-qaction` |
 | HTTP/HTTPS communication implementation | `dataminer-http-communication` |

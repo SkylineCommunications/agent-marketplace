@@ -40,7 +40,9 @@ XSD uniqueness constraints under `HTTP/Session`:
 `Request`:
 
 - Optional attributes: `pid`, `verb`, `url`.
-- `verb` values are listed in `protocol-types-and-enums.md`.
+- `pid`, type `xs:unsignedInt` (optional): replaces the `url` attribute; the value from the referenced parameter will be used as the request URL (`https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-pid.html`).
+- `url`, type `xs:string` (optional): specifies the literal URL of the request (`https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-url.html`). If omitted (and `pid` is not specified), the root directory of the server specified in the element wizard is used. If the value does not contain `://`, it is assumed to be a relative URL and is constructed using the polling IP and port of the corresponding connection. No restrictions apply to the length of the URL path. Does not interpolate parameter tokens such as `[param:105]` or `{pid:105}`.
+- `verb`, type `EnumHttpRequestVerb` (optional, default `GET`): specifies the HTTP verb (`https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-verb.html`); values are listed in `protocol-types-and-enums.md`. `CONNECT` is not supported; all verbs except `GET` support adding data to the message body.
 - Optional child model: one `xs:choice` occurrence.
 - Allowed child sequences: `Headers` followed by optional `Data` or optional `Parameters`; `Data` followed by optional `Headers`; or `Parameters` followed by optional `Headers`.
 - `Data` and `Parameters` MUST NOT both appear under one `Request`.
@@ -91,5 +93,6 @@ XSD uniqueness constraints under `HTTP/Session`:
 ## Anti-Invention
 
 - Do not invent HTTP verbs; use `EnumHttpRequestVerb`.
+- Do not invent parameter placeholder syntax (such as `url="[param:105]"`, `url="{pid:105}"`, or `url="[105]"`) inside `Request@url`. When a parameter contains the URL, use `Request@pid="105"` and omit `url`.
 - Do not invent HTTP child wrappers not present in the `Request` or `Response` XSD branches.
 - Do not add `HTTP` child elements other than `Session` under `/Protocol/HTTP`.

@@ -119,7 +119,7 @@ Validated complete example: [`examples/http-rest-protocol.xml`](examples/http-re
 			<Name>responseDevices</Name>
 			<Description>Response Devices</Description>
 			<Information>
-				<Subtext>Raw JSON response body from the /api/v1/devices endpoint. Parsed by QAction 1.</Subtext>
+				<Subtext>Raw JSON response body from the /api/v1/devices endpoint. Parsed by QAction 101.</Subtext>
 			</Information>
 			<Type>read</Type>
 			<Interprete>
@@ -355,24 +355,24 @@ Validated complete example: [`examples/http-rest-protocol.xml`](examples/http-re
 
 > `statusCode="100"` means "store the HTTP status line into parameter 100".
 > `<Content pid="101" />` means "store the response body into parameter 101".
-> The session URL `/api/v1/devices` is relative — the base URL comes from the element's IP/port connection settings.
+> The session URL `/api/v1/devices` is a static relative path (`Protocol.HTTP.Session.Connection.Request-url.html`) — the base URL comes from the element's IP/port connection settings.
+> When the request URL is constructed dynamically in a parameter (e.g. parameter `105`), use `<Request verb="GET" pid="105">` (`Protocol.HTTP.Session.Connection.Request-pid.html`), which replaces the `url` attribute. **NEVER** write `url="[param:105]"` or `url="{pid:105}"` — `Request@url` is a literal string and does not interpolate parameter placeholders.
 > HTTP connectors do NOT use `<Commands>`, `<Responses>`, or `<Pairs>` — those are for serial connectors only.
 
 ---
 
-## QAction
+## QActions
 
 ```xml
 	<QActions>
-		<QAction id="1" name="ParseDevicesResponse" encoding="csharp" triggers="101">
-		<![CDATA[
-// QAction C# code lives in QAction_1/QAction_1.cs (separate .csproj)
-		]]>
-		</QAction>
+		<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />
+		<QAction id="2" name="After Startup" encoding="csharp" triggers="1" />
+		<QAction id="101" name="Parse Devices Response" encoding="csharp" triggers="101" dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll" />
 	</QActions>
 ```
 
-> QAction `triggers="101"` fires when parameter 101 (the response body) changes.
+> `QAction id="1"` (`options="precompile"`) is the shared class library project (`QAction_1/`), which can organize shared models, parsers, and helpers into subfolders, namespaces, and separate `.cs` files rather than a single `QAction_1.cs` file.
+> `QAction id="101"` (`triggers="101"`) fires when parameter 101 (the response body) changes; its entry point lives in `QAction_101/QAction_101.cs` and imports `QAction_1` via `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` (and `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in `QAction_101.csproj`).
 > See `dataminer-qaction` skill and `example-json-table.md` for the C# implementation.
 
 ---
@@ -485,6 +485,8 @@ Configure connection defaults and disable non-applicable port types for HTTP:
 | Missing protocol-level `<SNMP>` marker in an HTTP connector | Add `<SNMP includepages="true">auto</SNMP>`; do not add per-parameter SNMP blocks |
 | `<Content><Param>1</Param>` in HTTP group | `<Content><Session>1</Session>` |
 | `<Response statusCode="200">` (confusing with HTTP 200) | `statusCode` is a param ID, not the expected HTTP status code |
+| `<Request verb="GET" url="[param:105]">` (parameter placeholder inside `url`) | `<Request verb="GET" pid="105">` (`pid` replaces `url` when a parameter contains the URL) |
+| Grouping `<Params>` by page/endpoint (`200s` → `1000s` → `300s` → `2000s`) | Order all `<Params>` strictly from low ID to high ID across the entire section (only read/write pairs are adjacent) |
 | `type="snmp"` on table columns filled by QAction | `type="retrieved"` for QAction-filled columns |
 | `volatile` combined with alarm monitoring or persistence features | Redesign or split the table; those behaviors are incompatible |
 | String index column with `<Type>double</Type>` | `<Type>string</Type>` for the display key column |

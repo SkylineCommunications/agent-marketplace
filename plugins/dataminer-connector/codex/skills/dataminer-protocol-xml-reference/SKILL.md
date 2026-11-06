@@ -4,8 +4,8 @@ description: 'protocol.xml, DPML, DataMiner connector XML schema authority: use 
 argument-hint: Describe the protocol.xml element, attribute, enum, schema error, or XML area to source-check.
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-09-27
-  version: 3.1
+  updated: 2026-10-27
+  version: 3.3
 ---
 
 Read the [Protocol XML guard rails](references/dataminer-protocol-xml.instructions.md)
@@ -17,6 +17,8 @@ guidance explicitly when it is not attached.
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 3.3 | 2026-10-27 | Clarified `Request@url` vs `Request@pid` in `protocol-http.md`: `url` specifies a literal URL string, `pid` replaces `url` when a parameter holds the URL, and `[param:...]` placeholder syntax inside `url` is forbidden. |
+| 3.2 | 2026-10-26 | Clarified `Param/Name` uniqueness in `protocol-params.md` to explicitly document the read/write parameter pair exception requiring identical `<Name>` and `<Description>` on both parameters. |
 | 3.1 | 2026-09-27 | Aligned packaged resource references and execution contracts. |
 | 3.0 | 2026-09-11 | Refreshed the closed-world authority to Protocol schema 1.1.10, added Swarming and `Fix@introducedIn`, and added reproducible schema hash/fact checks. |
 | 2.3 | 2026-09-11 | Added a machine-readable source manifest that distinguishes the local 1.1.7 schema baseline from observed upstream schema, validator, template, and analyzer versions. |

@@ -4,14 +4,17 @@ description: 'DataMiner protocol.xml validator prevention rules: concise authori
 argument-hint: 'Describe the protocol.xml area being authored or the validator category to prevent: params, tables, HTTP, QActions, groups, timers, tree controls, etc.'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-07
-  version: 1.18
+  updated: 2026-10-27
+  version: 1.21
 ---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.21 | 2026-10-27 | Added prevention rules and review checks for strict low-to-high `<Params>` ordering (forbidding page/feature interleaving of higher-ID tables before lower-ID parameters), removed fixed standalone/table ID range mandates, and clarified HTTP `Request@pid` vs `Request@url` (forbidding `url="[param:...]"` placeholders, which the validator does not catch). |
+| 1.20 | 2026-10-26 | Added explicit read/write parameter pair `<Name>`, `<Description>`, and `<Positions>` identity rule and review checklist item to prevent `_Write` or `(Write)` suffixes that break combined UI controls without triggering validator rule 2.22.5. |
+| 1.19 | 2026-10-23 | Added multi-file `QAction_1` (`precompile`) prevention rules (`using` inside `namespace` to prevent `CS1529`/`SA1200`, no global `QAction` class in `QAction_1`, consolidated NuGet versions, and `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"`). |
 | 1.18 | 2026-10-07 | Updated metadata guidance: IntegrationID, VendorOID, and DeviceOID default to DMS-DRV-XXXX, 1.3.6.1.4.1.8813.2.XX, and XX when not provided. |
 | 1.17 | 2026-09-27 | Aligned packaged resource references and execution contracts. |
 | 1.16 | 2026-09-17 | Clarified that GetColumns/SetColumns are Protocol.Extension package methods, and preserved the secure HTTP guidance and normal-vs-first-release review profile boundary. |
@@ -142,10 +145,11 @@ Load `dataminer-dis` as well when the user is working in Visual Studio with DIS 
 - Use tab characters for XML indentation, one tab per nesting level.
 - Do not use spaces for XML indentation.
 - Every child element should be indented one level deeper than its parent.
-- Within each ID-based XML section, keep items in ascending numeric ID order.
+- Within each ID-based XML section, keep items in ascending numeric ID order from low to high across the entire section.
 - The physical XML order must match the numeric order; do not append a low-ID helper item after higher-ID items.
-- Read/write parameter pairs are the exception: the write parameter must appear immediately after its read parameter.
-- Avoid large gaps between related IDs; group same-functionality items together.
+- Read/write parameter pairs are the **only** exception: the write parameter (`read ID + 50` or `+100`) must appear immediately after its read parameter.
+- **Never interleave higher-ID parameters (such as table and column parameters) before lower-ID parameters (such as standalone scalars) by page, endpoint, or feature**: placing `<Param id="1000">`..`<Param id="1009">` before `<Param id="300">`, or `<Param id="2000">`..`<Param id="2012">` before `<Param id="400">`, violates ascending `<Params>` order. Because the official validator CLI does not automatically flag out-of-order `<Param>` elements, verify the `<Param id="...">` sequence deterministically from top to bottom.
+- Avoid large gaps between related IDs; group same-functionality items together and keep each table array parameter and its column parameters in a contiguous ID block.
 - Do not reorder shipped IDs or change shipped physical ordering without checking impact.
 
 ## Protocol Connection Model
@@ -179,13 +183,12 @@ Load `dataminer-dis` as well when the user is working in Visual Studio with DIS 
 - Do not use reserved ranges for ordinary user-defined parameters.
 - Use mediation/base-protocol ranges only for mediation/base-protocol parameters.
 - Use SLA, enhanced service, spectrum, and DataMiner module ranges only for their documented purposes.
-- Follow the connector parameter allocation model unless an existing connector pattern or explicit requirement says otherwise: `1-99` for general/internal/metadata-style parameters, `100-999` for standalone read parameters, and `1000+` for table array and column parameters.
-- Do not place standalone non-table read parameters in the `1000+` table range.
+- Group related parameter IDs logically and keep each table array parameter and its column parameters in a contiguous ID block unless an existing connector pattern or explicit requirement says otherwise.
 - Write parameter IDs should use a fixed offset from the read parameter; prefer `+50`, allow `+100`, and never exceed `+100`.
 - Do not place write parameters in a separate high-numbered range such as `50000 + read ID`.
 - Keep read/write parameter pairs physically adjacent in the XML.
 - Every `Param` needs a valid `Name`.
-- Parameter names should be unique where the validator requires uniqueness.
+- Parameter names should be unique per logical parameter where the validator requires uniqueness, **except for read/write parameter pairs**: the paired `read` and `write` `<Param>` elements **MUST** have character-for-character identical `<Name>`, `<Description>`, and `<Positions>`. Never append `_Write`, `Write`, `(Write)`, or `Set` to a write parameter's `<Name>` or `<Description>` — DataMiner uses the exact `<Name>` and `<Description>` match at the shared position to render them as one combined UI control, and the validator (`2.22.5`) does not catch a mismatched `<Name>` when `<Description>` matches on the same position.
 - Avoid restricted parameter names.
 - Avoid invalid characters in parameter names.
 - Keep parameter names and descriptions trimmed.
@@ -214,7 +217,7 @@ Load `dataminer-dis` as well when the user is working in Visual Studio with DIS 
 - If a parameter is displayed, include valid `Display`, `RTDisplay`, and `Positions` data.
 - Use `RTDisplay=true` only when the parameter must be loaded into `SLElement`.
 - Hidden/internal helper parameters should normally have `RTDisplay=false`.
-- Table column params (`1000+` range) MUST have `<Display><RTDisplay>true</RTDisplay></Display>` but **MUST NOT** have a `<Positions>` block — `<Positions>` belongs exclusively on the table array param. A column with `RTDisplay=true` AND `<Positions>` triggers MINOR "Unexpected RTDisplay(true)" once per column. A standalone param that has `RTDisplay=true` but no `<Positions>` also triggers MINOR "Unexpected RTDisplay(true)" because the param is not being displayed.
+- Table column params MUST have `<Display><RTDisplay>true</RTDisplay></Display>` but **MUST NOT** have a `<Positions>` block — `<Positions>` belongs exclusively on the table array param. A column with `RTDisplay=true` AND `<Positions>` triggers MINOR "Unexpected RTDisplay(true)" once per column. A standalone param that has `RTDisplay=true` but no `<Positions>` also triggers MINOR "Unexpected RTDisplay(true)" because the param is not being displayed.
 
   ```xml
   <!-- ❌ WRONG — table column with both RTDisplay=true AND <Positions> → MINOR "Unexpected RTDisplay(true)" per column -->
@@ -249,9 +252,9 @@ Load `dataminer-dis` as well when the user is working in Visual Studio with DIS 
 
 - Units must be valid UOM or otherwise supported by schema/docs.
 - Units must be trimmed and not empty.
-- Every `number` parameter (standalone or table column, in any PID range) with `<Measurement><Type>number</Type></Measurement>` requires a non-empty `<Display><Units>` tag. Omitting it on any `number` param — including table column params in the `1000+` range — triggers MINOR "Missing 'Units' tag".
+- Every `number` parameter (standalone or table column, in any PID range) with `<Measurement><Type>number</Type></Measurement>` requires a non-empty `<Display><Units>` tag. Omitting it on any `number` param — including table column params — triggers MINOR "Missing 'Units' tag".
 - Range `<Low>` and `<High>` values must be valid for the parameter interpretation. **NEVER write an empty `<Range />` or `<Range></Range>` tag** — an empty Range element triggers WARNING "Empty tag 'Display/Range'", which is a distinct finding from the MINOR "Missing 'Display/Range' tag" raised when `<Range>` is absent entirely. Both are validator findings and both must be avoided: ❌ `<Range />` → WARNING; ❌ no `<Range>` on a displayed `number` param → MINOR; ✅ `<Range><Low>0</Low><High>100</High></Range>`.
-- Every displayed `number` parameter — standalone scalar **and** table column params in the `1000+` range — requires either a valid `<Range>` with `<Low>` and `<High>` or a `SuppressValidator 2.11.1` comment with a clear reason (e.g. cumulative counters with no meaningful upper bound).
+- Every displayed `number` parameter — standalone scalar **and** table column params — requires either a valid `<Range>` with `<Low>` and `<High>` or a `SuppressValidator 2.11.1` comment with a clear reason (e.g. cumulative counters with no meaningful upper bound).
 - Low must not exceed high.
 - Do not define impossible or misleading ranges.
 - Trending attributes and trend type values must be valid.
@@ -339,7 +342,8 @@ Load `dataminer-dis` as well when the user is working in Visual Studio with DIS 
 - A shared/no-entry-point QAction should not define triggers.
 - Conditions must reference existing parameters and valid expressions.
 - `encoding` must be supported; prefer `csharp` for modern QActions.
-- `dllImport` should use supported placeholders and must avoid deprecated DLL references.
+- `dllImport` should use supported placeholders (such as `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` when importing precompiled `QAction 1`) and must avoid deprecated DLL references.
+- When `QAction_1` (`options="precompile"`) or `QAction_N` is organized into multiple `.cs` files and subfolders/namespaces, every namespaced `.cs` file must place its `using` directives **inside** the `namespace` block so `ProtocolBuilder.CombineProjectFiles` concatenation does not fail with `CS1529` (`[Critical][3.4.1] CompilationFailure`) and StyleCop `SA1200`. Never declare a global `public class QAction` in `QAction_1` (`CS0436`), and keep NuGet `PackageReference` versions identical across all `QAction_*.csproj` projects (`[Major][3.38.1] UnconsolidatedPackageReference`).
 - Ensure QAction code compiles before considering XML complete.
 - Include secure coding dependencies/assemblies expected by the validator.
 - Avoid deprecated or unsupported Notify calls when typed/helper alternatives exist.
@@ -430,6 +434,7 @@ Load `dataminer-dis` as well when the user is working in Visual Studio with DIS 
   2. Collect every matching `<Header>` line regardless of which `<Session>` or `<Connection>` it belongs to.
   3. Retain `key` and `pid`, and add the same justified suppression to each required occurrence.
 - Do not leave empty headers or empty header key/PID attributes.
+- **Use `Request@pid` (never `Request@url="[param:...]"`) when a parameter contains the URL**: `Request@url` ([`Protocol.HTTP.Session.Connection.Request-url`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-url.html)) is strictly for a literal URL string and does **not** interpolate `[param:105]`, `{pid:105}`, or `[105]`. Because `Request@url` is `xs:string`, the official validator will **not** flag `url="[param:105]"`, causing DataMiner to request the literal path `/[param:105]` at runtime while leaving parameter `105` unused. Whenever a parameter holds the URL, use `<Request verb="GET" pid="105">` ([`Protocol.HTTP.Session.Connection.Request-pid`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-pid.html)) and omit `url`.
 - Request `pid` and request data `pid` references must be valid for the data they supply.
 - Response `Content@pid`, `Headers/Header@pid`, and `statusCode` references must point to suitable parameters.
 - Username, password, proxy server, proxy user, and proxy password attributes must be valid when present.
@@ -509,4 +514,7 @@ Before finishing a `protocol.xml` change:
 - Confirm `<SNMP includepages="true">auto</SNMP>` is present as a direct child of `<Protocol>` (Critical finding if absent, applies to all connector types including HTTP, SNMP, serial, and virtual).
 - Confirm every HTTP `<Header>` has its schema-required `key`. For an `X-`-prefixed or vendor-specific key, verify the external API requirement and add `<!-- SuppressValidator 8.3.1 <reason> -->` when the validator does not recognize it. Never convert a Header to pid-only form.
 - Confirm every `Copy` action's `<Type>` element has a non-empty `id` attribute referencing the destination parameter (Minor finding if absent or empty).
+- Confirm every read/write parameter pair shares the exact same `<Name>`, `<Description>`, and `<Positions>` (no `_Write`, `Write`, `(Write)`, or `Set` suffix on the write parameter).
+- Confirm all `<Param id="...">` elements in `<Params>` (and all ID-based sections) are ordered from low ID to high ID across the entire section, with only the read/write parameter pair exception (never grouped or interleaved by page, endpoint, or feature in a way that places higher-ID parameters before lower-ID parameters).
+- Confirm every HTTP `<Request>` uses `url` only for a literal URL path and uses `pid="<paramId>"` (omitting `url`) when a parameter contains the URL — never `url="[param:...]"`.
 - Run the validator and use its full output for exact rule IDs and details.

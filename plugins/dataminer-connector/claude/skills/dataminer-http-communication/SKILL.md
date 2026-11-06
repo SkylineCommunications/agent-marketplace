@@ -4,8 +4,8 @@ description: 'HTTP/HTTPS communication for DataMiner connectors: session and con
 argument-hint: 'Describe the HTTP task: e.g. "add HTTP session for REST API", "configure HTTPS with certificate", "parse JSON response"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-10-07
-  version: 1.7
+  updated: 2026-10-27
+  version: 1.8
 ---
 
 # DataMiner HTTP Communication
@@ -14,6 +14,7 @@ metadata:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.8 | 2026-10-27 | Added explicit `Request@url` vs `Request@pid` rules and anti-pattern warning forbidding `[param:...]` placeholders inside `Request@url`. |
 | 1.7 | 2026-10-07 | Clarified parameter resolution when reusing a session across multiple queued groups (requests are not identical using only the last set values). |
 | 1.6 | 2026-10-07 | Documented status code handling (1XX-6XX) and the three code classes that always contribute to Element Timeout (4XX, 5XX, 6XX System Errors). |
 | 1.5 | 2026-10-07 | Documented Element Wizard connection testing using Group ping="true" attribute. |
@@ -55,6 +56,22 @@ HTTP response parameters **MUST** use `<Type>read</Type>` — **NEVER** `<Type>d
 | AfterStartup / QAction trigger | `dummy` | `false` | Carries no data — exists only to trigger a QAction |
 
 **Why not `dummy`?** — This is a runtime/data-model rule, not a generated-helper limitation. A dummy parameter is intended as an internal trigger and does not represent stored response data. Generated helper versions can expose a dummy `SLProtocolExt` property, but response status/body values must still use `read` parameters.
+
+## Static vs Dynamic Request URLs (`url` vs `pid`)
+
+On `<HTTP><Session><Connection><Request>`, `url`, `pid`, and `verb` (default: `GET`) are all optional schema attributes ([`Protocol.HTTP.Session.Connection.Request`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request.html)). Use `url` for a static URL or `pid` to replace `url` with a parameter value (or omit both to request the server root directory configured in the element wizard) — never specify both `url` and `pid`, and **never** put parameter placeholder tokens inside `url`:
+
+- **Static URL (`url` attribute, `string`, optional)**: Specifies the URL of the request ([`Protocol.HTTP.Session.Connection.Request-url`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-url.html)). If omitted (and `pid` is not specified), the root directory of the server specified in the element wizard is used. If the value does not contain `://`, it is assumed to be a relative URL and is constructed using the polling IP and port of the corresponding connection. No restrictions apply to the length of the URL path:
+  ```xml
+  <Request verb="GET" url="/api/v1/status">
+  ```
+- **Dynamic URL in a parameter (`pid` attribute, `unsignedInt`, optional)**: Replaces the `url` attribute; the value from this parameter will be used as the URL ([`Protocol.HTTP.Session.Connection.Request-pid`](https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.HTTP.Session.Connection.Request-pid.html)):
+  ```xml
+  <Request verb="GET" pid="105">
+  ```
+- **CRITICAL ANTI-PATTERN — NEVER put `[param:...]`, `{pid:...}`, or `[...]` inside `url`**:
+  - ❌ `<Request verb="GET" url="[param:105]">` — **WRONG!** `Request@url` does **not** interpolate `[param:105]`; DataMiner treats it as the literal relative path `/[param:105]` (and the validator will not warn because `url` is `xs:string`).
+  - ✅ `<Request verb="GET" pid="105">` — **CORRECT!** The value of parameter `105` is used as the request URL.
 
 ## When to Load
 

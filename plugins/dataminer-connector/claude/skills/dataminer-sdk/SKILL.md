@@ -4,8 +4,8 @@ description: 'Skyline DataMiner SDK and official toolchain authority: SDK-style 
 argument-hint: 'Describe the SDK or tooling task: e.g. "install DataMiner templates", "which Skyline tool should I use", "validate connector often", "package and publish with the SDK"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-09-18
-  version: 2.2
+  updated: 2026-10-23
+  version: 2.3
 ---
 
 > **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-automation-core`, `dataminer-automation-scripting`, `dataminer-automation-xml`, `dataminer-dxm-release-notes`, `dataminer-gqi-ad-hoc-data-source`, `dataminer-user-defined-api`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
@@ -20,6 +20,7 @@ metadata:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.3 | 2026-10-23 | Documented multi-file folder/namespace structure inside `QAction_1/` in `connector-template-reference.md`. |
 | 2.2 | 2026-09-18 | Added explicit lifecycle-stage ownership and evidence separation for package creation, Catalog publication, deployment, and live verification. |
 | 2.1 | 2026-09-18 | Documented helper-based and helper-free QAction layouts and made helper refresh conditional, while preserving package-backed solution wiring and specialized template routing. |
 | 1.8 | 2026-07-02 | Corrected `connector-template-reference.md`: the current official template generates `.sln` by default (verified live), not `.slnx` as previously documented. Generalized validator/compare command examples to `.sln`/`.slnx` — confirmed via live test that `dataminer-validator` CLI 3.2.0 and `dotnet build` both work identically against either format. |

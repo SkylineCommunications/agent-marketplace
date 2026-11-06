@@ -1,14 +1,14 @@
 {
-  "manifestVersion": "0.1.3",
+  "manifestVersion": "0.2.0",
   "marketplace": "skyline-agent-marketplace",
   "sourceRepository": "SkylineCommunications/.github-private",
-  "sourceCommitSha": "547a8fd9d5e1f345830931b3424e67c496de0a67",
-  "builtAtUtc": "2026-10-22T11:19:10.1783465+00:00",
+  "sourceCommitSha": "7ef7805aa0d36595cc1fdb5c04cc5cce9b79b635",
+  "builtAtUtc": "2026-11-06T12:34:13.7078497+00:00",
   "publisherToolVersion": "1.0.0.0",
   "plugins": [
     {
       "id": "dataminer-apps",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "path": "plugins/dataminer-apps",
       "rootAgents": [
         "dataminer-app-builder"
@@ -29,11 +29,60 @@
         "dataminer-debug-issues"
       ],
       "instructions": null,
-      "fingerprint": "0dfe881018fb96796705f93be16d1167b7fd4d526f7ac8e9b84fa80e95adff16"
+      "fingerprint": "c8616ea18d3d46acbe49da9e8a528cb57b89427597a5e8d649c7bf389619b695"
+    },
+    {
+      "id": "dataminer-automation",
+      "version": "0.1.0",
+      "path": "plugins/dataminer-automation",
+      "rootAgents": [
+        "dataminer-automation-orchestrator"
+      ],
+      "agents": [
+        "dataminer-automation-orchestrator",
+        "dataminer-automation-scaffolder",
+        "dataminer-automation-author",
+        "dataminer-automation-reviewer",
+        "dataminer-automation-test-writer",
+        "dataminer-automation-investigator"
+      ],
+      "skills": [
+        "dataminer-automation-core",
+        "dataminer-automation-orchestrator",
+        "dataminer-automation-scripting",
+        "dataminer-automation-unit-testing",
+        "dataminer-automation-xml",
+        "dataminer-dis",
+        "dataminer-github-example-finder",
+        "dataminer-gqi-ad-hoc-data-source",
+        "dataminer-interactive-automation",
+        "dataminer-logging",
+        "dataminer-manifest",
+        "dataminer-node-recovery",
+        "dataminer-nugets",
+        "dataminer-sdk",
+        "dataminer-srm-automation",
+        "dataminer-user-defined-api",
+        "dataminer-api",
+        "dataminer-catalog-hygiene",
+        "dataminer-data-discovery",
+        "dataminer-dmprotocol-packaging",
+        "dataminer-execute-automation-script",
+        "dataminer-execute-query",
+        "dataminer-headless-ias",
+        "dataminer-idms",
+        "dataminer-qaops",
+        "dataminer-qaops-integration-testing",
+        "dataminer-qaops-simulators",
+        "dataminer-qaops-test-runs",
+        "project-type-identification"
+      ],
+      "instructions": null,
+      "fingerprint": "f9814b6e68ef9fa15bd0ebffde00e9865c10808f123ab7ffac176fbd43a70d34"
     },
     {
       "id": "dataminer-connector",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "path": "plugins/dataminer-connector",
       "rootAgents": [
         "dataminer-connector-orchestrator"
@@ -93,7 +142,7 @@
           "skill": "dataminer-qaction"
         }
       ],
-      "fingerprint": "55b52835d53d1255c8b50fd5a218e500b112aebc60d26be5fb9af8e473d6b81b"
+      "fingerprint": "28df72220b0ba30f95994135309179135f32fe3cd958e5cbd7e8b561ab04fdb4"
     }
   ]
 }

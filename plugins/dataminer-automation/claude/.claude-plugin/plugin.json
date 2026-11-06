@@ -1,0 +1,18 @@
+{
+  "skills": "./skills/",
+  "name": "dataminer-automation",
+  "version": "0.1.0",
+  "description": "DataMiner Automation script planning, authoring, testing, investigation, and review agents.",
+  "author": {
+    "name": "Skyline Communications",
+    "url": "https://github.com/SkylineCommunications"
+  },
+  "homepage": "https://github.com/SkylineCommunications/agent-marketplace",
+  "repository": "https://github.com/SkylineCommunications/agent-marketplace",
+  "keywords": [
+    "dataminer",
+    "automation",
+    "scripting"
+  ],
+  "license": "LicenseRef-Skyline-Agent-Marketplace"
+}

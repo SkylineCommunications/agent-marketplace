@@ -1,9 +1,12 @@
-# dataminer-connector-orchestrator — Archived Changelog (v1.1–v3.17)
+# dataminer-connector-orchestrator — Archived Changelog (v1.1–v3.20)
 
-Versions v3.18 and later are in `agents/dataminer-connector-orchestrator.agent.md`.
+Versions v3.21 and later are in `agents/dataminer-connector-orchestrator.agent.md`.
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 3.20 | 2026-10-23 | Added Phase 1 Session & Branch Naming Gate to detect auto-generated worktree placeholder branches and rename them semantically via rename_branch and rename_session before planning or editing code. |
+| 3.19 | 2026-10-23 | Added planning and delegation guidance for multi-file `QAction_1` (`precompile`) project structure, `ProjectReference`, and `dllImport` wiring. |
+| 3.18 | 2026-10-22 | Enforced official `QAction_Helper.cs` generation before QAction authoring when planned QActions consume `Parameter.*`, and prohibited manual `QAction_Helper.cs` synthesis. |
 | 3.17 | 2026-10-21 | Target minimum DataMiner version is optional during intake for new connectors; dynamically resolved from official Software Support Lifecycles docs. |
 | 3.16 | 2026-10-20 | Streamlined upfront skill loading by deferring low-level syntax and reference manuals to specialist subagents while retaining architectural and planning knowledge; kept artifact edits behind assigned specialists. |
 | 3.15 | 2026-10-16 | Enforced .NET Framework 4.8 (`net48`) and C# 7.3 for connector QActions and added a hard compilation gate forbidding non-compiling code from being returned to the user or committed/pushed to a PR. |

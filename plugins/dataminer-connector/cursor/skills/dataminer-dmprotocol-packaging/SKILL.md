@@ -4,14 +4,15 @@ description: Create a .dmprotocol connector package from a classic (DIS-style) c
 argument-hint: 'Describe the packaging need: e.g. "package this classic connector into a .dmprotocol", "harvest the connector for a Test Package", "build a deployable connector artifact in CI"'
 license: LicenseRef-Skyline-Agent-Marketplace
 metadata:
-  updated: 2026-09-16
-  version: 1.4
+  updated: 2026-10-26
+  version: 1.5
 ---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.5 | 2026-10-26 | Added the QAOps Test Package location rule: keep raw `.dmprotocol` files outside `Dependencies` and explicitly deploy pipeline content from the setup script. |
 | 1.4 | 2026-09-16 | Added explicit package handoff evidence and separated package creation from Catalog publication, deployment, and QAOps verification. |
 | 1.3 | 2026-09-14 | Recognized valid classic connector solutions that intentionally omit QAction_Helper. |
 | 1.2 | 2026-08-20 | Updated new-connector scaffolding guidance to the consolidated `dataminer-sdk` skill and its `dataminer-connector-solution` template. |
@@ -144,6 +145,8 @@ dataminer-package-deploy from-artifact --path-to-artifact "<path>\MyConnector.dm
 ```
 
 `--dm-server-location` (e.g. `localhost`), `--dm-user`, and `--dm-password` are mandatory; omitting them is a common, easily-missed mistake that surfaces only at deploy time. In a QAOps Test Package this deploy step belongs in `TestPackageContent/TestPackagePipeline/1.TestPackageSetup.ps1`, where the user/password come from the `WinEncryptedKeys` keys `QAOpsDataMinerUser`/`QAOpsDataMinerPassword` — see `dataminer-qaops-integration-testing` → `references/test-package-prerequisites.md` for the exact setup-script snippet.
+
+For a QAOps Test Package, set the generated output directory to `$(MSBuildThisFileDirectory)TestPackageContent\TestPackagePipeline\connector.generated` (when the project is at the package root), and resolve it at runtime relative to `$PathToTestPackageContent` as `TestPackagePipeline\connector.generated`. **Never put raw `.dmprotocol` files under `TestPackageContent/Dependencies`, even in a nested folder**: QAOps routes those files through the app-package installer, which expects `AppInfo.xml`. Verify the built `.dmtest` contains the connector under `AppInstallContent\DmTest\TestPackagePipeline\connector.generated\`, and explicitly deploy it from `1.TestPackageSetup.ps1`; moving the file alone does not install it.
 
 ## Related Skills
 

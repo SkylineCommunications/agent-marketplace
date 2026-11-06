@@ -17,6 +17,7 @@ skills:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.6 | 2026-10-23 | Expanded Step 5 C# deserialization search scope to `QAction_*/**/*.cs` (including `QAction_1/` subfolders) and added `SecureNewtonsoftDeserialization.DeserializeObject<` to search patterns. |
 | 1.5 | 2026-10-20 | Enabled model invocation (`disable-model-invocation: false`) while keeping `user-invocable: false` to allow orchestrator delegation. |
 | 1.4 | 2026-10-07 | Updated version and alignment. |
 
@@ -90,9 +91,11 @@ Extract from protocol.xml:
 
 ### Step 5 — Inspect C# Deserialization Classes (HTTP Only)
 
-Search QAction C# files (`QAction_*.cs`) for deserialization patterns:
+Search all QAction C# files across the solution (`QAction_*/**/*.cs`, including shared models/DTOs and parsers in `QAction_1/Models/`, `QAction_1/Parsers/`, etc.) for deserialization patterns:
 
 1. **Search patterns** (grep for these):
+   - `SecureNewtonsoftDeserialization.DeserializeObject<`
+   - `SecureNewtonsoftDeserialization.DeserializeObject<List<`
    - `JsonConvert.DeserializeObject<`
    - `JsonSerializer.Deserialize<`
    - `JsonConvert.DeserializeObject<List<`
@@ -102,11 +105,11 @@ Search QAction C# files (`QAction_*.cs`) for deserialization patterns:
 2. **For each discovered class**:
    - Extract all public properties
    - Note `[JsonProperty("name")]` or `[JsonPropertyName("name")]` values (these are the actual JSON field names)
-   - Identify nested classes and `List<T>` properties
+   - Identify nested classes and `List<T>` properties (which may be defined in separate `.cs` files under `QAction_1/`)
    - Map C# types to JSON value types
 
 3. **Link classes to sessions**:
-   - Match the QAction that processes a response PID → find which class it deserializes into
+   - Match the QAction that processes a response PID → follow any calls into shared parsers/helpers in `QAction_1` → find which DTO class it deserializes into
    - That class defines the response body structure for the corresponding session/connection
 
 4. **If no class found** for a response:

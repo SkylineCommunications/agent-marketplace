@@ -205,5 +205,5 @@ Or enable `GenerateDataMinerPackage=True` / scaffold with `--create-dataminer-pa
 ## Constraints
 
 - **Prefer the official template** over manual setup (SDK-first rule — see parent skill).
-- There is **no** automation validator CLI — quality gate is `dotnet build` + Skyline analyzers (+ optional DIS).
+- There is **no** vendor DIS/CICD automation validator CLI — quality gate is `dataminer-automation-xml/scripts/validate-dmsscript-xml.ps1` (pinned-XSD + document-wide `@id` uniqueness) + `dotnet build` + Skyline analyzers (+ optional DIS). Note that the scaffolded `<Exe id="1">` in `<Name>.xml` is provisional: because every descendant `@id` across the entire DMSScript document shares one document-wide namespace, if you add `<ScriptParameter id="1">`, `<Protocol id="1">`, or `<File id="1">`, renumber `<Exe id>` to `max(all used descendant @id values) + 1`.
 - Solution file is `.slnx` (XML solution format). `global.json` pins the SDK; `Directory.Build.props` and `Internal/Code Analysis/*` carry shared build + analyzer settings.

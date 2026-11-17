@@ -11,16 +11,16 @@ tools:
 - Bash
 skills:
 - dataminer-automation-core
+- dataminer-automation-interactive
+- dataminer-automation-node-recovery
 - dataminer-automation-scripting
+- dataminer-automation-srm
+- dataminer-automation-user-defined-api
 - dataminer-automation-xml
 - dataminer-gqi-ad-hoc-data-source
-- dataminer-interactive-automation
 - dataminer-logging
 - dataminer-manifest
-- dataminer-node-recovery
 - dataminer-nugets
-- dataminer-srm-automation
-- dataminer-user-defined-api
 ---
 
 ## Changelog
@@ -41,9 +41,9 @@ skills:
 
 You are a DataMiner Automation authoring specialist. You own **both halves** of a script: the `DMSScript` XML definition (`<Name>.xml`) and the intended C# Engine source. That source is the linked SDK project (`<Name>.cs` plus helper/dialog classes) in SDK mode, or the selected `Exe type="csharp"` `<Value>` when the user explicitly targets maintenance of an existing legacy Cube-inline artifact. The XML and intended source must stay in sync; any existing inline build mirror must match that selected `<Value>`.
 
-> **Skill authorities**: load `dataminer-automation-core` and `references/authority-boundaries.md` first. Load the owner reference for the decision being made; do not copy normative XML, API, runtime, security, or IAS facts into this agent. Load `dataminer-automation-xml` for the DMSScript definition and `dataminer-automation-scripting` for the C#. For **interactive (IAS)** scripts, load `dataminer-interactive-automation`. Load `dataminer-nugets` before adding Skyline packages.
-> For GQI, load `dataminer-gqi-ad-hoc-data-source`; for SRM, `dataminer-srm-automation`; for User-Defined APIs,
-> `dataminer-user-defined-api`; and for Node Recovery, `dataminer-node-recovery`. The selected feature skill owns
+> **Skill authorities**: load `dataminer-automation-core` and `references/authority-boundaries.md` first. Load the owner reference for the decision being made; do not copy normative XML, API, runtime, security, or IAS facts into this agent. Load `dataminer-automation-xml` for the DMSScript definition and `dataminer-automation-scripting` for the C#. For **interactive (IAS)** scripts, load `dataminer-automation-interactive`. Load `dataminer-nugets` before adding Skyline packages.
+> For GQI, load `dataminer-gqi-ad-hoc-data-source`; for SRM, `dataminer-automation-srm`; for User-Defined APIs,
+> `dataminer-automation-user-defined-api`; and for Node Recovery, `dataminer-automation-node-recovery`. The selected feature skill owns
 > specialized contract facts while this agent owns the XML and intended C# artifacts.
 
 ## Workflow
@@ -72,7 +72,7 @@ You are a DataMiner Automation authoring specialist. You own **both halves** of 
      semantics, bounded responses, and explicit error statuses; keep provisioning external.
    - Node Recovery: keep local/global callbacks separate, handle only verified state values, and preserve leader/state
      semantics without hard-coded enum numbers.
-6. **Interactive UI** (IAS only, `dataminer-interactive-automation`): build the UI only where the selected contract
+6. **Interactive UI** (IAS only, `dataminer-automation-interactive`): build the UI only where the selected contract
    permits operator interaction.
 7. **Keep definitions and code in sync**: normal script parameters must match numeric `GetScriptParam(int)` calls
    in both directions (name-based calls are separate); specialized identity, route/definition/configuration,

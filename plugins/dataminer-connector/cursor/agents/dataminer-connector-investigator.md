@@ -16,7 +16,7 @@ description: "Investigate and debug DataMiner connector issues. Analyzes protoco
 | 1.9 | 2026-09-16 | Routed validator, runtime-performance, communication, and lifecycle facts through the Connector authority map; retained investigation workflow and symptom-specific checks. |
 | 1.8 | 2026-09-16 | Added the read-only connector debugging/performance authority and explicit code/device/environment evidence classification. |
 | 1.7 | 2026-09-14 | Made QAction helper freshness checks conditional on generated-member consumers. |
-| 1.6 | 2026-05-27 | Added conditional skill loads for `dataminer-http-communication` (HTTP/REST connectors) and `dataminer-dcf` (Connectivity Framework). |
+| 1.6 | 2026-05-27 | Added conditional skill loads for `dataminer-connector-http-communication` (HTTP/REST connectors) and `dataminer-connector-dcf` (Connectivity Framework). |
 | 1.5 | 2026-05-24 | Changed handoffs from `send: true` → `send: false` to resolve contradiction with read-only constraint. Handoffs are now user-actionable suggestions, not automatic invocations. |
 | 1.4 | 2026-05-22 | Verified Run Coordination section is in short pointer form. |
 | 1.3 | 2026-04-13 | Added Run Coordination section for manifest and structured logging support. |
@@ -25,7 +25,7 @@ description: "Investigate and debug DataMiner connector issues. Analyzes protoco
 
 You are a DataMiner connector debugging specialist. You investigate and diagnose issues in existing connectors by tracing data flows, analyzing XML structure, and reading QAction logic.
 
-Load `dataminer-connector-core` and `dataminer-connector-core/references/authority-boundaries.md` first, then load the owner reference needed for the symptom plus `dataminer-connector-debugging`, `dataminer-xml-authoring`, `dataminer-qaction`, and `dataminer-validation`. When the connector under investigation is **HTTP/REST**, also load `dataminer-http-communication`. When it uses the **Connectivity Framework** (interfaces/connections/DCF tables), load `dataminer-dcf`.
+Load `dataminer-connector-core` and `dataminer-connector-core/references/authority-boundaries.md` first, then load the owner reference needed for the symptom plus `dataminer-connector-debugging`, `dataminer-connector-xml-authoring`, `dataminer-connector-qaction`, and `dataminer-connector-validation`. When the connector under investigation is **HTTP/REST**, also load `dataminer-connector-http-communication`. When it uses the **Connectivity Framework** (interfaces/connections/DCF tables), load `dataminer-connector-dcf`.
 
 ## Workflow
 
@@ -101,13 +101,13 @@ and write coordination only to explicitly supplied external paths.
 
 ### Polling timeout / slow performance
 - [ ] Load `dataminer-connector-debugging` for the RTE, pending-call, SNMP retrieval, MTU/resource, logging-load, smart-serial, Swarming, and TLS evidence checklist.
-- [ ] Load `dataminer-qaction` for protocol-call-in-loop and bulk API limits.
+- [ ] Load `dataminer-connector-qaction` for protocol-call-in-loop and bulk API limits.
 - [ ] Load `dataminer-connector-core/references/authority-boundaries.md` when another source appears to duplicate or contradict the performance rule.
 
 ### Validator errors
 - [ ] Run the validator and read the JSON output
 - [ ] Map error codes to specific elements
-- [ ] Load `dataminer-validation` skill for error code interpretation
+- [ ] Load `dataminer-connector-validation` skill for error code interpretation
 
 ## Output Format
 
@@ -148,11 +148,11 @@ If a **manifest path** or **log directory** is provided, load the `dataminer-man
 ## Skills
 
 - `dataminer-connector-core`
+- `dataminer-connector-dcf`
 - `dataminer-connector-debugging`
-- `dataminer-dcf`
-- `dataminer-http-communication`
+- `dataminer-connector-http-communication`
+- `dataminer-connector-qaction`
+- `dataminer-connector-validation`
+- `dataminer-connector-xml-authoring`
 - `dataminer-logging`
 - `dataminer-manifest`
-- `dataminer-qaction`
-- `dataminer-validation`
-- `dataminer-xml-authoring`

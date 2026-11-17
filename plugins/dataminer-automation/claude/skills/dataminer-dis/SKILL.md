@@ -8,9 +8,9 @@ metadata:
   version: 1.2
 ---
 
-> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-protocol-xml-reference`, `dataminer-validation`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
-> - `dataminer-protocol-xml-reference`: DIS connector XML workflow only; Automation does not use the Protocol schema.
-> - `dataminer-validation`: DIS connector validator workflow only.
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-connector-protocol-xml`, `dataminer-connector-validation`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-connector-protocol-xml`: DIS connector XML workflow only; Automation does not use the Protocol schema.
+> - `dataminer-connector-validation`: DIS connector validator workflow only.
 
 ## Changelog
 
@@ -26,7 +26,7 @@ This skill covers DIS features that materially affect connector source code, Aut
 
 It does **not** cover packaging, Catalog publication, deployment, or general DMA operations outside the codebase itself. `references/automation-workflows.md` covers the code-relevant Automation import/debug route; it is not a substitute for QAOps or release/deployment verification.
 
-Load `dataminer-sdk` alongside this skill for official CLI, package, and tool version decisions. Load `dataminer-protocol-xml-reference` for XML schema authority. Load `dataminer-validation` for validator semantics and suppression syntax.
+Load `dataminer-sdk` alongside this skill for official CLI, package, and tool version decisions. Load `dataminer-connector-protocol-xml` for XML schema authority. Load `dataminer-connector-validation` for validator semantics and suppression syntax.
 
 ---
 

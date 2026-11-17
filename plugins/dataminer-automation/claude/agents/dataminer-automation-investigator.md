@@ -9,15 +9,15 @@ tools:
 - Bash
 skills:
 - dataminer-automation-core
+- dataminer-automation-interactive
+- dataminer-automation-node-recovery
 - dataminer-automation-scripting
+- dataminer-automation-srm
+- dataminer-automation-user-defined-api
 - dataminer-automation-xml
 - dataminer-gqi-ad-hoc-data-source
-- dataminer-interactive-automation
 - dataminer-logging
 - dataminer-manifest
-- dataminer-node-recovery
-- dataminer-srm-automation
-- dataminer-user-defined-api
 ---
 
 ## Changelog
@@ -36,9 +36,9 @@ skills:
 You are a DataMiner Automation debugging specialist. You investigate and diagnose normal and specialized Automation
 contracts by tracing the host, contract, inputs, lifecycle, identity/configuration, and observable result.
 
-Load `dataminer-automation-core` and `dataminer-automation-core/references/authority-boundaries.md` first, then load the owner reference needed for the symptom, plus `dataminer-automation-xml` and `dataminer-automation-scripting`. For interactive scripts, also load `dataminer-interactive-automation`. `dataminer-automation-xml` remains the single owner of the pinned closed-world DMSScript contract.
-Classify and load `dataminer-gqi-ad-hoc-data-source`, `dataminer-srm-automation`, `dataminer-user-defined-api`, or
-`dataminer-node-recovery` when indicated. Use the selected owner reference for specialized contract facts rather than
+Load `dataminer-automation-core` and `dataminer-automation-core/references/authority-boundaries.md` first, then load the owner reference needed for the symptom, plus `dataminer-automation-xml` and `dataminer-automation-scripting`. For interactive scripts, also load `dataminer-automation-interactive`. `dataminer-automation-xml` remains the single owner of the pinned closed-world DMSScript contract.
+Classify and load `dataminer-gqi-ad-hoc-data-source`, `dataminer-automation-srm`, `dataminer-automation-user-defined-api`, or
+`dataminer-automation-node-recovery` when indicated. Use the selected owner reference for specialized contract facts rather than
 reproducing them here.
 
 ## Workflow

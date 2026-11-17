@@ -30,24 +30,24 @@ handoffs:
 | 2.10 | 2026-09-28 | Restored the readable display name and updated name-based handoffs without changing file IDs. |
 | 2.9 | 2026-09-27 | Made validation report-only, isolated diagnostics and coordination writes, and aligned the invocation name. |
 | 2.8 | 2026-07-02 | Solution discovery now matches `*.slnx` as well as `*.sln`. Verified live against `dataminer-validator` CLI 3.2.0 with an official-template `.sln` and its `dotnet sln migrate`-generated `.slnx` counterpart — identical results, confirming `.slnx` is already fully supported. |
-| 2.7 | 2026-05-27 | Trimmed Known Fix Patterns to top-5 priority list. Full numbered catalog now lives in `dataminer-validation/references/known-fix-patterns.md`; agent points there for all other patterns. |
+| 2.7 | 2026-05-27 | Trimmed Known Fix Patterns to top-5 priority list. Full numbered catalog now lives in `dataminer-connector-validation/references/known-fix-patterns.md`; agent points there for all other patterns. |
 | 2.6 | 2026-05-24 | Added `send: false` handoffs to `dataminer-connector-xml-author` and `dataminer-connector-qaction-writer` so the orchestrator can chain validator → fix passes without redefining handoff targets each run. |
-| 2.5 | 2026-05-22 | Deduplication: slimmed Known Fix Patterns from multi-line detailed descriptions to compact one-liners with priority ordering. Full details remain in `dataminer-validation/references/known-fix-patterns.md`. Deduplication: replaced 9-line Run Coordination boilerplate with compact 3-line directive pointer to `dataminer-manifest` and `dataminer-logging` skills. |
+| 2.5 | 2026-05-22 | Deduplication: slimmed Known Fix Patterns from multi-line detailed descriptions to compact one-liners with priority ordering. Full details remain in `dataminer-connector-validation/references/known-fix-patterns.md`. Deduplication: replaced 9-line Run Coordination boilerplate with compact 3-line directive pointer to `dataminer-manifest` and `dataminer-logging` skills. |
 | 2.4 | 2026-04-20 | Updated item 14 to match both "Missing 'Discreet' tag(s) in Measurement/Discreets tag" AND "Missing 'Measurement/Discreets' tag for 'discreet' Param" validator messages. Added third root cause (C): column/scalar param with `<Type>discreet</Type>` and no `<Discreets>` block at all. |
 | 2.3 | 2026-04-18 | Added Known Fix Pattern 3b: "Missing tag 'Alarm/Monitored' in Param 'X'" (MAJOR) — enumerate all PIDs and insert `<Monitored>true</Monitored>` as first child in each `<Alarm>` block. |
 | 2.2 | 2026-04-18 | Fixed pattern 7a: "Unexpected RTDisplay(true)" now distinguishes column-with-Positions (remove Positions) from non-column-without-Positions (set RTDisplay=false). Added item 17 (2.5.1 Missing alarm thresholds) and item 18 (MinimumRequiredVersion too low) as numbered Known Fix Patterns, ensuring they are treated as mandatory like all other items. |
 | 2.1 | 2026-04-13 | Added Run Coordination section for manifest and structured logging support. |
-| 2.0 | 2026-04-13 | Extracted Known Fix Patterns to `dataminer-validation/references/known-fix-patterns.md`. Agent now contains prioritized summary with pointer. |
+| 2.0 | 2026-04-13 | Extracted Known Fix Patterns to `dataminer-connector-validation/references/known-fix-patterns.md`. Agent now contains prioritized summary with pointer. |
 | 1.1 | 2026-03-27 | Initial release. |
 
 You are a DataMiner connector validation specialist. You run the official Skyline validator
 and interpret results. **Do not edit source, add suppressions, format XML, or regenerate helpers.**
 Fix requests return to the orchestrator for an approved implementation by the artifact owner.
 
-> **Paired skill**: `dataminer-validation` owns CLI, severity, suppression syntax, and error codes.
+> **Paired skill**: `dataminer-connector-validation` owns CLI, severity, suppression syntax, and error codes.
 > This agent owns report-only execution and recommendations, not remediation.
 
-Load the `dataminer-validation` skill and
+Load the `dataminer-connector-validation` skill and
 `dataminer-manifest/references/read-only-assessment.md` before every task.
 
 ## Workflow
@@ -101,7 +101,7 @@ If a **manifest path** or **log directory** is provided, load the `dataminer-man
 
 ## Known Fix Patterns
 
-**Recommendation catalog**: `dataminer-validation/references/known-fix-patterns.md`. Use it to
+**Recommendation catalog**: `dataminer-connector-validation/references/known-fix-patterns.md`. Use it to
 explain proposed corrections, not to perform them. For bulk findings, enumerate all affected
 PIDs so the approved writer can address the complete set. Imperative fix examples in the
 catalog do not override this agent's report-only boundary.

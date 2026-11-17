@@ -373,7 +373,7 @@ Validated complete example: [`examples/http-rest-protocol.xml`](examples/http-re
 
 > `QAction id="1"` (`options="precompile"`) is the shared class library project (`QAction_1/`), which can organize shared models, parsers, and helpers into subfolders, namespaces, and separate `.cs` files rather than a single `QAction_1.cs` file.
 > `QAction id="101"` (`triggers="101"`) fires when parameter 101 (the response body) changes; its entry point lives in `QAction_101/QAction_101.cs` and imports `QAction_1` via `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` (and `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in `QAction_101.csproj`).
-> See `dataminer-qaction` skill and `example-json-table.md` for the C# implementation.
+> See `dataminer-connector-qaction` skill and `example-json-table.md` for the C# implementation.
 
 ---
 

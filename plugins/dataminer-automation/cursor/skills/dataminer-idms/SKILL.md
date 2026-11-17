@@ -8,9 +8,9 @@ metadata:
   version: 1.7
 ---
 
-> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-dataapi`, `dataminer-qaction`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-connector-qaction`, `dataminer-dataapi`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-connector-qaction`: QAction-specific IDms entry point; Automation and integration-test callers do not need QAction authoring.
 > - `dataminer-dataapi`: Alternative dynamic/name-addressed element route, not the fixed-PID IDms contract.
-> - `dataminer-qaction`: QAction-specific IDms entry point; Automation and integration-test callers do not need QAction authoring.
 
 ## Changelog
 
@@ -204,5 +204,5 @@ For a fuller example (including a deterministic "first element" pick, table read
 | SDK-style Automation project setup, build, packaging | `dataminer-sdk` |
 | GQI/SRM/User-Defined API/Node Recovery contract behavior | Load the matching feature skill before adding IDms calls |
 | Choosing DataMiner NuGet packages | `dataminer-nugets` |
-| QAction (connector-side) development | `dataminer-qaction` |
+| QAction (connector-side) development | `dataminer-connector-qaction` |
 | Push data into a **name-addressable dynamic** element without a static protocol.xml (and when NOT to — fixed-PID caveat) | `dataminer-dataapi` |

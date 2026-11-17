@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dataminer-automation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DataMiner Automation script planning, authoring, testing, investigation, and review agents.",
   "author": {
     "name": "Skyline Communications",

@@ -8,11 +8,11 @@ metadata:
   version: 2.3
 ---
 
-> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-connector-core`, `dataminer-dxm-release-notes`, `dataminer-qaction-helper-generator`, `dataminer-validation`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-connector-core`, `dataminer-connector-qaction-helper`, `dataminer-connector-validation`, `dataminer-dxm-release-notes`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
 > - `dataminer-connector-core`: Connector-specific route; consumers authoring connectors include this authority.
+> - `dataminer-connector-qaction-helper`: Connector-only generated-helper route; not required for other SDK project types.
+> - `dataminer-connector-validation`: Connector-only validator route; there is no Automation validator mode.
 > - `dataminer-dxm-release-notes`: Only required for a separate DxM/DcM release-note workflow, which is not distributed in these plugins.
-> - `dataminer-qaction-helper-generator`: Connector-only generated-helper route; not required for other SDK project types.
-> - `dataminer-validation`: Connector-only validator route; there is no Automation validator mode.
 
 ## Changelog
 
@@ -27,7 +27,7 @@ metadata:
 | 1.5 | 2026-06-17 | Added a pointer to the new `dataminer-dmprotocol-packaging` skill for the detailed `.dmprotocol` workflow on **classic (non-SDK) connector solutions** — local tool-manifest install, MSBuild wiring, the trailing-backslash `--output` gotcha, verification, and deploy. SDK-style connectors still package via `dotnet publish`. |
 | 1.4 | 2026-06-12 | Troubleshooting: package builds failing in `CreateDataMinerPackages`-style targets on fresh checkouts need `dotnet tool restore` (local tool manifest `.config/dotnet-tools.json`; verified — a baseline build failed until the packager tool was restored). |
 | 1.3 | 2026-06-10 | Added the `Skyline.DataMiner.qaops` CLI to the ecosystem and commands-by-job tables with routing to the QAOps skills. |
-| 1.2 | 2026-05-24 | Replaced duplicated validator CLI subcommand block and troubleshooting with pointers to `dataminer-validation` (sole authoritative CLI reference). |
+| 1.2 | 2026-05-24 | Replaced duplicated validator CLI subcommand block and troubleshooting with pointers to `dataminer-connector-validation` (sole authoritative CLI reference). |
 | 1.1 | 2026-05-14 | Added DIS routing, validator command version-awareness, and current compare guidance. |
 | 1.0 | 2026-05-14 | Initial release. |
 
@@ -220,7 +220,7 @@ Use validators early and often. Do not wait until the end of the task.
 
 ### Validator command
 
-For full CLI reference (current vs. legacy subcommand shape, options, JSON output, severity, suppression), see `dataminer-validation` → "Running the Validator". Always probe `dataminer-validator --help` before assuming the installed command shape.
+For full CLI reference (current vs. legacy subcommand shape, options, JSON output, severity, suppression), see `dataminer-connector-validation` → "Running the Validator". Always probe `dataminer-validator --help` before assuming the installed command shape.
 
 ### Compare command
 
@@ -346,7 +346,7 @@ winget install Microsoft.DotNet.SDK.10
 
 ### Validator CLI command shape does not match the docs
 
-See `dataminer-validation` → "Running the Validator" for legacy-vs-current subcommand handling. To upgrade an old install: `dotnet tool update -g Skyline.DataMiner.CICD.Tools.Validator`. With DIS available, DIS Validator/Comparer remain valid interactive fallbacks.
+See `dataminer-connector-validation` → "Running the Validator" for legacy-vs-current subcommand handling. To upgrade an old install: `dotnet tool update -g Skyline.DataMiner.CICD.Tools.Validator`. With DIS available, DIS Validator/Comparer remain valid interactive fallbacks.
 
 ### SDK cannot be resolved from Visual Studio or NuGet restore
 

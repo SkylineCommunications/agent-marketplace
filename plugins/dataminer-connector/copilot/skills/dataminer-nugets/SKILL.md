@@ -8,8 +8,8 @@ metadata:
   version: 1.4
 ---
 
-> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-interactive-automation`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
-> - `dataminer-interactive-automation`: IAS package branch only; the Automation plugin already supplies it for interactive tasks.
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-automation-interactive`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-automation-interactive`: IAS package branch only; the Automation plugin already supplies it for interactive tasks.
 
 ## Changelog
 
@@ -40,7 +40,7 @@ Load this skill before adding package references or writing custom helper code f
 |-----------------|---------|-----------|
 | Compile connector QActions, access `SLProtocol`, use DataMiner scripting APIs without manual DLL references | `Skyline.DataMiner.Dev.Protocol` | `references/skyline-dataminer-dev-protocol.md` |
 | Compile Automation scripts and access `IEngine` | `Skyline.DataMiner.Dev.Automation` | Load `dataminer-sdk` and the Automation template reference |
-| Build an Interactive Automation Script UI | `Skyline.DataMiner.Utils.InteractiveAutomationScriptToolkit` | Load `dataminer-interactive-automation` |
+| Build an Interactive Automation Script UI | `Skyline.DataMiner.Utils.InteractiveAutomationScriptToolkit` | Load `dataminer-automation-interactive` |
 | Typed/bulk Automation element and table access | `Skyline.DataMiner.Core.DataMinerSystem.Automation` | Load `dataminer-idms` |
 | InterApp full lifecycle, element-to-element messaging, automation-to-element calls, command/response messages, connector API messages | `Skyline.DataMiner.Core.InterAppCalls.Common` | `references/skyline-dataminer-core-interappcalls-common.md` |
 | High-level `SLProtocol` wrappers, bulk `SetParameters`, `SetColumns`, `GetColumns`, `SetCell`, `DeleteRows`, `RunAction` | `Skyline.DataMiner.Utils.Protocol.Extension` | `references/skyline-dataminer-utils-protocol-extension.md` |
@@ -82,4 +82,4 @@ dotnet restore "<solution-or-project>"
 dotnet build "<solution-or-project>"
 ```
 
-For connector changes, also run the official validator through the `dataminer-validation` and `dataminer-sdk` guidance before final handoff.
+For connector changes, also run the official validator through the `dataminer-connector-validation` and `dataminer-sdk` guidance before final handoff.

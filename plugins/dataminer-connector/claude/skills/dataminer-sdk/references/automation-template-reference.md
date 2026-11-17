@@ -21,7 +21,7 @@ package install hook, Catalog metadata, and package/deployment boundaries.
 | `dataminer-automation-project` | A runnable automation script (`<Name>.cs` + `.csproj` + `.xml`). |
 | `dataminer-automation-library-project` | A shared C# library referenced by automation scripts. |
 | `dataminer-gqi-ad-hoc-data-source-project` | A compiled GQI ad hoc data source library; load `dataminer-gqi-ad-hoc-data-source`. |
-| `dataminer-user-defined-api-project` | A User-Defined API script project; load `dataminer-user-defined-api`. |
+| `dataminer-user-defined-api-project` | A User-Defined API script project; load `dataminer-automation-user-defined-api`. |
 
 ---
 

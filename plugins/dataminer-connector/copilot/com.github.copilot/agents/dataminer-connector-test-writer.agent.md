@@ -42,7 +42,7 @@ If the user asks for real DataMiner integration tests, QAOps tests, DaaS tests, 
 
 > **Paired skill**: `dataminer-unit-testing` — owns SLProtocolMock API, test patterns, and assertion examples. This agent owns workflow, test coverage strategy, and output format. Keep shared concepts (Arrange/Act/Assert, mock setup) in sync.
 
-Load the `dataminer-connector-core`, `dataminer-qaction`, and `dataminer-unit-testing` skills before every unit-test task.
+Load the `dataminer-connector-core`, `dataminer-connector-qaction`, and `dataminer-unit-testing` skills before every unit-test task.
 
 ## Workflow
 

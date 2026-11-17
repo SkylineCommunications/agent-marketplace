@@ -16,15 +16,15 @@ metadata:
 | 1.3 | 2026-09-14 | Added Run-thread safety, canonical diagnostic/error handling, audit-only information events, and verified present/absent Engine APIs. |
 | 1.2 | 2026-09-15 | Defined the boundary between normal Engine C# and typed GQI, SRM, User-Defined API, and Node Recovery contracts, and aligned IAS lifecycle, XML interactivity, key-cache, timeout, and natural-success guidance with target versions. |
 | 1.1 | 2026-07-13 | Added explicit guidance to avoid reflection for known Automation/Assistant APIs and to use typed sub-script + assistant calls. |
-| 1.0 | 2026-06-27 | Initial release. Automation-script counterpart of `dataminer-qaction`. |
+| 1.0 | 2026-06-27 | Initial release. Automation-script counterpart of `dataminer-connector-qaction`. |
 
 You are guided here for the **C# half** of a DataMiner Automation script — the `public class Script` with `Run(IEngine engine)`.
 
-> **Skill authorities**: load `dataminer-automation-core` first. For target versions and compatibility, use `dataminer-automation-core/references/version-compatibility.md`; for invocation, inputs/outputs, locks, table keys, and subscripts, use `dataminer-automation-core/references/invocation-and-entry-points.md`; for identity, permissions, credentials, and secret handling, use `dataminer-automation-core/references/security-permissions-credentials.md`; for the Engine API surface, use `dataminer-automation-core/references/engine-api-overview.md`. Load `dataminer-nugets` before selecting Skyline NuGet packages. For interactive UI, load `dataminer-interactive-automation`. For the XML half (script parameters, dummies, memory), load `dataminer-automation-xml`.
+> **Skill authorities**: load `dataminer-automation-core` first. For target versions and compatibility, use `dataminer-automation-core/references/version-compatibility.md`; for invocation, inputs/outputs, locks, table keys, and subscripts, use `dataminer-automation-core/references/invocation-and-entry-points.md`; for identity, permissions, credentials, and secret handling, use `dataminer-automation-core/references/security-permissions-credentials.md`; for the Engine API surface, use `dataminer-automation-core/references/engine-api-overview.md`. Load `dataminer-nugets` before selecting Skyline NuGet packages. For interactive UI, load `dataminer-automation-interactive`. For the XML half (script parameters, dummies, memory), load `dataminer-automation-xml`.
 
 This skill is for ordinary C# Automation logic only. Before applying the `Run(IEngine)` pattern, classify the
-contract. Route GQI to `dataminer-gqi-ad-hoc-data-source`, SRM roles/callbacks to `dataminer-srm-automation`,
-User-Defined APIs to `dataminer-user-defined-api`, and Node Recovery callbacks to `dataminer-node-recovery`.
+contract. Route GQI to `dataminer-gqi-ad-hoc-data-source`, SRM roles/callbacks to `dataminer-automation-srm`,
+User-Defined APIs to `dataminer-automation-user-defined-api`, and Node Recovery callbacks to `dataminer-automation-node-recovery`.
 Those contracts may use C# and an Automation project, but their entry point, inputs, lifecycle, identity, and
 validation are host-defined. Do not add a dummy `Run` method merely to satisfy this skill.
 
@@ -75,7 +75,7 @@ Explicit DMSScript interactivity is supported from DataMiner 10.5.9/10.6.0. Use 
 - **Specialized boundary**: do not reference `Skyline.DataMiner.Automation` from a Core GQI data-source library; do
   not treat an API request as a script parameter; do not assume SRM role payloads or Node Recovery enum values
   without the selected version-matched package/template. Static compilation and mocks do not prove host behavior.
-- **Interactive scripts**: follow the pinned Toolkit lifecycle and target-gated XML interactivity decisions above; add `RunTimeFlags.NoKeyCaching` only when a documented stale table-key or key-mapping cache risk exists, and add an `engine.Timeout` override only for a bounded requirement, not as generic IAS setup. Handle `InteractiveUserDetachedException` and prefer the IAS Toolkit (`dataminer-interactive-automation`).
+- **Interactive scripts**: follow the pinned Toolkit lifecycle and target-gated XML interactivity decisions above; add `RunTimeFlags.NoKeyCaching` only when a documented stale table-key or key-mapping cache risk exists, and add an `engine.Timeout` override only for a bounded requirement, not as generic IAS setup. Handle `InteractiveUserDetachedException` and prefer the IAS Toolkit (`dataminer-automation-interactive`).
 
 ## Reference Files
 

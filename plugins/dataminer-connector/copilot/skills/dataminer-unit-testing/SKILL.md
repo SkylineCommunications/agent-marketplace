@@ -23,7 +23,7 @@ metadata:
 
 # DataMiner Connector Unit Testing
 
-Covers writing unit tests for QActions using the `Skyline.DataMiner.Utils.UnitTestingFramework`. Load `dataminer-connector-core` and `dataminer-qaction` alongside for conventions and API reference.
+Covers writing unit tests for QActions using the `Skyline.DataMiner.Utils.UnitTestingFramework`. Load `dataminer-connector-core` and `dataminer-connector-qaction` alongside for conventions and API reference.
 
 > **Scope boundary**: this skill is for **local, mocked connector QAction** tests only, and the `.Protocol` package mocks `SLProtocol`, so it applies to connectors and nothing else. For **Automation scripts** (mocked `IEngine` with Moq) load `dataminer-automation-unit-testing`. There is no unit-test framework for solutions or packages: validate them and test them on a real DataMiner. For tests that must run on a **real DataMiner** — Automation script behavior, element/service state, end-to-end regression tests, anything QAOps — load `dataminer-qaops` and `dataminer-qaops-integration-testing` instead. SLProtocolMock cannot test Automation scripts or live elements.
 

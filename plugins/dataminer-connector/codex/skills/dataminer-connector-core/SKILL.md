@@ -16,9 +16,9 @@ metadata:
 | Version | Date | Changes |
 |---------|------|---------|
 | 4.13 | 2026-10-27 | Clarified low-to-high `<Params>` ordering (forbidding page/feature interleaving of higher-ID tables before lower-ID standalone scalars), removed fixed standalone/table parameter ID range mandates, and clarified HTTP `Request@url` vs `Request@pid` across core references. |
-| 4.12 | 2026-10-26 | Updated `protocol.xml` authoring routing to include `dataminer-xml-authoring` and `dataminer-protocol-validator-prevention`, and strengthened read/write parameter pair `<Name>`, `<Description>`, and `<Positions>` identity rules. |
+| 4.12 | 2026-10-26 | Updated `protocol.xml` authoring routing to include `dataminer-connector-xml-authoring` and `dataminer-connector-validator-prevention`, and strengthened read/write parameter pair `<Name>`, `<Description>`, and `<Positions>` identity rules. |
 | 4.11 | 2026-10-23 | Documented multi-file folder/namespace project structure for `QAction_1` (`precompile`) and aligned HTTP QAction IDs and review checklist rules. |
-| 4.10 | 2026-10-07 | Updated skill routing to dataminer-connector-orchestrator. |
+| 4.10 | 2026-10-07 | Updated skill routing to dataminer-connector-agent. |
 | 4.9 | 2026-10-07 | Clarified session parameter resolution when reusing a session across multiple queued groups (requests are not identical using only the last set values). |
 | 4.8 | 2026-10-07 | Documented HTTP status code handling (1XX-6XX) and the three code classes that always contribute to Element Timeout (4XX, 5XX, 6XX System Errors). |
 | 4.7 | 2026-10-07 | Documented Element Wizard connection testing using Group ping="true" attribute. |
@@ -35,8 +35,8 @@ metadata:
 | 3.5 | 2026-06-10 | Added QAOps routing for running `.dmtest` packages and authoring real DataMiner integration tests. |
 | 3.4 | 2026-05-14 | Added `dataminer-dis` routing for code-relevant Visual Studio workflows. |
 | 3.3 | 2026-05-14 | Added `dataminer-sdk` routing for official Skyline SDK/templates/CLI/Dev Pack usage. |
-| 3.2 | 2026-05-14 | Removed conventions reference from core. XML schema authority now lives in `dataminer-protocol-xml-reference`;
-| 3.1 | 2026-05-08 | Added Hard Rules (anti-hallucination) section. Added glossary, canonical SNMP example, canonical HTTP example, and connector review prompt to reference table. Added canonical QAction example to dataminer-qaction skill. |
+| 3.2 | 2026-05-14 | Removed conventions reference from core. XML schema authority now lives in `dataminer-connector-protocol-xml`;
+| 3.1 | 2026-05-08 | Added Hard Rules (anti-hallucination) section. Added glossary, canonical SNMP example, canonical HTTP example, and connector review prompt to reference table. Added canonical QAction example to dataminer-connector-qaction skill. |
 | 3.0 | 2026-04-21 | Restructured from conventions-only to DataMiner overview + skill router. Moved all conventions to `references/conventions.md`. Absorbed 5 logic reference files from dataminer-xsd-reference (conditions, groups-timers, parameters, qactions, triggers-actions). |
 | 2.2 | 2026-04-19 | Strengthened parameter Name character rule. |
 | 2.1 | 2026-04-18 | Clarified Parameter ID Conventions. |
@@ -90,8 +90,8 @@ A connector is a single `protocol.xml` file (DPML — DataMiner Protocol Markup 
 ## Hard Rules (Anti-Hallucination)
 
 These rules apply to **every** connector task. Automatic instruction attachment depends on
-the client and installation. Load `dataminer-protocol-xml-reference` for XML and
-`dataminer-qaction` for C#, including their linked guard rails, whether or not rules are attached.
+the client and installation. Load `dataminer-connector-protocol-xml` for XML and
+`dataminer-connector-qaction` for C#, including their linked guard rails, whether or not rules are attached.
 
 > **Do NOT invent XML elements or attributes.** Fetch the schema docs first: `https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.{element.path}.html`. An element that "looks right" but isn't in the schema causes XSD validation failures.
 
@@ -103,7 +103,7 @@ the client and installation. Load `dataminer-protocol-xml-reference` for XML and
 
 > **If context is missing, say so.** Never fill in unknowns with plausible-sounding values.
 
-> **Prefer canonical examples over invention.** Load `references/example-snmp-connector.md`, `references/example-http-connector.md`, or `dataminer-qaction/references/example-json-table.md` and follow them exactly.
+> **Prefer canonical examples over invention.** Load `references/example-snmp-connector.md`, `references/example-http-connector.md`, or `dataminer-connector-qaction/references/example-json-table.md` and follow them exactly.
 
 > **Always verify against the official documentation.** Documentation links are in the table at the bottom of this file.
 
@@ -175,22 +175,22 @@ Use this table to decide which skill(s) to load for a task.
 | Task | Load Skill(s) |
 |------|---------------|
 | Create a new connector from scratch | `dataminer-sdk` (load `references/connector-template-reference.md`) |
-| Write or edit `protocol.xml` structure, tags, attributes, enum values, IDs, keyrefs | `dataminer-xml-authoring` + `dataminer-protocol-xml-reference` + `dataminer-protocol-validator-prevention` |
+| Write or edit `protocol.xml` structure, tags, attributes, enum values, IDs, keyrefs | `dataminer-connector-xml-authoring` + `dataminer-connector-protocol-xml` + `dataminer-connector-validator-prevention` |
 | Understand DataMiner runtime behavior before making XML changes | Relevant `logic-*` reference file(s) in this skill |
-| Write or modify C# QAction code | `dataminer-qaction` |
-| HTTP/HTTPS communication implementation | `dataminer-http-communication` |
-| Run the validator, interpret results, fix validator errors | `dataminer-validation` |
+| Write or modify C# QAction code | `dataminer-connector-qaction` |
+| HTTP/HTTPS communication implementation | `dataminer-connector-http-communication` |
+| Run the validator, interpret results, fix validator errors | `dataminer-connector-validation` |
 | Write unit tests for QActions | `dataminer-unit-testing` |
 | Run DataMiner integration/regression test packages on QAOps DaaS targets | `dataminer-qaops` + `dataminer-qaops-test-runs` |
 | Test Automation script, element, or solution behavior on a real DataMiner (QAOps) | `dataminer-qaops` + `dataminer-qaops-integration-testing` + `dataminer-sdk` |
 | Author an Automation script + QAOps verification, with **no** `protocol.xml` authoring | `dataminer-idms` + `dataminer-qaops` (then `dataminer-qaops-integration-testing`/`-test-runs`); skip this skill's logic/example references — they are connector-only |
-| Generate or refresh `QAction_Helper.cs` when requested or when consumed generated members changed | `dataminer-qaction-helper-generator` |
+| Generate or refresh `QAction_Helper.cs` when requested or when consumed generated members changed | `dataminer-connector-qaction-helper` |
 | Create a `.dmprotocol` package from a classic (non-SDK) connector solution | `dataminer-dmprotocol-packaging` |
 | Push data into a name-addressable **dynamic** element via the DataAPI HTTP feature (no fixed PIDs / no protocol.xml) | `dataminer-dataapi` (and `dataminer-idms` for the normal fixed-PID path) |
 | Write connector help/documentation pages | `dataminer-connector-help` |
-| Review a connector against XML schema, runtime logic, QAction, and validator expectations | `dataminer-protocol-xml-reference` + relevant `logic-*` files + `dataminer-qaction` + `dataminer-validation` |
-| Plan and delegate a multi-step connector task | `dataminer-connector-orchestrator` |
-| Run inline validation gates (XSD check, C# auto-fix) | `dataminer-validation-gates` |
+| Review a connector against XML schema, runtime logic, QAction, and validator expectations | `dataminer-connector-protocol-xml` + relevant `logic-*` files + `dataminer-connector-qaction` + `dataminer-connector-validation` |
+| Plan and delegate a multi-step connector task | `dataminer-connector-agent` |
+| Run inline validation gates (XSD check, C# auto-fix) | `dataminer-connector-validation-gates` |
 | Investigate runtime symptoms, RTEs, slow SNMP tables, smart-serial server queues, Swarming, or TLS | `dataminer-connector-debugging` + the relevant communication reference |
 | Understand DataMiner / connector terminology | `references/glossary.md` (this skill) |
 | SNMP connector pattern reference | `references/example-snmp-connector.md` (this skill) |
@@ -202,8 +202,8 @@ Use this table to decide which skill(s) to load for a task.
 | Understand triggers, actions, event handling | `references/logic-triggers-actions.md` (this skill) |
 | Understand QAction fundamentals, compilation, entry points | `references/logic-qactions.md` (this skill) |
 | Understand conditions, conditional execution | `references/logic-conditions.md` (this skill) |
-| DCF interfaces, connections, properties, tables, API | `dataminer-dcf` |
-| Polling Manager (configurable per-data-set polling intervals, enable/disable, dependencies) | `dataminer-polling-manager` |
+| DCF interfaces, connections, properties, tables, API | `dataminer-connector-dcf` |
+| Polling Manager (configurable per-data-set polling intervals, enable/disable, dependencies) | `dataminer-connector-polling-manager` |
 | Find the right Skyline NuGet package or package-specific API reference | `dataminer-nugets` + `references/nuget-packages.md` (quick catalog) |
 
 > **Hard rule — "test/verify on a real DataMiner" always means QAOps, never a local DataMiner.** Any request to test, run, or verify behavior on a real DataMiner (Automation scripts, IDms code, connectors, element/service behavior) goes through QAOps: `dataminer-qaops` → `dataminer-qaops-integration-testing` → `dataminer-qaops-test-runs`. A local `C:\Skyline DataMiner` install that happens to be on the machine is **not** the test target — never point tests at it, reference its `Files` DLLs, or run integration tests with local `dotnet test`. Authoring code locally and verifying it on a real system are distinct phases; when you reach verification, re-route to QAOps.

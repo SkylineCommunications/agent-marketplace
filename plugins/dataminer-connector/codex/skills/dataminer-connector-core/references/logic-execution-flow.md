@@ -1,6 +1,6 @@
 # Execution Flow And Runtime Architecture
 
-Authority scope: this file explains DataMiner runtime behavior. It is not the XML schema reference. For valid XML elements, attributes, enum values, fixed values, ID patterns, and keyrefs, use `dataminer-protocol-xml-reference`.
+Authority scope: this file explains DataMiner runtime behavior. It is not the XML schema reference. For valid XML elements, attributes, enum values, fixed values, ID patterns, and keyrefs, use `dataminer-connector-protocol-xml`.
 
 ## Process Roles
 

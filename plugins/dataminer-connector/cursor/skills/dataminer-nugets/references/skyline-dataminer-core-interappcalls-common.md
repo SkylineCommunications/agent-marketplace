@@ -83,7 +83,7 @@ Follow this order when designing or implementing InterApp in DataMiner:
 
 ## Connector XML Setup
 
-Protocols that receive InterApp calls must include and process the reserved receiver and return parameters. Use `dataminer-protocol-xml-reference` when authoring the exact `protocol.xml` structure.
+Protocols that receive InterApp calls must include and process the reserved receiver and return parameters. Use `dataminer-connector-protocol-xml` when authoring the exact `protocol.xml` structure.
 
 | PID | Name | Purpose |
 |-----|------|---------|
@@ -590,4 +590,4 @@ dotnet restore "<solution-or-project>"
 dotnet build "<solution-or-project>"
 ```
 
-For connector XML/QAction changes, also run the official validator through `dataminer-validation` and SDK guidance. Validator-relevant InterApp issues include invalid reply logic, missing package references, build failures, invalid QAction triggers, and malformed connector parameters.
+For connector XML/QAction changes, also run the official validator through `dataminer-connector-validation` and SDK guidance. Validator-relevant InterApp issues include invalid reply logic, missing package references, build failures, invalid QAction triggers, and malformed connector parameters.

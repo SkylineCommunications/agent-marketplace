@@ -17,7 +17,7 @@ metadata:
 | 1.3 | 2026-09-14 | Clarified exact SDK linkage for greenfield work and the selected inline source/mirror contract for explicitly maintained legacy Cube-inline scripts. |
 | 1.2 | 2026-09-14 | Replaced the partial guidance with the closed-world DMSScript 1.1.10 contract, document-wide ID allocation, exact SDK project linkage, and bidirectional numeric parameter parity. |
 | 1.1 | 2026-09-15 | Added guidance to distinguish normal DMSScript XML from GQI library and other specialized contract project shapes, and made Interactivity target-gated and UX-based, with modern `Never` and legacy element-omission guidance. |
-| 1.0 | 2026-06-27 | Initial release. Automation-script counterpart of `dataminer-xml-authoring` (DMSScript instead of protocol.xml). |
+| 1.0 | 2026-06-27 | Initial release. Automation-script counterpart of `dataminer-connector-xml-authoring` (DMSScript instead of protocol.xml). |
 
 You are guided here for the **XML half** of a DataMiner Automation script: the `DMSScript` definition file (`<Name>.xml`). Load `dataminer-automation-core` first. The C# half is owned by `dataminer-automation-scripting`; its intended source is the linked SDK project in SDK mode or the selected C# `Exe` `<Value>` during explicitly targeted maintenance of an existing legacy Cube-inline artifact.
 

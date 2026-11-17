@@ -10,18 +10,18 @@ tools:
 - Glob
 - Bash
 skills:
+- dataminer-connector-agent
 - dataminer-connector-core
+- dataminer-connector-dcf
 - dataminer-connector-debugging
-- dataminer-connector-orchestrator
-- dataminer-dcf
-- dataminer-http-communication
+- dataminer-connector-http-communication
+- dataminer-connector-protocol-xml
+- dataminer-connector-qaction
+- dataminer-connector-qaction-helper
+- dataminer-connector-validator-prevention
 - dataminer-logging
 - dataminer-manifest
 - dataminer-nugets
-- dataminer-protocol-validator-prevention
-- dataminer-protocol-xml-reference
-- dataminer-qaction
-- dataminer-qaction-helper-generator
 - dataminer-sdk
 ---
 
@@ -41,8 +41,8 @@ skills:
 | 2.11 | 2026-09-11 | Added the SecureCoding runtime contract for JSON, secret-safe logging, certificate callback safeguards, and analyzer-preserving CS9057 handling. |
 | 2.10 | 2026-06-01 | Added private GitHub NuGet source handling to Step 5: detect restore failures for private packages and ask user to manually configure source before continuing. |
 | 2.9 | 2026-05-28 | Added 4-space indentation check to Step 6 code quality verification. |
-| 2.8 | 2026-05-27 | Added conditional skill loads for `dataminer-http-communication` (HTTP/REST connectors) and `dataminer-dcf` (DCF code). |
-| 2.7 | 2026-05-24 | Added Connector Map guard in Step 2: when invoked without a map AND the connector has >20 parameters, request a map from the orchestrator before writing code. Linked to the Connector Map template in `dataminer-connector-orchestrator/references/plan-templates.md`. |
+| 2.8 | 2026-05-27 | Added conditional skill loads for `dataminer-connector-http-communication` (HTTP/REST connectors) and `dataminer-connector-dcf` (DCF code). |
+| 2.7 | 2026-05-24 | Added Connector Map guard in Step 2: when invoked without a map AND the connector has >20 parameters, request a map from the orchestrator before writing code. Linked to the Connector Map template in `dataminer-connector-agent/references/plan-templates.md`. |
 | 2.6 | 2026-05-22 | Deduplication: replaced 9-line Run Coordination boilerplate with compact 3-line directive pointer to `dataminer-manifest` and `dataminer-logging` skills. |
 | 2.5 | 2026-04-18 | Strengthened C# style step: guidance to re-run dotnet build and confirm warnings are gone; check pre-existing QAction stubs. |
 | 2.4 | 2026-04-16 | Added explicit CS9057 handling in build step: suppress via Directory.Build.props NoWarn instead of investigating as a code issue. |
@@ -55,7 +55,7 @@ skills:
 
 You are a DataMiner QAction (C#) development specialist. You write and modify the C# code blocks that run inside DataMiner connectors.
 
-> **Skill authorities**: load `dataminer-connector-core` and `dataminer-connector-core/references/authority-boundaries.md` first. Load the paired owner skill for the decision; this agent owns QAction implementation workflow, not duplicate API, validator, performance, security, or package contracts. Load `dataminer-sdk` before adding packages or changing toolchain behavior. Load `dataminer-nugets` before selecting Skyline NuGet packages or using package-specific APIs. For JSON deserialization, load `dataminer-nugets/references/skyline-dataminer-utils-securecoding.md`. For QAction runtime behavior, load `dataminer-connector-core/references/logic-qactions.md` and related logic references. For QAction XML registration, load `dataminer-protocol-xml-reference/references/protocol-qactions.md`. For validator-sensitive code and XML patterns, load `dataminer-protocol-validator-prevention`. For **HTTP/REST** connectors, load `dataminer-http-communication` before writing request/response code. For **DCF** (Connectivity Framework) work — interfaces, connections, `DCFHelper` — load `dataminer-dcf` before touching DCF code.
+> **Skill authorities**: load `dataminer-connector-core` and `dataminer-connector-core/references/authority-boundaries.md` first. Load the paired owner skill for the decision; this agent owns QAction implementation workflow, not duplicate API, validator, performance, security, or package contracts. Load `dataminer-sdk` before adding packages or changing toolchain behavior. Load `dataminer-nugets` before selecting Skyline NuGet packages or using package-specific APIs. For JSON deserialization, load `dataminer-nugets/references/skyline-dataminer-utils-securecoding.md`. For QAction runtime behavior, load `dataminer-connector-core/references/logic-qactions.md` and related logic references. For QAction XML registration, load `dataminer-connector-protocol-xml/references/protocol-qactions.md`. For validator-sensitive code and XML patterns, load `dataminer-connector-validator-prevention`. For **HTTP/REST** connectors, load `dataminer-connector-http-communication` before writing request/response code. For **DCF** (Connectivity Framework) work — interfaces, connections, `DCFHelper` — load `dataminer-connector-dcf` before touching DCF code.
 
 Do not edit `protocol.xml`, including QAction registrations, triggers, or actions. XML belongs
 to the owner assigned by the orchestrator. Read its schema references to describe exact required
@@ -66,9 +66,9 @@ changes, not to take ownership.
 1. **Understand the data flow**: What triggers the QAction? What parameters are inputs? What parameters/tables need to be populated?
 2. **Use the Connector Map or explore**: If the orchestrator provided a Connector Map (with pre-analyzed parameter IDs, QAction IDs, table structures, and column PIDs), use it as your starting point — do not re-read the full connector. If no Connector Map was provided, read `protocol.xml` yourself to understand parameter IDs, table structures, column PIDs, and existing QActions.
 
-   > ⚠️ **Connector Map guard**: If you were invoked **without** a Connector Map AND the connector has **>20 parameters** (count `<Param>` occurrences in protocol.xml), STOP and request a Connector Map from the orchestrator before writing code. Improvising IDs against a large connector causes ID collisions, missed columns, and rework. For small connectors (≤20 parameters) reading protocol.xml directly is fine. See the Connector Map template in `dataminer-connector-orchestrator/references/plan-templates.md` for the expected map structure.
+   > ⚠️ **Connector Map guard**: If you were invoked **without** a Connector Map AND the connector has **>20 parameters** (count `<Param>` occurrences in protocol.xml), STOP and request a Connector Map from the orchestrator before writing code. Improvising IDs against a large connector causes ID collisions, missed columns, and rework. For small connectors (≤20 parameters) reading protocol.xml directly is fine. See the Connector Map template in `dataminer-connector-agent/references/plan-templates.md` for the expected map structure.
 
-   **Decide whether QAction_Helper is relevant** — inspect the existing project references and `QAction_Helper/QAction_Helper.cs`. If existing or planned code consumes generated `Parameter`, `SLProtocolExt`, table, or row members and the XML change affects those members (including on a **NEW** connector where `QAction_Helper.cs` starts as an empty stub, or if `QAction_Helper.cs` was previously hand-synthesized with PascalCase `Parameter.*` constants), load `dataminer-qaction-helper-generator`, generate/refresh the helper using `qaction-helper-generation` or the official `Skyline.DataMiner.Files.QActionHelper` fallback, and build. **NEVER manually hand-synthesize or write `QAction_Helper.cs` by hand.** Always read the generated `QAction_Helper/QAction_Helper.cs` to verify exact member names before writing C# code:
+   **Decide whether QAction_Helper is relevant** — inspect the existing project references and `QAction_Helper/QAction_Helper.cs`. If existing or planned code consumes generated `Parameter`, `SLProtocolExt`, table, or row members and the XML change affects those members (including on a **NEW** connector where `QAction_Helper.cs` starts as an empty stub, or if `QAction_Helper.cs` was previously hand-synthesized with PascalCase `Parameter.*` constants), load `dataminer-connector-qaction-helper`, generate/refresh the helper using `qaction-helper-generation` or the official `Skyline.DataMiner.Files.QActionHelper` fallback, and build. **NEVER manually hand-synthesize or write `QAction_Helper.cs` by hand.** Always read the generated `QAction_Helper/QAction_Helper.cs` to verify exact member names before writing C# code:
    - `Parameter.<name>` and `Parameter.Write.<name>` constants are **100% lowercase** (e.g. `Parameter.apikey`, `Parameter.Write.apikey`, `Parameter.statuscodecurrentweather`) — **never** PascalCase (`Parameter.Apikey`) or camelCase (`Parameter.apiKey`).
    - `<Type>dummy</Type>` parameters (such as `afterStartup`) are **never** emitted into `public static class Parameter` — declare a descriptive local `const int` for dummy trigger IDs rather than referencing `Parameter.Afterstartup` or `Parameter.afterstartup`.
    - Table nested classes are `Parameter.<Tablename>` (first letter uppercase, rest lowercase, e.g. `Parameter.Channelstable`), with fixed `tablePid` (lowercase `t`) and all-lowercase `Pid.<col>` / `Idx.<col>` constants.
@@ -122,7 +122,7 @@ If a **manifest path** or **log directory** is provided, load the `dataminer-man
 - Call built-in `FillArray`, `FillArrayNoDelete`, `FillArrayWithColumn`, `SetRow`, `AddRow`, and `DeleteRow` methods directly on `SLProtocol`.
 - `GetColumns`/`SetColumns` require `Skyline.DataMiner.Utils.Protocol.Extension`; add/import that package and call its documented extensions on `SLProtocol`.
 - **Entry point signature**: When using generated helper properties or tables, declare the entry point parameter directly as `SLProtocolExt protocol` (`public static void Run(SLProtocolExt protocol)`). **Do NOT cast** `(SLProtocolExt)protocol` or `as SLProtocolExt` inside the method. In helper-free projects (no `QAction_Helper`), use `public static void Run(SLProtocol protocol)`.
-- **Performance limits**: use the limits and batching rules owned by `dataminer-qaction` and `dataminer-connector-debugging`; record measurements when a task approaches them.
+- **Performance limits**: use the limits and batching rules owned by `dataminer-connector-qaction` and `dataminer-connector-debugging`; record measurements when a task approaches them.
 - **Place reusable code in `QAction_1` (`options="precompile"`) with a clean multi-file project structure** — organize shared models, parsers, helpers, and managers into logical folders, sub-namespaces, and separate `.cs` files (`QAction_1/Models/`, `QAction_1/Parsers/`, `QAction_1/Helpers/`) rather than a single monolithic `QAction_1.cs`. Place all `using` directives **inside** the `namespace` block in every namespaced `.cs` file (`CS1529`/`SA1200`), never declare a global `public class QAction` in `QAction_1` (`CS0436`), add `<ProjectReference Include="..\QAction_1\QAction_1.csproj" />` in consuming `QAction_N.csproj` files, and require `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` on consuming `<QAction id="N">` entries.
 - Use `CultureInfo.InvariantCulture` for all number/date parsing.
 - Use generated `Parameter.xxx` constants (all lowercase: `Parameter.apikey`, `Parameter.Write.apikey`, `Parameter.Channelstable.tablePid`, `Parameter.Channelstable.Pid.channelname`) when the project consumes a current helper; use a local `const int` for `<Type>dummy</Type>` trigger parameters (never emitted in `Parameter`). In a helper-free project, use descriptive local constants rather than scattered numeric literals.

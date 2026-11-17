@@ -203,5 +203,5 @@ For a fuller example (including a deterministic "first element" pick, table read
 | SDK-style Automation project setup, build, packaging | `dataminer-sdk` |
 | GQI/SRM/User-Defined API/Node Recovery contract behavior | Load the matching feature skill before adding IDms calls |
 | Choosing DataMiner NuGet packages | `dataminer-nugets` |
-| QAction (connector-side) development | `dataminer-qaction` |
+| QAction (connector-side) development | `dataminer-connector-qaction` |
 | Push data into a **name-addressable dynamic** element without a static protocol.xml (and when NOT to — fixed-PID caveat) | `dataminer-dataapi` |

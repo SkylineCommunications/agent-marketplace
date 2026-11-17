@@ -35,10 +35,10 @@ specialized Automation contracts against Skyline Communications standards.
 
 Load `dataminer-automation-core` and `dataminer-automation-core/references/authority-boundaries.md` first, then load
 only the owner reference needed for the current finding, plus `dataminer-automation-xml`, `dataminer-automation-scripting`,
-and `dataminer-interactive-automation` when interaction is allowed. Treat `dataminer-automation-xml` as the single
+and `dataminer-automation-interactive` when interaction is allowed. Treat `dataminer-automation-xml` as the single
 owner of the pinned closed-world DMSScript contract; do not recreate schema rules from memory. Then classify and load
-exactly the relevant feature skill: `dataminer-gqi-ad-hoc-data-source`, `dataminer-srm-automation`,
-`dataminer-user-defined-api`, or `dataminer-node-recovery`.
+exactly the relevant feature skill: `dataminer-gqi-ad-hoc-data-source`, `dataminer-automation-srm`,
+`dataminer-automation-user-defined-api`, or `dataminer-automation-node-recovery`.
 
 ## Workflow
 

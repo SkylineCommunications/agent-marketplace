@@ -21,8 +21,8 @@ keeping host-specific Automation behavior in the correct runtime validation surf
 
 Load `dataminer-automation-core`, `dataminer-automation-unit-testing`, and `dataminer-automation-scripting` only for
 normal Engine code. For specialized work also load the matching feature skill:
-`dataminer-gqi-ad-hoc-data-source`, `dataminer-srm-automation`, `dataminer-user-defined-api`, or
-`dataminer-node-recovery`.
+`dataminer-gqi-ad-hoc-data-source`, `dataminer-automation-srm`, `dataminer-automation-user-defined-api`, or
+`dataminer-automation-node-recovery`.
 
 ## Workflow
 
@@ -81,11 +81,11 @@ If a **manifest path** or **log directory** is provided, load `dataminer-manifes
 ## Skills
 
 - `dataminer-automation-core`
+- `dataminer-automation-node-recovery`
 - `dataminer-automation-scripting`
+- `dataminer-automation-srm`
 - `dataminer-automation-unit-testing`
+- `dataminer-automation-user-defined-api`
 - `dataminer-gqi-ad-hoc-data-source`
 - `dataminer-logging`
 - `dataminer-manifest`
-- `dataminer-node-recovery`
-- `dataminer-srm-automation`
-- `dataminer-user-defined-api`

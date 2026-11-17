@@ -1,6 +1,6 @@
 # Triggers And Actions Logic
 
-Authority scope: this file explains trigger and action runtime behavior. It is not the XML schema reference. For valid trigger/action XML structure and enum values, use `dataminer-protocol-xml-reference`.
+Authority scope: this file explains trigger and action runtime behavior. It is not the XML schema reference. For valid trigger/action XML structure and enum values, use `dataminer-connector-protocol-xml`.
 
 ## Triggers
 

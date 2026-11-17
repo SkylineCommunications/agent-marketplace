@@ -122,7 +122,7 @@ Description:
 Example connector that demonstrates HTTP communication from a DataMiner connector, showing how to structure HTTP requests/responses and parse the results into parameters and tables.
 
 Why Use It:
-Canonical reference for the HTTP communication pattern in connectors — request construction, response handling, and mapping payloads into the protocol model. Pairs directly with the dataminer-http-communication guidance.
+Canonical reference for the HTTP communication pattern in connectors — request construction, response handling, and mapping payloads into the protocol model. Pairs directly with the dataminer-connector-http-communication guidance.
 
 Typical Use Cases:
 - Building a connector that polls or controls a device/service over HTTP/REST
@@ -166,7 +166,7 @@ Description:
 Example connector showing the use of Skyline.DataMiner.Core.ConnectivityFramework to model DataMiner Connectivity Framework (DCF) connections within a connector (previously the Skyline SDF DCF example).
 
 Why Use It:
-The reference implementation for DCF interfaces and connections — how to define, create, and maintain connectivity (nodes, interfaces, connections) programmatically from QActions. Pairs with the dataminer-dcf guidance.
+The reference implementation for DCF interfaces and connections — how to define, create, and maintain connectivity (nodes, interfaces, connections) programmatically from QActions. Pairs with the dataminer-connector-dcf guidance.
 
 Typical Use Cases:
 - Connectors that expose physical/logical connectivity (matrices, routers, signal flows)

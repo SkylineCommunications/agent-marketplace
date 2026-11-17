@@ -1,6 +1,6 @@
 # Parameters Logic
 
-Authority scope: this file explains DataMiner parameter runtime behavior. It is not the XML schema reference. For valid parameter XML structure, attributes, enum values, and ID type patterns, use `dataminer-protocol-xml-reference`.
+Authority scope: this file explains DataMiner parameter runtime behavior. It is not the XML schema reference. For valid parameter XML structure, attributes, enum values, and ID type patterns, use `dataminer-connector-protocol-xml`.
 
 ## Parameter Roles
 

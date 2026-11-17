@@ -7,7 +7,7 @@ updated: "2026-10-27"
 
 # DataMiner Protocol XML — Guard Rails
 
-> For comprehensive authoring guidance, load the `dataminer-xml-authoring` skill. For naming conventions and ID management, load the `dataminer-connector-core` skill. For the full ownership matrix across all four `protocol.xml` customization files, see the **Authority Matrix** at the top of `dataminer-protocol-validator-prevention/SKILL.md`.
+> For comprehensive authoring guidance, load the `dataminer-connector-xml-authoring` skill. For naming conventions and ID management, load the `dataminer-connector-core` skill. For the full ownership matrix across all four `protocol.xml` customization files, see the **Authority Matrix** at the top of `dataminer-connector-validator-prevention/SKILL.md`.
 > **Canonical examples** (follow these exactly — do not invent structures):
 > - SNMP connector: `dataminer-connector-core/references/example-snmp-connector.md`
 > - HTTP connector: `dataminer-connector-core/references/example-http-connector.md`
@@ -26,7 +26,7 @@ updated: "2026-10-27"
 - Use the file-editing tool available in the current environment directly. An assistant tool name such as `apply_patch` is a tool call, not a PowerShell executable; do not pipe patch text into a shell expecting that command to exist.
 - If an edit fails, do not cycle through patch flags or guess at the cause. Read the actual error and re-read the on-disk target block; inspect tabs or line endings only when the evidence points to them. Make at most one corrected attempt, then stop and report the blocker if it still fails.
 - Immediately after editing, verify the exact intended value with a case-sensitive check and inspect the diff to ensure the change stayed within scope.
-- For a unit change, load `dataminer-protocol-xml-reference/references/protocol-uom.md` before editing and preserve the exact case-sensitive unit string listed there.
+- For a unit change, load `dataminer-connector-protocol-xml/references/protocol-uom.md` before editing and preserve the exact case-sensitive unit string listed there.
 - For a unit-only display-metadata change, use a focused XML parse/value assertion and the official connector validator; skip a full solution build when no code or generated output changed. If the validator is unavailable, report that gate as not run and follow the validation skill's installation policy.
 - If validation reports unrelated findings, distinguish them from findings caused by this edit. Do not call a nonzero validator result clean or broaden a scoped change to fix pre-existing issues unless requested.
 
@@ -46,7 +46,7 @@ updated: "2026-10-27"
 - **Never fabricate child elements** — e.g. `<Param><Subtext>` ❌, `<Param><Trending>` ❌, `<Param><Units>` ❌. See the "Valid `<Param>` Child Elements" allowlist below.
 - **Never fabricate attributes** — only use attributes listed in the schema for that element.
 - **Never fabricate attribute option values** — e.g. `<Type options="encrypt">` ❌ (not a real option). See the "Measurement Type Options" section below for valid `options` values.
-- When in doubt, load the `dataminer-protocol-xml-reference` skill or fetch the schema URL — do NOT guess.
+- When in doubt, load the `dataminer-connector-protocol-xml` skill or fetch the schema URL — do NOT guess.
 
 ## Element Ordering (Ascending ID)
 
@@ -86,7 +86,7 @@ Apply these rules to `<Protocol><Params><Param>` elements:
 
 ## Critical One-Liners (top 5 highest-risk rules)
 
-These five rules cause the most bulk findings when violated. For the **full rule set**, load the `dataminer-xml-authoring` skill (TABLE GENERATION GATE, Pre-Completion Checklist).
+These five rules cause the most bulk findings when violated. For the **full rule set**, load the `dataminer-connector-xml-authoring` skill (TABLE GENERATION GATE, Pre-Completion Checklist).
 
 - **All valid operational parameters MUST have `<Alarm><Monitored>true</Monitored>`** — every displayed operational health, status, and telemetry parameter (voltages, currents, power, frequencies, battery charge/capacity, remaining runtimes, temperatures, link states, error counters, operational status enums with `<RTDisplay>true</RTDisplay>`) is valid for alarming and MUST have `<Alarm><Monitored>true</Monitored>` with default thresholds or justified `2.5.1` suppression. Non-alarmable parameters (write parameters, dummy parameters, table array params, index PKs, display keys, RTDisplay=false intermediates, static asset information like serial numbers, volatile tables) must NOT be monitored. For every `<Alarm>` block present, explicitly place `<Monitored>true</Monitored>` (or `<Monitored>false</Monitored>` if intentionally unmonitored) first.
 - **Pre-known values MUST be numeric discreets** — when creating a parameter with pre-known finite values (enums, operational states, modes, statuses, boolean conditions), implement it as a discrete parameter (`<Type>discreet</Type>`, or `<Type>togglebutton</Type>` for 2-state booleans) with numeric backend (`<Interprete><Type>double</Type></Interprete>`). The numeric backend value allows DataMiner to alarm and trend the parameter. The `<Discreet><Display>` text provides clear, human-readable labels for the end user in Cube/web UI. Never store pre-known states as raw strings.
@@ -110,7 +110,7 @@ These five rules cause the most bulk findings when violated. For the **full rule
 
 ## XSD-Critical Enum Values
 
-Consult `dataminer-protocol-xml-reference/references/protocol-types-and-enums.md` for all valid enum values (`RawType`, `Interprete/Type`, `Measurement/Type`, `SNMP/Type`, `OID type`, `ColumnOption type`). Key reminders:
+Consult `dataminer-connector-protocol-xml/references/protocol-types-and-enums.md` for all valid enum values (`RawType`, `Interprete/Type`, `Measurement/Type`, `SNMP/Type`, `OID type`, `ColumnOption type`). Key reminders:
 
 - **`<RawType>`**: NEVER use SNMP type names (`octetstring` ❌, `gauge32` ❌).
 - **`<OID type>`**: only `complete`, `auto`, `composed`, `wildcard` — `id` is a separate attribute, not a type value. NEVER use SNMP data types or direction names.

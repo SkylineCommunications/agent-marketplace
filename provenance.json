@@ -1,45 +1,45 @@
 {
-  "manifestVersion": "0.2.0",
+  "manifestVersion": "0.3.0",
   "marketplace": "skyline-agent-marketplace",
   "sourceRepository": "SkylineCommunications/.github-private",
-  "sourceCommitSha": "7ef7805aa0d36595cc1fdb5c04cc5cce9b79b635",
-  "builtAtUtc": "2026-11-06T12:34:13.7078497+00:00",
+  "sourceCommitSha": "93862f2fc46a1f9bc350494d1c274dbb2377d251",
+  "builtAtUtc": "2026-11-17T15:48:17.5546075+00:00",
   "publisherToolVersion": "1.0.0.0",
   "plugins": [
     {
       "id": "dataminer-apps",
-      "version": "0.1.2",
+      "version": "0.2.0",
       "path": "plugins/dataminer-apps",
       "rootAgents": [
-        "dataminer-app-builder"
+        "dataminer-app"
       ],
       "agents": [
-        "dataminer-app-builder"
+        "dataminer-app"
       ],
       "skills": [
-        "dataminer-create-new-app",
-        "dataminer-e2e-testing",
-        "dataminer-frontend",
+        "dataminer-apps-scaffolder",
+        "dataminer-apps-e2e-testing",
+        "dataminer-apps-frontend",
         "dataminer-api",
         "dataminer-data-discovery",
         "dataminer-execute-query",
         "dataminer-execute-automation-script",
-        "dataminer-performing-actions",
+        "dataminer-apps-actions",
         "dataminer-headless-ias",
-        "dataminer-debug-issues"
+        "dataminer-apps-debug-issues"
       ],
       "instructions": null,
-      "fingerprint": "c8616ea18d3d46acbe49da9e8a528cb57b89427597a5e8d649c7bf389619b695"
+      "fingerprint": "57b08c728c32b3610877d20eceafb44475883a193acb7cc743b8d6d527e5ef13"
     },
     {
       "id": "dataminer-automation",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "path": "plugins/dataminer-automation",
       "rootAgents": [
-        "dataminer-automation-orchestrator"
+        "dataminer-automation"
       ],
       "agents": [
-        "dataminer-automation-orchestrator",
+        "dataminer-automation",
         "dataminer-automation-scaffolder",
         "dataminer-automation-author",
         "dataminer-automation-reviewer",
@@ -48,21 +48,21 @@
       ],
       "skills": [
         "dataminer-automation-core",
-        "dataminer-automation-orchestrator",
+        "dataminer-automation-agent",
         "dataminer-automation-scripting",
         "dataminer-automation-unit-testing",
         "dataminer-automation-xml",
         "dataminer-dis",
         "dataminer-github-example-finder",
         "dataminer-gqi-ad-hoc-data-source",
-        "dataminer-interactive-automation",
+        "dataminer-automation-interactive",
         "dataminer-logging",
         "dataminer-manifest",
-        "dataminer-node-recovery",
+        "dataminer-automation-node-recovery",
         "dataminer-nugets",
         "dataminer-sdk",
-        "dataminer-srm-automation",
-        "dataminer-user-defined-api",
+        "dataminer-automation-srm",
+        "dataminer-automation-user-defined-api",
         "dataminer-api",
         "dataminer-catalog-hygiene",
         "dataminer-data-discovery",
@@ -78,17 +78,17 @@
         "project-type-identification"
       ],
       "instructions": null,
-      "fingerprint": "f9814b6e68ef9fa15bd0ebffde00e9865c10808f123ab7ffac176fbd43a70d34"
+      "fingerprint": "4e664c55ae0abe3f472bb300e0b0ef278319105d923c002bfd72d36290cb064e"
     },
     {
       "id": "dataminer-connector",
-      "version": "0.1.4",
+      "version": "0.2.0",
       "path": "plugins/dataminer-connector",
       "rootAgents": [
-        "dataminer-connector-orchestrator"
+        "dataminer-connector"
       ],
       "agents": [
-        "dataminer-connector-orchestrator",
+        "dataminer-connector",
         "dataminer-connector-scaffolder",
         "dataminer-connector-xml-author",
         "dataminer-connector-qaction-writer",
@@ -102,32 +102,32 @@
       "skills": [
         "dataminer-connector-core",
         "dataminer-connector-help",
-        "dataminer-dcf",
+        "dataminer-connector-dcf",
         "dataminer-dis",
         "dataminer-docs-house-style",
         "dataminer-github-example-finder",
-        "dataminer-http-communication",
+        "dataminer-connector-http-communication",
         "dataminer-logging",
         "dataminer-manifest",
         "dataminer-nugets",
-        "dataminer-connector-orchestrator",
-        "dataminer-protocol-validator-prevention",
-        "dataminer-protocol-xml-reference",
-        "dataminer-qaction",
-        "dataminer-qaction-helper-generator",
+        "dataminer-connector-agent",
+        "dataminer-connector-validator-prevention",
+        "dataminer-connector-protocol-xml",
+        "dataminer-connector-qaction",
+        "dataminer-connector-qaction-helper",
         "dataminer-qaops",
         "dataminer-qaops-integration-testing",
         "dataminer-sdk",
-        "dataminer-toon-simulation",
+        "dataminer-connector-toon-simulation",
         "dataminer-unit-testing",
-        "dataminer-validation",
-        "dataminer-validation-gates",
-        "dataminer-xml-authoring",
+        "dataminer-connector-validation",
+        "dataminer-connector-validation-gates",
+        "dataminer-connector-xml-authoring",
         "dataminer-catalog-hygiene",
         "dataminer-connector-debugging",
         "dataminer-dmprotocol-packaging",
         "dataminer-idms",
-        "dataminer-polling-manager",
+        "dataminer-connector-polling-manager",
         "dataminer-qaops-simulators",
         "dataminer-qaops-test-runs",
         "project-type-identification"
@@ -135,14 +135,14 @@
       "instructions": [
         {
           "file": "dataminer-protocol-xml.instructions.md",
-          "skill": "dataminer-protocol-xml-reference"
+          "skill": "dataminer-connector-protocol-xml"
         },
         {
           "file": "dataminer-qaction.instructions.md",
-          "skill": "dataminer-qaction"
+          "skill": "dataminer-connector-qaction"
         }
       ],
-      "fingerprint": "28df72220b0ba30f95994135309179135f32fe3cd958e5cbd7e8b561ab04fdb4"
+      "fingerprint": "341aec8a64da8c1c80f6bd35a6ed56d79026efcb79d25a22563d3209427627e1"
     }
   ]
 }

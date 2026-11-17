@@ -7,8 +7,8 @@ metadata:
   version: 1.6
 ---
 
-> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-create-new-app`, `source-code-readme-writing`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
-> - `dataminer-create-new-app`: Example frontend classification signal; classification does not scaffold applications.
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-apps-scaffolder`, `source-code-readme-writing`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-apps-scaffolder`: Example frontend classification signal; classification does not scaffold applications.
 > - `source-code-readme-writing`: Example consumer of the inventory, not a dependency of classification or Catalog auditing.
 
 ## Changelog
@@ -99,8 +99,8 @@ For **DataMiner app** detection specifically, corroborate with these additional 
 - No backend/server code — the app is a purely client-side React (or other framework) SPA.
 - No in-app login/authentication UI — session bootstrap relies on DataMiner's own `/auth/` sign-in page (see the `dataminer-api` skill's cookie/auth-guard conventions).
 - Data access goes through DataMiner GQI queries (e.g., `OpenQuerySessionAsync`) rather than direct SOAP/DOM calls.
-- The build output folder is copied into a DataMiner `Webpages\Public` (or equivalent `CompanionFiles`) location, matching the deployment model in the `dataminer-create-new-app` skill.
-- These apps are commonly produced with the `dataminer-app-builder` agent, though no explicit provenance marker is written into the generated code — classification must rely on the structural signals above, not on a tag or comment.
+- The build output folder is copied into a DataMiner `Webpages\Public` (or equivalent `CompanionFiles`) location, matching the deployment model in the `dataminer-apps-scaffolder` skill.
+- These apps are commonly produced with the `dataminer-app` agent, though no explicit provenance marker is written into the generated code — classification must rely on the structural signals above, not on a tag or comment.
 
 ### Source B — `manifest.yml` type field
 

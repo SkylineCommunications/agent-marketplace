@@ -131,7 +131,7 @@ The [`InteractivityOptions` page at revision `103263b74f73d172b7c7bc3fc10c3bae6d
 | Thread and async safety | <https://aka.dataminer.services/AsyncAutomation> | `develop/devguide/Automation/Best_Practices/Handling_Async_Code.md`, UID `Handling_Async_Code` | Automation author, reviewer, investigator, core |
 | Logging and information events | <https://aka.dataminer.services/automation-best-practices-information-events> | `develop/devguide/Automation/Best_Practices/Automation_best_practices_information_events.md`, UID `Automation_best_practices_information_events` | Automation core and scripting |
 | Debug-ready exception behavior | <https://aka.dataminer.services/how-to-make-your-automation-scripts-debug-ready> | `develop/devguide/Automation/Howto/How_to_make_your_automation_scripts_debug_ready.md` | Automation author, reviewer, investigator |
-| IAS setup and package identity | <https://aka.dataminer.services/1068hoHHP> | `develop/devguide/Automation/Howto/Getting_Started_with_the_IAS_Toolkit.md`, UID `Getting_Started_with_the_IAS_Toolkit` | `dataminer-interactive-automation`, Automation core |
+| IAS setup and package identity | <https://aka.dataminer.services/1068hoHHP> | `develop/devguide/Automation/Howto/Getting_Started_with_the_IAS_Toolkit.md`, UID `Getting_Started_with_the_IAS_Toolkit` | `dataminer-automation-interactive`, Automation core |
 | IAS compatibility table | <https://aka.dataminer.services/interactive-automation-script-toolkit> | `develop/TOOLS/NuGet/Interactive_Automation_Script_Toolkit.md`, UID `Interactive_Automation_Script_Toolkit` | IAS references and planning |
 | Script interactivity | <https://aka.dataminer.services/interactivity-options> | [`develop/schemadoc/Automation/InteractivityOptions.md` at `103263b...`](https://github.com/SkylineCommunications/dataminer-docs/blob/103263b74f73d172b7c7bc3fc10c3bae6d8ffc2c/develop/schemadoc/Automation/InteractivityOptions.md), UID `Automation-InteractivityOptions`; Automation schema package above | Automation XML and IAS |
 | Runtime flags | <https://aka.dataminer.services/skyline-data-miner-automation-run-time-flags> | Generated API reference from the captured docs build | Automation core and IAS |
@@ -155,7 +155,7 @@ All paths above are relative to the pinned `dataminer-docs` revision.
 | `skills/dataminer-automation-core/` | Runtime model, entry-point overview, error behavior, source routing |
 | `skills/dataminer-automation-xml/` | DMSScript structure and version-gated XML |
 | `skills/dataminer-automation-scripting/` | Engine/API usage, input/output behavior, thread and logging rules |
-| `skills/dataminer-interactive-automation/` | IAS package/API, host behavior, lifecycle, and widgets |
+| `skills/dataminer-automation-interactive/` | IAS package/API, host behavior, lifecycle, and widgets |
 | `skills/dataminer-automation-unit-testing/` | Supported seams, packages, isolation, and executable test patterns |
 | `skills/dataminer-sdk/references/automation-template-reference.md` | Actual output and options of the pinned official template package |
 

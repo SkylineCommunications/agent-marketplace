@@ -7,7 +7,7 @@ updated: "2026-10-23"
 
 # DataMiner QAction C# — Guard Rails
 
-> For comprehensive QAction patterns, load the `dataminer-qaction` skill and `dataminer-qaction/references/example-json-table.md`.
+> For comprehensive QAction patterns, load the `dataminer-connector-qaction` skill and `dataminer-connector-qaction/references/example-json-table.md`.
 > **Scope**: These guard rails apply to all C# source files in `QAction_<id>/` projects (including nested folder/class files under `QAction_1/` and `QAction_N/`). Do not manually edit auto-generated `QAction_Helper/QAction_Helper.cs`, and use `dataminer-unit-testing` for `QAction_Tests/` unit test projects.
 
 ## Target Framework, Language Version & Compilation Gate (CRITICAL)
@@ -63,7 +63,7 @@ updated: "2026-10-23"
   const int DevicesStatusPid = 1003;
   protocol.GetParameter(DevicesStatusPid);
   ```
-- **NEVER manually write or hand-synthesize `QAction_Helper/QAction_Helper.cs`.** Always generate it from `protocol.xml` using `dataminer-qaction-helper-generator` (`qaction-helper-generation` or `Skyline.DataMiner.Files.QActionHelper`) and read the actual generated `QAction_Helper.cs` before referencing `Parameter.*` constants. Note:
+- **NEVER manually write or hand-synthesize `QAction_Helper/QAction_Helper.cs`.** Always generate it from `protocol.xml` using `dataminer-connector-qaction-helper` (`qaction-helper-generation` or `Skyline.DataMiner.Files.QActionHelper`) and read the actual generated `QAction_Helper.cs` before referencing `Parameter.*` constants. Note:
   - Standalone read/write constants in `Parameter.<name>` and `Parameter.Write.<name>` are **100% lowercase** (e.g. `<Name>apiKey</Name>` → `Parameter.apikey`, `Parameter.Write.apikey`).
   - Table class names in `Parameter.<Tablename>` have **only the first letter capitalized and the rest lowercase** (e.g. `<Name>channelsTable</Name>` → `Parameter.Channelstable`), its fixed table PID field is `tablePid` (camelCase `t`, never `TablePid`), and `Pid`/`Idx` column constants are **100% lowercase** (`Parameter.Channelstable.Pid.channelname`).
   - `<Type>dummy</Type>` parameters (such as `afterStartup`) are **never** emitted into `public static class Parameter` — declare a descriptive `const int` for dummy trigger IDs instead of `Parameter.Afterstartup` or `Parameter.afterstartup`.
@@ -150,7 +150,7 @@ updated: "2026-10-23"
 
 ## Canonical Pattern Reference
 
-Load `dataminer-qaction/references/example-json-table.md` for complete working examples of:
+Load `dataminer-connector-qaction/references/example-json-table.md` for complete working examples of:
 - JSON response → FillArray table (Pattern 1)
 - Bulk GetParameters / SetParameters (Pattern 2)
 - FillArrayWithColumn single-column update (Pattern 3)

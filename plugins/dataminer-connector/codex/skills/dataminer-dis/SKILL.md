@@ -8,10 +8,10 @@ metadata:
   version: 1.2
 ---
 
-> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-automation-scripting`, `dataminer-automation-xml`, `dataminer-interactive-automation`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> **Skill reference notice:** This skill refers to additional skills that are not included in this distribution: `dataminer-automation-interactive`, `dataminer-automation-scripting`, `dataminer-automation-xml`. If the task needs one, report the missing prerequisite and obtain it or explicitly narrow the task; do not claim the unsupported route is complete.
+> - `dataminer-automation-interactive`: DIS interactive Automation workflow only.
 > - `dataminer-automation-scripting`: DIS Automation workflow only; connector-only tasks do not use this branch.
 > - `dataminer-automation-xml`: DIS Automation schema workflow only; not required for connector authoring.
-> - `dataminer-interactive-automation`: DIS interactive Automation workflow only.
 
 ## Changelog
 
@@ -27,7 +27,7 @@ This skill covers DIS features that materially affect connector source code, Aut
 
 It does **not** cover packaging, Catalog publication, deployment, or general DMA operations outside the codebase itself. `references/automation-workflows.md` covers the code-relevant Automation import/debug route; it is not a substitute for QAOps or release/deployment verification.
 
-Load `dataminer-sdk` alongside this skill for official CLI, package, and tool version decisions. Load `dataminer-protocol-xml-reference` for XML schema authority. Load `dataminer-validation` for validator semantics and suppression syntax.
+Load `dataminer-sdk` alongside this skill for official CLI, package, and tool version decisions. Load `dataminer-connector-protocol-xml` for XML schema authority. Load `dataminer-connector-validation` for validator semantics and suppression syntax.
 
 ---
 

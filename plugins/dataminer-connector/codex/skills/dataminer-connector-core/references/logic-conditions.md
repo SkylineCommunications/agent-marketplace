@@ -1,6 +1,6 @@
 # Conditions Logic
 
-Authority scope: this file explains condition expression behavior and evaluation timing. It is not the XML schema reference. For valid XML placement of `Condition` elements, use `dataminer-protocol-xml-reference`.
+Authority scope: this file explains condition expression behavior and evaluation timing. It is not the XML schema reference. For valid XML placement of `Condition` elements, use `dataminer-connector-protocol-xml`.
 
 ## Purpose
 

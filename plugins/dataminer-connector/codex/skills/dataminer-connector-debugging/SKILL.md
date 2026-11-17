@@ -16,7 +16,7 @@ metadata:
 
 # DataMiner Connector Debugging
 
-Use this skill for read-only diagnosis of an existing connector when the symptom is runtime behavior, missing data, slow polling, a protocol-thread RTE, a growing communication queue, or an environment-dependent failure. Load `dataminer-connector-core`, `dataminer-validation`, and the relevant communication skill alongside this one.
+Use this skill for read-only diagnosis of an existing connector when the symptom is runtime behavior, missing data, slow polling, a protocol-thread RTE, a growing communication queue, or an environment-dependent failure. Load `dataminer-connector-core`, `dataminer-connector-validation`, and the relevant communication skill alongside this one.
 
 This skill does not authorize code, XML, deployment, certificate, or logging-level changes. A diagnosis must identify the evidence and the owner of the next change.
 
@@ -35,9 +35,9 @@ Do not call a device or environment problem a connector defect without evidence 
 1. Record the symptom, expected behavior, affected element/protocol version, DataMiner version, DMA, connection type, time window, and whether the issue is reproducible.
 2. Read `protocol.xml`, the complete affected QAction source, and the solution/project files. Trace the full parameter → group/timer → trigger/action/QAction → response path.
 3. Check the applicable communication reference:
-   - SNMP tables: `dataminer-xml-authoring/references/advanced-connectivity.md` and the official [SNMP table retrieval guide](https://aka.dataminer.services/connections-snmp-retrieving-tables).
-   - Serial or smart-serial: `dataminer-xml-authoring/references/serial-connections.md`.
-   - HTTP/REST: `dataminer-http-communication`.
+   - SNMP tables: `dataminer-connector-xml-authoring/references/advanced-connectivity.md` and the official [SNMP table retrieval guide](https://aka.dataminer.services/connections-snmp-retrieving-tables).
+   - Serial or smart-serial: `dataminer-connector-xml-authoring/references/serial-connections.md`.
+   - HTTP/REST: `dataminer-connector-http-communication`.
 4. Gather runtime evidence without changing production behavior:
    - DataMiner/Cube logs and the Watchdog log for the first RTE (`count = 1`).
    - SLNetClientTest protocol pending calls while the RTE is active; use the no-lock diagnostic only when the element is fully stuck.

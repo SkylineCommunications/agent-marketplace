@@ -1,6 +1,6 @@
 # Groups And Timers Logic
 
-Authority scope: this file explains group, timer, and polling behavior. It is not the XML schema reference. For valid XML children, attributes, enum values, and keyrefs, use `dataminer-protocol-xml-reference`.
+Authority scope: this file explains group, timer, and polling behavior. It is not the XML schema reference. For valid XML children, attributes, enum values, and keyrefs, use `dataminer-connector-protocol-xml`.
 
 ## Groups
 

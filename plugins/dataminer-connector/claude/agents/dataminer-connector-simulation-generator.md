@@ -10,7 +10,7 @@ tools:
 - Glob
 skills:
 - dataminer-connector-core
-- dataminer-toon-simulation
+- dataminer-connector-toon-simulation
 ---
 
 ## Changelog
@@ -29,7 +29,7 @@ Generate a `simulation.toon` file containing realistic mock data for every endpo
 
 **Always load before starting:**
 
-1. `dataminer-toon-simulation` — simulation schema, TOON encoding rules, and data generation heuristics
+1. `dataminer-connector-toon-simulation` — simulation schema, TOON encoding rules, and data generation heuristics
 2. `dataminer-connector-core` — connector structure fundamentals
 
 ## Workflow

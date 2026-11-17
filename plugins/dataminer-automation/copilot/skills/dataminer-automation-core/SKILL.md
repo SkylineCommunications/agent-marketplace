@@ -49,9 +49,9 @@ Not every DataMiner feature that is authored or deployed through the Automation 
 | Contract | Core shape | Route to |
 |---|---|---|
 | GQI ad hoc data source | Compiled `IGQIDataSource` library with columns and explicit pages | `dataminer-gqi-ad-hoc-data-source` |
-| SRM | Role/configuration-driven script or a version-matched typed callback | `dataminer-srm-automation` |
-| User-Defined API | `OnApiTrigger` with `ApiTriggerInput`/`ApiTriggerOutput` (legacy `Run` is a separate compatibility shape) | `dataminer-user-defined-api` |
-| Node Recovery | `OnNodeRecoveryLocalStateChange` or `OnNodeRecoveryGlobalStateChange` callback | `dataminer-node-recovery` |
+| SRM | Role/configuration-driven script or a version-matched typed callback | `dataminer-automation-srm` |
+| User-Defined API | `OnApiTrigger` with `ApiTriggerInput`/`ApiTriggerOutput` (legacy `Run` is a separate compatibility shape) | `dataminer-automation-user-defined-api` |
+| Node Recovery | `OnNodeRecoveryLocalStateChange` or `OnNodeRecoveryGlobalStateChange` callback | `dataminer-automation-node-recovery` |
 
 These contracts may still use a `DMSScript` definition or an Automation package, but they do not inherit the normal
 script-parameter/exit/UI assumptions. Record the host/trigger, identity/configuration, target version, and validation
@@ -177,15 +177,15 @@ Use this table to decide which skill(s) to load for a task.
 
 | Task | Load Skill(s) |
 |------|---------------|
-| Plan and delegate a multi-step automation task | `dataminer-automation-orchestrator` |
+| Plan and delegate a multi-step automation task | `dataminer-automation-agent` |
 | Create a new automation script solution from scratch | `dataminer-sdk` (load `references/automation-template-reference.md`) |
 | Write or edit the `DMSScript` XML (params, memory, dummies, options, Exe) | `dataminer-automation-xml` |
 | Write or modify the C# Engine (`IEngine`) logic | `dataminer-automation-scripting` |
-| Build an interactive UI (wizards, forms, dashboards) | `dataminer-interactive-automation` |
+| Build an interactive UI (wizards, forms, dashboards) | `dataminer-automation-interactive` |
 | Implement a GQI ad hoc data source | `dataminer-gqi-ad-hoc-data-source` |
-| Implement an SRM role, orchestration, profile/lifecycle, or callback script | `dataminer-srm-automation` |
-| Implement a User-Defined API endpoint | `dataminer-user-defined-api` |
-| Implement a Node Recovery state-change script | `dataminer-node-recovery` |
+| Implement an SRM role, orchestration, profile/lifecycle, or callback script | `dataminer-automation-srm` |
+| Implement a User-Defined API endpoint | `dataminer-automation-user-defined-api` |
+| Implement a Node Recovery state-change script | `dataminer-automation-node-recovery` |
 | Write unit tests for an automation script | `dataminer-automation-unit-testing` |
 | Official Skyline SDK/templates/Dev Pack/packaging/deploy | `dataminer-sdk` |
 | Find the right Skyline NuGet package or package API | `dataminer-nugets` |

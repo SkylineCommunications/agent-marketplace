@@ -352,7 +352,7 @@ No port settings required.
 
 The template already contains a helper generated for its initial `protocol.xml`; a second unconditional post-scaffold generation is unnecessary.
 
-After later XML changes, load `dataminer-qaction-helper-generator` only when existing source consumes generated members affected by those changes, or when the user explicitly requests a refresh. If the solution is intentionally helper-free, preserve that architecture.
+After later XML changes, load `dataminer-connector-qaction-helper` only when existing source consumes generated members affected by those changes, or when the user explicitly requests a refresh. If the solution is intentionally helper-free, preserve that architecture.
 
 ### Common NuGet Packages
 

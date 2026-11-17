@@ -28,7 +28,7 @@ Required human sign-offs: [owners, artifacts, or pending]
 ```
 
 For first-release reviews, also load
-`skills/dataminer-protocol-validator-prevention/references/first-release-review-matrix.md` after
+`skills/dataminer-connector-validator-prevention/references/first-release-review-matrix.md` after
 the normal checklist. The external OneNote checklist controls coverage and release-gate policy;
 its source version/date are intentionally unknown and `SCRXXX` is accepted as supplied. Reuse
 existing baseline results, add only `enhance` deltas and applicable `new` rows, and never duplicate

@@ -10,12 +10,12 @@ tools:
 - Glob
 skills:
 - dataminer-connector-core
-- dataminer-dcf
-- dataminer-http-communication
+- dataminer-connector-dcf
+- dataminer-connector-http-communication
+- dataminer-connector-protocol-xml
+- dataminer-connector-xml-authoring
 - dataminer-logging
 - dataminer-manifest
-- dataminer-protocol-xml-reference
-- dataminer-xml-authoring
 ---
 
 ## Changelog
@@ -40,12 +40,12 @@ skills:
 | 2.15 | 2026-07-17 | Added XML comment hygiene for generated, modified, incremental, and final-format `protocol.xml` output; copyright and justified `SuppressValidator` comments remain allowed. |
 | 2.14 | 2026-06-24 | Expanded Step 3 into 3a/3b sub-steps: 3a enforces SNMP tag presence at authoring time (before writing other content); 3b adds an explicit camelCase name-transform step for standalone param `<Name>` elements with a conversion table for the most common violations (Hostname, SoftwareVersion, Uptime, ApiKey, StatusCodeSystemInfo, ResponseSystemInfo, etc.). Both rules were previously only in the post-completion checklist (Step 5) — moving them to Step 3 enforces them at generation time. |
 | 2.13 | 2026-06-01 | Added HTTP parameter type constraint: response parameters (status code, body, parsed scalars) MUST be `type="read"` with `RTDisplay=false`, NEVER `type="dummy"`. Dummy is exclusively for trigger params. Rationale: dummy params lack typed accessor properties on `SLProtocolExt`. |
-| 2.12 | 2026-05-31 | Added HTTP constraints: ping group (ID `-1`) for timeout recovery, URL construction rule (DataMiner auto-prepends base URL), and `url`/`pid` precedence. Updated `dataminer-http-communication` skill with URL concatenation, ping group, and PortSettings best practices. |
+| 2.12 | 2026-05-31 | Added HTTP constraints: ping group (ID `-1`) for timeout recovery, URL construction rule (DataMiner auto-prepends base URL), and `url`/`pid` precedence. Updated `dataminer-connector-http-communication` skill with URL concatenation, ping group, and PortSettings best practices. |
 | 2.11 | 2026-05-28 | Expanded Step 6 into a full Format & Order XML pass — enforces ascending-ID ordering across all ID-based sections (with Read/Write pair exception). Replaces the removed XML fix CLI as a final cleanup step. Added standalone invocation mode for end-of-pipeline use. |
 | 2.10 | 2026-05-28 | Added Step 6 as a dedicated XML formatting enforcement step; renumbered Explain changes to Step 7. |
 | 2.9 | 2026-05-28 | Added tab-indentation verification to Step 5 completeness self-check. |
-| 2.8 | 2026-05-27 | Added conditional skill loads for `dataminer-http-communication` (HTTP/HTTPS connectors) and `dataminer-dcf` (Connectivity Framework work). |
-| 2.7 | 2026-05-22 | Deduplication: replaced inline TABLE GENERATION GATE bullets (Step 3), enumerated-values sub-list (Step 4), 18-item completeness self-check (Step 5), and three Constraints entries with directive pointers to `dataminer-xml-authoring` skill. All rules remain authoritative in the skill. Deduplication: replaced 9-line Run Coordination boilerplate with compact 3-line directive pointer to `dataminer-manifest` and `dataminer-logging` skills. |
+| 2.8 | 2026-05-27 | Added conditional skill loads for `dataminer-connector-http-communication` (HTTP/HTTPS connectors) and `dataminer-connector-dcf` (Connectivity Framework work). |
+| 2.7 | 2026-05-22 | Deduplication: replaced inline TABLE GENERATION GATE bullets (Step 3), enumerated-values sub-list (Step 4), 18-item completeness self-check (Step 5), and three Constraints entries with directive pointers to `dataminer-connector-xml-authoring` skill. All rules remain authoritative in the skill. Deduplication: replaced 9-line Run Coordination boilerplate with compact 3-line directive pointer to `dataminer-manifest` and `dataminer-logging` skills. |
 | 2.6 | 2026-04-21 | Fixed displaykey rule: SNMP columns (with `<SNMP><OID>`) must always be `type="snmp"`, never `type="displaykey"`. `type="displaykey"` is only for non-SNMP columns holding multi-PID NamingFormat concatenation. |
 | 2.5 | 2026-04-20 | Added Alarm/Monitored enforcement: Step 3 per-table gate now checks every `<Alarm>` block has `<Monitored>true</Monitored>` as first child; Step 5 completeness self-check now includes count-based Monitored vs Alarm verification. |
 | 2.4 | 2026-04-18 | Volatile: excluded HTTP REST API tables (volatile is incompatible for HTTP, causes MAJOR). Added VendorOID prefix check to step 5 completeness. Added RTDisplay=false rule for HTTP intermediate non-column non-displayed params. |
@@ -68,9 +68,9 @@ Apply this rule to every output form: full files, snippets, incremental edits, c
 - Keep `SuppressValidator` comments only when they directly wrap the affected element and state a specific reason for a genuinely non-applicable validator finding.
 - Move explanations to `<Description>`, `<Information><Subtext>`, Markdown, or C# documentation comments. When editing an existing file, remove newly introduced non-allowed comments rather than preserving them as part of the edit. `<Information><Subtext>` must describe the parameter in plain, operator-friendly language and must never contain technical protocol details such as SNMP OIDs.
 
-> **Paired skill**: `dataminer-xml-authoring` — owns XML templates, examples, and element reference. This agent owns workflow, constraints, and validation steps. Keep shared constraints (alarm tags, naming rules) in sync.
+> **Paired skill**: `dataminer-connector-xml-authoring` — owns XML templates, examples, and element reference. This agent owns workflow, constraints, and validation steps. Keep shared constraints (alarm tags, naming rules) in sync.
 
-Load the `dataminer-connector-core` and `dataminer-xml-authoring` skills before every task. When authoring an **HTTP/REST connector** (`<Type>HTTP</Type>` or `<Type>HTTPS</Type>`), also load `dataminer-http-communication` for session, request/response, and HTTPS guidance. When the connector models **physical connectivity** (interfaces, connections, DCF tables), load `dataminer-dcf` for DCF system tables and modelling rules.
+Load the `dataminer-connector-core` and `dataminer-connector-xml-authoring` skills before every task. When authoring an **HTTP/REST connector** (`<Type>HTTP</Type>` or `<Type>HTTPS</Type>`), also load `dataminer-connector-http-communication` for session, request/response, and HTTPS guidance. When the connector models **physical connectivity** (interfaces, connections, DCF tables), load `dataminer-connector-dcf` for DCF system tables and modelling rules.
 
 ## Incremental Editing Strategy
 
@@ -98,11 +98,11 @@ When adding **multiple SNMP tables** (2 or more), use an incremental approach to
    - When columns in different tables share a description, append the table description or a clear abbreviation in parentheses.
    - Re-check only the `<Protocol><Params><Param>` elements changed by this task before continuing.
 
-   **If table columns were added or modified**, immediately verify each column: (a) `<Name>` is camelCase `tableNameColumnName` with the exact table-name prefix, (b) `<Description>` is human-readable Title Case and duplicate descriptions across tables are disambiguated with a parenthetical table description or abbreviation, and (c) `<Information><Subtext>` is present. **If an SNMP table (`<Param type="array">`) was added**, apply the **TABLE GENERATION GATE** (all 11 rules, 0–10) from the `dataminer-xml-authoring` skill before continuing. Also verify that every automatically polled `<ColumnOption type="snmp">` omits the `save` token from `options`; alarm monitoring and trending do not justify saving these values.
+   **If table columns were added or modified**, immediately verify each column: (a) `<Name>` is camelCase `tableNameColumnName` with the exact table-name prefix, (b) `<Description>` is human-readable Title Case and duplicate descriptions across tables are disambiguated with a parenthetical table description or abbreviation, and (c) `<Information><Subtext>` is present. **If an SNMP table (`<Param type="array">`) was added**, apply the **TABLE GENERATION GATE** (all 11 rules, 0–10) from the `dataminer-connector-xml-authoring` skill before continuing. Also verify that every automatically polled `<ColumnOption type="snmp">` omits the `save` token from `options`; alarm monitoring and trending do not justify saving these values.
 
    **3c. SNMP write and polling gate**: Before completing SNMP XML, load
-   `dataminer-xml-authoring/references/snmp-writes-single.md` and
-   `dataminer-xml-authoring/references/groups-timers-triggers-actions.md`. For each requested
+   `dataminer-connector-xml-authoring/references/snmp-writes-single.md` and
+   `dataminer-connector-xml-authoring/references/groups-timers-triggers-actions.md`. For each requested
    scalar write, verify its read/write pair and use `snmpSetAndGet="true"` by default; use another
    SET pattern only when the requirement justifies it. Plan each scalar polling cadence before
    writing XML. Count the direct `<Param>` entries in every group; if a cadence has more than 10
@@ -123,15 +123,15 @@ When adding **multiple SNMP tables** (2 or more), use an incremental approach to
    - **Operational Alarming (Mandatory for Valid Parameters)**: All valid operational health, status, and telemetry indicators (voltages, currents, power, frequencies, battery capacities/charge/runtimes, temperatures, link states, error counters, operational statuses with `<RTDisplay>true</RTDisplay>`) **MUST** have `<Alarm><Monitored>true</Monitored>` with standard default thresholds or justified `2.5.1` suppression. Only non-alarmable parameters (write parameters, dummy parameters, table array params, index PKs, display keys, RTDisplay=false intermediates, static asset information, volatile tables) omit `<Alarm>`.
    - **Discrete Parameters for Pre-Known Values**: Any parameter representing pre-known values (enumerations, states, modes, statuses, boolean conditions) **MUST** be implemented as a discrete parameter (`<Type>discreet</Type>`, or `<Type>togglebutton</Type>` for 2-state booleans). The backend stored value **MUST** be numeric (`<Interprete><Type>double</Type></Interprete>`) so that the parameter can be alarmed and trended. The displayed value (`<Discreet><Display>...</Display></Discreet>`) must provide clear, user-friendly text for the end user. Never use raw string parameters for pre-known states or enumerations.
 
-4. **Verify every element and attribute against the schema**: **Before writing any XML element, attribute, or enum value, consult `dataminer-xml-authoring/references/dataminer-protocol-rules.md` FIRST** — it contains authoritative protocol rules covering common XSD errors and their corrections. Then also apply these checks:
-   - **Child elements**: Verify each child element against the parent's valid children list from the `dataminer-xml-authoring` skill (e.g. `<Subtext>` belongs under `<Param><Information><Subtext>`, NOT directly under `<Param>`).
+4. **Verify every element and attribute against the schema**: **Before writing any XML element, attribute, or enum value, consult `dataminer-connector-xml-authoring/references/dataminer-protocol-rules.md` FIRST** — it contains authoritative protocol rules covering common XSD errors and their corrections. Then also apply these checks:
+   - **Child elements**: Verify each child element against the parent's valid children list from the `dataminer-connector-xml-authoring` skill (e.g. `<Subtext>` belongs under `<Param><Information><Subtext>`, NOT directly under `<Param>`).
    - **Attribute names**: Verify each attribute exists on the element per the schema. **NEVER** use `foreignId` on `<Discreets>` — use `<ColumnOption type="foreignkey" ... options=";foreignkey={pid}" />` instead.
-   - **Enumerated values**: Consult `dataminer-protocol-xml-reference/references/protocol-types-and-enums.md` for all allowed values of `RawType`, `Interprete/Type`, `Measurement/Type`, `SNMP/Type`, `OID type`, and `ColumnOption type` **before** writing them. Never use SNMP type names in `RawType` or `OID type`.
-   - **Units**: Whenever adding or changing `<Display><Units>`, load `dataminer-protocol-xml-reference/references/protocol-uom.md` and use an exact, case-sensitive listed value. Do not infer capitalization from prose or rely on the validator to discover the correct spelling after editing.
+   - **Enumerated values**: Consult `dataminer-connector-protocol-xml/references/protocol-types-and-enums.md` for all allowed values of `RawType`, `Interprete/Type`, `Measurement/Type`, `SNMP/Type`, `OID type`, and `ColumnOption type` **before** writing them. Never use SNMP type names in `RawType` or `OID type`.
+   - **Units**: Whenever adding or changing `<Display><Units>`, load `dataminer-connector-protocol-xml/references/protocol-uom.md` and use an exact, case-sensitive listed value. Do not infer capitalization from prose or rely on the validator to discover the correct spelling after editing.
    - **Alarm threshold values**: Use **dot** (`.`) as decimal separator, **NEVER** comma.
    - **Schema lookup**: Use `https://docs.dataminer.services/develop/schemadoc/Protocol/Protocol.{path}.html` when uncertain about any element.
    - **Anti-patterns to catch**: `<Param><Subtext>`, `<Param><Trending>`, `<Param><Units>`, `<Param><Includes>`, `<Discreets foreignId>`, `<Protocol><WebInterface>` — see skill for correct placements.
-5. **Completeness self-check** — Run the relevant parts of the **Pre-Completion Checklist** from the `dataminer-xml-authoring` skill against the content changed by this task. Verify that all valid operational health, status, and telemetry parameters have `<Alarm><Monitored>true</Monitored>` configured with thresholds or 2.5.1 suppression. For a one-field metadata edit, verify the owning parameter, exact value, well-formed XML, and diff scope; do not repeat unrelated whole-connector count checks. Run the full checklist for new parameters/tables, structural edits, or when explicitly requested. Keep pre-existing validator findings separate from findings caused by this edit; do not fix unrelated remarks or report a nonzero result as clean.
+5. **Completeness self-check** — Run the relevant parts of the **Pre-Completion Checklist** from the `dataminer-connector-xml-authoring` skill against the content changed by this task. Verify that all valid operational health, status, and telemetry parameters have `<Alarm><Monitored>true</Monitored>` configured with thresholds or 2.5.1 suppression. For a one-field metadata edit, verify the owning parameter, exact value, well-formed XML, and diff scope; do not repeat unrelated whole-connector count checks. Run the full checklist for new parameters/tables, structural edits, or when explicitly requested. Keep pre-existing validator findings separate from findings caused by this edit; do not fix unrelated remarks or report a nonzero result as clean.
 6. **Format, Order, and Clean XML** — Validate formatting and ordering without widening the edit. Apply checks to changed lines and affected sections; inspect the entire file only for an explicit standalone whole-file pass. Do not reformat, reorder, or clean unrelated pre-existing content as part of a scoped change.
 
    **6a. Tab indentation**: New or modified XML lines must use tabs, one per nesting level. Preserve indentation, line endings, and whitespace on untouched lines.
@@ -164,7 +164,7 @@ This agent can be invoked **standalone** (without a preceding authoring task) to
 
 When invoked with a prompt like *"Run a final formatting and ordering pass on protocol.xml"* or *"Format and order the XML"*:
 
-1. Load `dataminer-connector-core` and `dataminer-xml-authoring` skills.
+1. Load `dataminer-connector-core` and `dataminer-connector-xml-authoring` skills.
 2. Read the full `protocol.xml`.
 3. Execute **Step 6 (Format, Order, and Clean XML)** as a whole-file pass because this standalone invocation explicitly requests it. Apply 6a through 6e across the file while preserving its line endings and avoiding unrelated semantic changes.
 4. Report what was reordered or reformatted (or confirm "no changes needed").
@@ -179,14 +179,14 @@ If a **manifest path** or **log directory** is provided, load the `dataminer-man
 - Use `NamingFormat` for display keys, never `displayColumn`.
 - Read/write pairs must have **character-for-character identical** `<Name>`, `<Description>`, and `<Positions>` — this is how DataMiner pairs them into a single UI control. **Different names = two separate unlinked controls on the UI.**
 - Table column `<Name>`: camelCase `tableNameColumnName`. Column `<Description>`: append table name in parentheses.
-- RTDisplay and Positions rules: see TABLE GENERATION GATE rules 3 and 7 in the `dataminer-xml-authoring` skill. For HTTP intermediate params, use `<RTDisplay>false</RTDisplay>`.
+- RTDisplay and Positions rules: see TABLE GENERATION GATE rules 3 and 7 in the `dataminer-connector-xml-authoring` skill. For HTTP intermediate params, use `<RTDisplay>false</RTDisplay>`.
 - Trending is an **attribute** on `<Param>`, not a child element.
-- Before writing XML, check `<Type>` to determine connection type and only include applicable sections — see the `dataminer-xml-authoring` skill's Connection-Type-Specific Sections table for the full rules.
+- Before writing XML, check `<Type>` to determine connection type and only include applicable sections — see the `dataminer-connector-xml-authoring` skill's Connection-Type-Specific Sections table for the full rules.
 - HTTP polling groups: ALWAYS use `<Type>poll</Type>` with `<Content><Session>N</Session></Content>`. NEVER use `poll action`.
-- HTTP connectors should include a **ping group** (Group ID `-1`) referencing a lightweight health-check session for automatic timeout recovery. See `dataminer-http-communication` skill for details.
+- HTTP connectors should include a **ping group** (Group ID `-1`) referencing a lightweight health-check session for automatic timeout recovery. See `dataminer-connector-http-communication` skill for details.
 - HTTP session URLs: DataMiner auto-prepends `http://<Element IP>:<Port>/` — for static URLs, specify only the literal relative path in `Request@url` (`Protocol.HTTP.Session.Connection.Request-url`). When a parameter contains the URL, use `Request@pid="<paramId>"` (`Protocol.HTTP.Session.Connection.Request-pid`) and omit `url`. **NEVER** put `[param:...]`, `{pid:...}`, or parameter placeholders inside `Request@url`. If both `url` and `pid` are specified, `pid` is ignored.
 - HTTP response parameters (status code, response body, parsed scalars) MUST use `<Type>read</Type>` with `<RTDisplay>false</RTDisplay>` — **NEVER** `<Type>dummy</Type>`. `dummy` is reserved for internal trigger parameters (e.g. AfterStartup) that carry no stored response data. This runtime distinction applies even though generated helper versions can expose dummy `SLProtocolExt` properties.
-- `defaultPage` MUST always be `"General"` — see Pre-Completion Checklist in `dataminer-xml-authoring` skill.
+- `defaultPage` MUST always be `"General"` — see Pre-Completion Checklist in `dataminer-connector-xml-authoring` skill.
 - `<PortSettings>` MUST include the `name` attribute and follow connection-specific defaults (SNMP: `BusAddress` disabled, `IPport` 161, `PortTypeSerial` disabled; HTTP: `BusAddress` bypassProxy, `IPport` 80/443, `PortTypeUDP` and `PortTypeSerial` disabled; Serial: standard framing defaults, `BusAddress` disabled unless RS-485).
 - Parameters with pre-known values (enumerations, states, modes, statuses, boolean conditions) MUST use numeric backend interpretation (`<Interprete><Type>double</Type>`) and discrete measurement (`discreet` or `togglebutton`) with numeric `<Value>` and clear operator-facing `<Display>` text.
 - **Precompile QAction (`QAction 1`) & `dllImport` wiring**: Keep `<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile" />` without `triggers`. Whenever any triggered `<QAction id="N">` consumes shared classes/models/parsers/helpers from `QAction 1`, include `dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll"` on `<QAction id="N">`.

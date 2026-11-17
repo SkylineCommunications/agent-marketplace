@@ -1,6 +1,6 @@
 # QActions Logic
 
-Authority scope: this file explains QAction runtime behavior and C# execution constraints. It is not the XML schema reference. For valid `QAction` XML attributes, enum values, and schema structure, use `dataminer-protocol-xml-reference`.
+Authority scope: this file explains QAction runtime behavior and C# execution constraints. It is not the XML schema reference. For valid `QAction` XML attributes, enum values, and schema structure, use `dataminer-connector-protocol-xml`.
 
 ## QAction Role
 

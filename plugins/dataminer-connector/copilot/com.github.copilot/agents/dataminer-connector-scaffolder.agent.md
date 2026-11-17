@@ -57,7 +57,7 @@ Load `dataminer-connector-core` and `dataminer-sdk` before every task. The `data
 5. **Check initial XML cleanliness**: Before handing the solution to the XML author, inspect the generated `protocol.xml` and remove any explanatory, documentation, TODO, FIXME, debug, workaround, or design-note comments. Preserve copyright comments and justified `SuppressValidator` wrappers only. The XML author owns any substantive XML changes and must repeat the full-file check.
   For SNMP tables, also verify that automatically polled `type="snmp"` columns do not use `;save`; polling refreshes those values. Keep persistence available for explicitly justified non-SNMP columns and standalone configuration/state parameters.
 6. **Build the template output**: Run `dotnet build` without an unconditional helper regeneration. The official template already includes its initial generated helper.
-7. **Record helper handling**: If later work consumes generated members affected by XML changes, route a conditional refresh through `dataminer-qaction-helper-generator`. Otherwise record that no refresh is required.
+7. **Record helper handling**: If later work consumes generated members affected by XML changes, route a conditional refresh through `dataminer-connector-qaction-helper`. Otherwise record that no refresh is required.
 8. **Run initial validation**: Suggest running the validator against the new solution.
 
 ## Output Format

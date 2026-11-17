@@ -1,6 +1,6 @@
 # DataMiner Automation C# Rules (Anti-Hallucination)
 
-Concrete rules for writing the C# half of an Automation script. Mirrors the spirit of the connector `dataminer-qaction-rules.md`, but for the **Engine (`IEngine`) API**, not `SLProtocol`.
+Concrete rules for writing the C# half of an Automation script. Mirrors the spirit of the connector `dataminer-connector-qaction-rules.md`, but for the **Engine (`IEngine`) API**, not `SLProtocol`.
 
 > **Parent skill**: `dataminer-automation-scripting/SKILL.md`. Engine surface: `dataminer-automation-core/references/engine-api-overview.md`. Version, invocation, and security/state boundaries: `dataminer-automation-core/references/version-compatibility.md`, `invocation-and-entry-points.md`, and `security-permissions-credentials.md`.
 

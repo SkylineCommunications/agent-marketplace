@@ -1,6 +1,6 @@
 # DIS Automation Workflows
 
-Use this reference when Visual Studio and DIS are available for Automation XML/C# authoring or debugging. It complements `dataminer-automation-xml`, `dataminer-automation-scripting`, and `dataminer-interactive-automation`; it does not replace the pinned XSD, package API, or target-host decision.
+Use this reference when Visual Studio and DIS are available for Automation XML/C# authoring or debugging. It complements `dataminer-automation-xml`, `dataminer-automation-scripting`, and `dataminer-automation-interactive`; it does not replace the pinned XSD, package API, or target-host decision.
 
 ## Authoring and validation
 
